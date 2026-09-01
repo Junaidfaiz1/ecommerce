@@ -1,4 +1,4 @@
-import type { Prisma, PrismaClient } from '@/generated/prisma/client';
+import type { Prisma, PrismaClient, ProductType } from '@/generated/prisma/client';
 import type { AuthUser } from '../auth/types';
 import { asDecimal } from './memory-prisma';
 
@@ -112,7 +112,7 @@ async function seedProduct(
   prisma: PrismaClient,
   input: {
     id: string;
-    type: string;
+    type: ProductType;
     name: string;
     slug: string;
   },

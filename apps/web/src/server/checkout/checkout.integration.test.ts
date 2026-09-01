@@ -44,7 +44,7 @@ function succeededEvent(input: {
         metadata: { orderId: input.orderId, userId: IDS.customer },
       },
     },
-  } as Stripe.Event;
+  } as unknown as Stripe.Event;
 }
 
 async function stubIntent() {
@@ -205,7 +205,7 @@ describe('checkout + Stripe webhook', () => {
       id: 'evt_cancel',
       type: 'payment_intent.canceled',
       data: { object: { id: session.paymentIntentId } },
-    } as Stripe.Event);
+    } as unknown as Stripe.Event);
 
     const order = await prisma.order.findUnique({
       where: { id: session.orderId },

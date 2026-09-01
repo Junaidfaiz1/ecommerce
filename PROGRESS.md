@@ -7,9 +7,9 @@
 
 | Field | Value |
 |-------|-------|
-| **Current phase** | Phase 17 — Testing |
-| **Status** | 🟡 In progress |
-| **Next phase** | Phase 18 — Performance optimization |
+| **Current phase** | Phase 18 — Performance optimization |
+| **Status** | ⬜ Pending |
+| **Next phase** | Phase 19 — Deployment |
 | **Blocked by** | — |
 
 ## Phase checklist
@@ -32,7 +32,7 @@
 | 14 | Resend + abandoned cart | ✅ Done |
 | 15 | Analytics | ✅ Done |
 | 16 | SEO + security hardening | ✅ Done |
-| 17 | Testing | 🟡 In progress |
+| 17 | Testing | ✅ Done |
 | 18 | Performance optimization | ⬜ Pending |
 | 19 | Deployment | ⬜ Pending |
 
@@ -40,10 +40,9 @@
 
 ## What to do next (for agents)
 
-1. Finish Phase 17 verification (`pnpm typecheck`, `pnpm lint`, `pnpm test`).
-2. After Phase 17 is marked done, wait for the user to request **Phase 18**.
-3. Phase 18 = 3D budgets, query efficiency, images.
-4. Do not start Phase 18 until asked.
+1. Wait for the user to request **Phase 18**.
+2. Phase 18 = 3D budgets, query efficiency, images.
+3. Do not start Phase 18 until asked.
 
 ## Architecture decision
 
@@ -52,6 +51,18 @@
 - `apps/web` — UI + `/api/graphql` (Yoga) + `/api/health` + future webhooks/cron
 - `apps/web/src/server/*` — domain services
 - No `apps/api`
+
+## Phase 17 verification
+
+| Check | Result |
+|-------|--------|
+| Domain unit tests (compat, coupons, inventory math, webhook signatures, RBAC, scheduler, analytics, security) | Pass |
+| In-memory Prisma integration (cart, coupon, addBuildToCart gate, inventory idempotency, checkout webhook, orders, RBAC) | Pass |
+| GraphQL client-authority contract (no paid/price/stock mutations from customers) | Pass |
+| In-process E2E: build → cart → coupon → PaymentIntent stub → webhook PAID + SALE | Pass |
+| Optional HTTP smoke (`E2E_BASE_URL`) | Skip unless origin set |
+| `pnpm typecheck` / lint / `pnpm test` | Pass |
+| 3D budgets / query / images | Deferred Phase 18 |
 
 ## Phase 16 verification
 
@@ -66,7 +77,7 @@
 | Audit sanitize + staff `adminAuditLogs` / `/admin/audit` | Pass |
 | Shared Zod/helpers (`@vorqen/types` security + seo) | Pass |
 | `pnpm typecheck` / lint / test | Pass |
-| Critical-path E2E | Deferred Phase 17 |
+| Critical-path E2E | ✅ Phase 17 |
 
 ## Phase 15 verification
 
@@ -283,6 +294,7 @@
 
 | Date | Note |
 |------|------|
+| 2026-09-01 | **Phase 17 complete** — in-memory integration + critical-path E2E (build→paid), GraphQL authority tests, `pnpm test` / typecheck / lint. |
 | 2026-09-01 | **Phase 16 complete** — SEO metadata/sitemap/JSON-LD, GraphQL rate limits, audit hardening, security headers. |
 | 2026-09-01 | **Phase 14 complete** — Resend templates, auth + order-paid email, abandoned-cart cron/click/recovered. |
 | 2026-09-01 | **Phase 13 complete** — admin ops shell, catalog/orders/inventory/coupons/bundles/reviews, audit log, Stripe refunds. |

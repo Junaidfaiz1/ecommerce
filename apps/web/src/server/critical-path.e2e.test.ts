@@ -66,7 +66,7 @@ describe('critical path: build to paid order', () => {
           metadata: { orderId: session.orderId, userId: IDS.customer },
         },
       },
-    } as Stripe.Event);
+    } as unknown as Stripe.Event);
 
     const paid = await getMyOrder(prisma, IDS.customer, session.orderId);
     assert.equal(paid.status, 'PAID');

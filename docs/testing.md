@@ -19,6 +19,7 @@ HTTP UI smoke is skipped unless `E2E_BASE_URL` points at a running Next.js origi
 | Admin order transitions + refund remaining | Unit | `admin.test.ts` |
 | Stripe webhook signature + order paid | Unit / integration | `checkout.test.ts`, `checkout.integration.test.ts` |
 | Auth + RBAC guards | Unit / integration | `auth.test.ts`, `auth.integration.test.ts` |
+| GraphQL client authority (no paid/price/stock from client) | Integration | `authority.test.ts` |
 | Abandoned cart scheduler | Unit / integration | `email.test.ts`, `abandoned-cart.integration.test.ts` |
 | Order creation / ownership | Integration | `orders.integration.test.ts` |
 | Builder save → add to cart → checkout → paid | In-process E2E | `critical-path.e2e.test.ts` |

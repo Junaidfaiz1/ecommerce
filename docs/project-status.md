@@ -13,9 +13,9 @@
 
 | Item | Status |
 |------|--------|
-| Overall progress | **Phase 16 / 19 complete** (~84%) |
-| Current phase | Phase 17 — Testing (**not started**) |
-| Next work | Phase 17 when the user requests it |
+| Overall progress | **Phase 17 / 19 complete** (~89%) |
+| Current phase | Phase 18 — Performance optimization (**not started**) |
+| Next work | Phase 18 when the user requests it |
 | Architecture | Next.js-only modular monolith (NestJS / Docker / Redis nahi) |
 
 ---
@@ -152,7 +152,7 @@
 | 14 | Resend + abandoned cart | ✅ Done |
 | 15 | Analytics | ✅ Done |
 | 16 | SEO + security hardening | ✅ Done |
-| 17 | Testing (critical paths) | ⬜ Pending |
+| 17 | Testing (critical paths) | ✅ Done |
 | 18 | Performance optimization | ⬜ Pending |
 | 19 | Deployment (Vercel + Neon + CI) | ⬜ Pending |
 
@@ -162,9 +162,10 @@
 - Cart, wishlist, coupons, checkout, Stripe webhook — ✅ Phases 10–11
 - Orders + inventory transactions — ✅ Phase 12
 - Admin CRUD — ✅ Phase 13; KPIs/charts — ✅ Phase 15
-- Email (Resend) + abandoned-cart recovery — ✅ Phase 14 
+- Email (Resend) + abandoned-cart recovery — ✅ Phase 14
 - SEO, rate limits, audit log — ✅ Phase 16
-- Full test suite + production deploy  
+- Critical-path tests — ✅ Phase 17
+- Performance pass + production deploy  
 
 Detailed feature rows: [`features.md`](./features.md).
 
@@ -282,7 +283,7 @@ Yeh **business / product requirements** hain — end product mein yeh capabiliti
 | Email / abandoned cart | ✅ Done | Phase 14 — Resend + cron recovery |
 | Analytics | ✅ Done | Phase 15 — `/admin` KPIs + Recharts |
 | SEO / security harden | ✅ Done | Phase 16 — metadata, sitemap, JSON-LD, rate limits, audit |
-| Testing suite | ❌ Not started | Phase 17 |
+| Testing suite | ✅ Done | Phase 17 — unit + in-memory integration + build→paid E2E |
 | Performance pass | ❌ Not started | Phase 18 |
 | Deployment | ❌ Not started | Phase 19 |
 
@@ -290,9 +291,9 @@ Yeh **business / product requirements** hain — end product mein yeh capabiliti
 
 ## 6. Aghla qadam (Next)
 
-1. User **Phase 17** request kare.  
-2. Phase 17 = critical-path unit/integration/E2E (compat, cart, inventory, webhook, auth).  
-3. Us se pehle Phase 17 start mat karo.  
+1. User **Phase 18** request kare.
+2. Phase 18 = 3D budgets, query efficiency, images.
+3. Us se pehle Phase 18 start mat karo.
 4. Local DB: Neon URL `.env` mein set karke `pnpm exec prisma migrate deploy && pnpm db:seed`.
 
 ---

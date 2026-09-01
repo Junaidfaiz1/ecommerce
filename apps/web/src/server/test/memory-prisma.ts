@@ -221,8 +221,11 @@ function compareValues(a: unknown, b: unknown): number {
   if (a == null && b == null) return 0;
   if (a == null) return -1;
   if (b == null) return 1;
-  if (a < (b as never)) return -1;
-  if (a > (b as never)) return 1;
+  if (typeof a === 'number' && typeof b === 'number') return a - b;
+  const left = String(a);
+  const right = String(b);
+  if (left < right) return -1;
+  if (left > right) return 1;
   return 0;
 }
 
@@ -415,10 +418,11 @@ export function createMemoryPrisma(): PrismaClient {
     const childCreates: Array<{ table: string; fk: string; data: unknown }> = [];
 
     for (const [key, value] of Object.entries(data)) {
-      if (key in nested && isPlainObject(value) && 'create' in value) {
+      const nestedSpec = nested[key];
+      if (nestedSpec && isPlainObject(value) && 'create' in value) {
         childCreates.push({
-          table: nested[key].table,
-          fk: nested[key].fk,
+          table: nestedSpec.table,
+          fk: nestedSpec.fk,
           data: value.create,
         });
         continue;
