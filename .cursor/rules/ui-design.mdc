@@ -1,0 +1,39 @@
+---
+description: VORQEN UI/UX and design system constraints
+globs: apps/web/**/*.{tsx,css}
+alwaysApply: false
+---
+
+# UI / Design System
+
+Direction: premium hardware lab + automotive configurator — **not** neon gamer kitsch.
+
+## Palette
+
+| Token | Hex |
+|-------|-----|
+| Background | `#070707` |
+| Surface | `#101010` |
+| Elevated | `#171717` |
+| Text | `#F5F5F5` |
+| Muted | `#8A8A8A` |
+| Border | `#252525` |
+| Accent | electric violet / cool blue — **sparingly** |
+
+## Typography
+
+- Display: Space Grotesk  
+- Body: Geist / Inter  
+- Technical: JetBrains Mono  
+
+## Avoid
+
+Excessive neon/gradients/glow, glassmorphism spam, huge glowing headlines, generic card grids, purple-on-white AI defaults.
+
+## Layout notes
+
+- Homepage = one continuous visual story; hero budget is tight.
+- Builder desktop: left nav | center 3D | right summary. Mobile: step-by-step.
+- Product cards: image, name, category, price, rating, key spec, stock + subtle hover.
+
+Full: `docs/ui-design.md`.

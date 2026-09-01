@@ -1,0 +1,19 @@
+---
+description: Next.js frontend patterns for apps/web
+globs: apps/web/**/*.{ts,tsx}
+alwaysApply: false
+---
+
+# Frontend (`apps/web`)
+
+- Server Components by default; Client Components only for interaction/3D/browser APIs.
+- Domain features in `features/<domain>/` — avoid dumping everything in `components/`.
+- Apollo for GraphQL; never invent mock REST for catalog/cart/orders.
+- Dynamic-import 3D (`@react-three/fiber`) — never load GLBs on pages that do not need them.
+- Cart/wishlist UI may use Zustand for UX; **prices and stock always from API**.
+- Checkout: no heavy 3D; keep the flow fast and simple.
+- Admin UI must look different from the storefront (ops dashboard, not shop theme).
+
+Forms: React Hook Form + Zod. Charts (admin): Recharts.
+
+Reuse UI: search `components/` before adding new markup. Shared pieces live in `components/ui|shared|layout|navigation|3d`; promote feature components when used twice. See `docs/components.md`.

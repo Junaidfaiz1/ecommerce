@@ -1,0 +1,28 @@
+---
+description: Security and trust boundaries for VORQEN
+alwaysApply: true
+---
+
+# Security
+
+Never trust from the client:
+
+- Price, inventory quantity, compatibility result
+- User role / permissions
+- Payment / order paid status
+
+## Required patterns
+
+- JWT + refresh tokens; secure cookies where applicable
+- Password hashing; email verification
+- RBAC on admin and sensitive mutations
+- Rate limiting; GraphQL validation + query depth limits
+- Stripe webhook signature validation
+- Input validation on every mutation
+- Audit log for admin-critical actions
+
+## Secrets
+
+Use env vars only. Never commit `.env`. Keep `.env.example` in sync.
+
+List: `docs/tech-stack.md` → Environment variables.

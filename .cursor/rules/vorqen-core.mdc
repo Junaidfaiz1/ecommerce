@@ -1,0 +1,40 @@
+---
+description: VORQEN core identity, stack, and non-negotiable constraints
+alwaysApply: true
+---
+
+# VORQEN Core
+
+Premium gaming hardware marketplace + PC Builder + compatibility engine + 3D visualization.
+
+**Tagline:** Build Beyond Limits.
+
+## Always do
+
+1. Read `PROGRESS.md` before coding.
+2. Implement **only** the current phase.
+3. Prefer domain/feature folders over random utils.
+4. Use **latest stable** package versions (see `.cursor/rules/latest-versions.mdc`).
+5. After work: typecheck, lint, tests, update `PROGRESS.md` + `docs/features.md`.
+
+## Never do
+
+- NestJS or a separate `apps/api` service
+- Docker / Docker Compose / containers for local or production services
+- Redis, BullMQ, RabbitMQ, Kafka, microservices
+- Trust client prices / inventory / compatibility / roles / payment state
+- Fake APIs when real Next.js server modules + Prisma can be used
+- `localStorage` as source of truth for orders, payments, inventory, prices
+- Neon “cheap gaming” UI (excessive glow, glassmorphism, purple spam)
+- Skip phases or implement the whole app in one shot
+- Add outdated package majors when a newer stable release is available and compatible
+
+## Stack (short)
+
+- Monorepo: pnpm + Turborepo
+- **Single app:** Next.js 16+ App Router (UI + GraphQL/API + server domains)
+- Tailwind 4, shadcn, R3F, Zustand, Apollo Client
+- Prisma 7 + PostgreSQL, JWT + RBAC
+- Ext: Stripe, Cloudflare R2, Resend, Sentry
+
+Full detail: `docs/tech-stack.md`, `docs/architecture.md`.

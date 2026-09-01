@@ -1,0 +1,14 @@
+---
+description: Baseline accessibility for interactive UI
+globs: apps/web/**/*.{ts,tsx}
+alwaysApply: false
+---
+
+# Accessibility
+
+- Interactive controls: keyboard reachable, visible focus (accent sparingly).
+- Icon-only buttons need `aria-label`.
+- Forms: label association; errors linked via `aria-describedby` / `aria-invalid`.
+- Do not rely on color alone for stock/compat status — include text/icon.
+- 3D canvases: provide non-3D fallback info (specs still readable if WebGL fails).
+- Prefer shadcn primitives (they include solid a11y defaults) over custom divs-as-buttons.

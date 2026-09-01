@@ -1,0 +1,28 @@
+---
+description: Input validation on client and server — server is authoritative
+alwaysApply: true
+---
+
+# Input Validation
+
+## Rules
+
+1. **Validate on the server for every mutation/query input** — never trust the client.
+2. Frontend Zod (React Hook Form) = UX only; server re-validates the same constraints.
+3. Prefer shared schemas in `packages/types` when both sides need the same shape.
+4. Next.js server: Zod on GraphQL args, Server Actions, and webhook/cron handlers.
+5. Sanitize lengths, enums, IDs, email, URLs; reject unknown fields where practical.
+6. Money, stock, discounts, compatibility: **recompute server-side** — clients send IDs/codes, not final prices.
+
+## Forms
+
+- React Hook Form + Zod resolver on web.
+- Disable double-submit; show pending state.
+- Admin and checkout forms must not bypass schema with raw `any`.
+
+## Webhooks / external
+
+- Verify Stripe signature before parsing body.
+- Validate webhook payload shape after verification.
+
+Details: `docs/validation.md`.

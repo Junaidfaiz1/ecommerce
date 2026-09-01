@@ -1,0 +1,41 @@
+---
+description: Phase-gated workflow — only implement the current phase
+alwaysApply: true
+---
+
+# Phase Workflow
+
+Before coding any feature:
+
+1. Inspect the repo — do not overwrite working code.
+2. Check `PROGRESS.md` for **Current phase**.
+3. Prefer **latest stable** versions for new/updated packages (`.cursor/rules/latest-versions.mdc`).
+4. Briefly state the plan for that phase only.
+5. Implement that phase.
+6. Typecheck + lint + available tests.
+7. Mark phase done in `PROGRESS.md` and `docs/features.md`.
+8. Set **Next** to the following phase — do not start it unless asked.
+
+## Phases (order is fixed)
+
+1. Monorepo foundation (Next.js-only)
+2. Database + Prisma
+3. Next.js GraphQL / server foundation
+4. Auth + RBAC
+5. Catalog + hardware domain
+6. Compatibility Engine
+7. PC Builder
+8. Customer storefront
+9. 3D system
+10. Cart + wishlist
+11. Stripe + checkout
+12. Orders + inventory
+13. Admin panel
+14. Resend + abandoned cart
+15. Analytics
+16. SEO + security hardening
+17. Testing
+18. Performance optimization
+19. Deployment
+
+Details: `docs/phases.md`.

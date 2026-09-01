@@ -1,0 +1,27 @@
+{
+  "name": "@vorqen/ui",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "echo \"No lint configured for @vorqen/ui yet\"",
+    "build": "echo \"@vorqen/ui is source-consumed; no build step\""
+  },
+  "peerDependencies": {
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.5",
+    "@vorqen/config": "workspace:*",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "typescript": "~5.9.3"
+  }
+}

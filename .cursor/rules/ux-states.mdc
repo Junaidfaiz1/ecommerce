@@ -1,0 +1,19 @@
+---
+description: Loading, empty, and error UI states required on every data surface
+globs: apps/web/**/*.{ts,tsx}
+alwaysApply: false
+---
+
+# UX States
+
+Every list, detail, and builder panel must handle:
+
+| State | Requirement |
+|-------|-------------|
+| Loading | Skeleton or spinner — reuse shared skeletons |
+| Empty | `EmptyState` + clear next action |
+| Error | `ErrorState` + retry when safe |
+| Success | Toast or inline confirm for mutations |
+| Partial | e.g. 3D failed but specs still show |
+
+Do not ship pages that only handle the happy path. Checkout and payments: explicit failure + “do not pay twice” guidance when status is unknown.

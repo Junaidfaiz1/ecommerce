@@ -1,0 +1,38 @@
+---
+description: Prefer reusable shared components; avoid one-off duplicates
+globs: apps/web/**/*.{ts,tsx}
+alwaysApply: false
+---
+
+# Reusable Components
+
+Build UI once; reuse everywhere. Do not copy-paste near-identical JSX.
+
+## Where things live
+
+| Kind | Location |
+|------|----------|
+| Primitives (Button, Input, Dialog…) | `components/ui/` (shadcn) or `packages/ui` |
+| Layout / nav / chrome | `components/layout/`, `components/navigation/` |
+| Cross-feature shared | `components/shared/` |
+| Domain-specific | `features/<domain>/components/` |
+| 3D primitives | `components/3d/` |
+
+Promote to `components/shared/` or `packages/ui` when a feature component is needed in **2+ features**.
+
+## Rules
+
+- Props-driven variants (`variant`, `size`, `state`) — not forked copies.
+- Compose small pieces; no giant mega-components.
+- Shared visual language: design tokens from `docs/ui-design.md`.
+- Loading / empty / error: reuse shared state components when possible.
+- Product card, price, rating, stock badge, quantity stepper = shared — not redefined per page.
+
+## Avoid
+
+```tsx
+// ❌ Same card markup in Shop, Wishlist, and Admin with tiny diffs
+// ✅ <ProductCard product={p} actions={['cart','wishlist']} />
+```
+
+When adding UI, first search existing `components/` and `features/*/components/` for something to extend.

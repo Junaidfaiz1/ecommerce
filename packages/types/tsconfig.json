@@ -1,0 +1,9 @@
+{
+  "extends": "@vorqen/config/typescript/base.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": "src",
+    "composite": false
+  },
+  "include": ["src/**/*.ts"]
+}

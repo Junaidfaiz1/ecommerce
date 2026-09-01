@@ -1,0 +1,15 @@
+---
+description: Keep PROGRESS, features, and bugs docs updated after each change
+alwaysApply: true
+---
+
+# Docs hygiene
+
+After completing work in a session:
+
+1. Update `PROGRESS.md` (current phase status, recent updates table).
+2. Update matching rows in `docs/features.md`.
+3. Log new defects in `docs/bugs.md` (do not leave known P0/P1 undocumented).
+4. If architecture/stack/UI decisions change, update the matching `docs/*.md` file.
+
+Do not mark a phase **done** unless its exit criteria in `docs/phases.md` are met.

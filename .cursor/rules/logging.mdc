@@ -1,0 +1,13 @@
+---
+description: Structured logging rules for Next.js server modules
+globs: apps/web/src/server/**/*.ts,apps/web/src/app/api/**/*.ts
+alwaysApply: false
+---
+
+# Logging
+
+- Structured logs with context objects (request id, user id, action, entity ids).
+- **Must log:** login success/failure (no password), order create, payment webhook, inventory change, admin mutations, email failure, unexpected compatibility failures.
+- **Never log:** passwords, tokens, card data, Stripe/R2 secrets, full PII dumps.
+- Levels: `error` failures, `warn` recoverable, `info` business events, `debug` local-only.
+- Sentry for unhandled exceptions; scrub sensitive fields in beforeSend when added.

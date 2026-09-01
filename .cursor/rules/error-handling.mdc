@@ -1,0 +1,27 @@
+---
+description: Consistent API and UI error handling — no leaked internals
+alwaysApply: true
+---
+
+# Error Handling
+
+## Backend
+
+- Throw domain errors from services (e.g. `NotFoundError`, `ValidationError`, `ForbiddenError`, `ConflictError`).
+- Map to GraphQL / HTTP with **stable error codes** (see `docs/error-handling.md`).
+- Never expose stack traces, Prisma messages, or internal paths to clients.
+- Unexpected errors → log + generic client message; report to Sentry when configured.
+- Stripe / email / R2 failures: log with context IDs; return safe user-facing messages.
+
+## Frontend
+
+- Map known error codes to user-friendly copy (toast or inline).
+- Network / unknown → generic retry message; do not dump raw GraphQL errors in UI.
+- Forms: field-level errors from Zod; submit errors from API codes.
+- Every data view needs error UI (reuse `ErrorState`) — not a blank screen.
+
+## Do not
+
+- `catch (e) {}` empty swallows
+- `toast(error.message)` when message may be internal
+- Mark order paid / stock changed in UI without confirmed API success

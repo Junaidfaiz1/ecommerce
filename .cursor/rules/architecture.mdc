@@ -1,0 +1,30 @@
+---
+description: Monorepo and Next.js-only modular architecture
+alwaysApply: true
+---
+
+# Architecture
+
+```
+VORQEN/
+  apps/web/          # Next.js only (UI + API)
+  packages/ui|types|config/
+  prisma/
+  docs/
+```
+
+## App (`apps/web`)
+
+- **UI:** App Router groups `(store)`, `(account)`, `(auth)`, `admin/`
+- **Features:** `src/features/<domain>/`
+- **Server domains:** `src/server/<domain>/` — services hold business logic
+- **GraphQL:** Route Handler at `/api/graphql` (Yoga) — thin resolvers → services
+- **Webhooks/cron:** `/api/webhooks/*`, `/api/cron/*`
+- Zustand = UI state only; prices/stock/compat/auth = server
+
+## Data
+
+- PostgreSQL + Prisma
+- Typed hardware fields for compatibility-critical specs
+
+Full: `docs/architecture.md`.

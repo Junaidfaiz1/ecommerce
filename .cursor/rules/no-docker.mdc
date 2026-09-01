@@ -1,0 +1,20 @@
+---
+description: Do not use Docker in the VORQEN project
+alwaysApply: true
+---
+
+# No Docker
+
+Do **not** use Docker, Docker Compose, containers, or container-based local services in this project.
+
+## Use instead
+
+- **PostgreSQL:** Neon (or similar hosted Postgres) for development and production, or a native local Postgres install if the developer already has one.
+- Configure via `DATABASE_URL` in `.env` only.
+- App runs with `pnpm dev` (Next.js) — no compose stack.
+
+## Never add
+
+- `Dockerfile`, `docker-compose.yml`, `.dockerignore`
+- Docs/scripts that require `docker compose up`
+- Redis/DB/API containers for local setup

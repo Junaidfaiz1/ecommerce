@@ -1,0 +1,25 @@
+---
+description: Always use latest stable package versions for VORQEN
+alwaysApply: true
+---
+
+# Latest Versions Policy
+
+Prefer the **latest stable** release of every dependency and toolchain when adding or upgrading packages.
+
+## Rules
+
+1. Before adding a package, check the current latest on npm (`pnpm view <pkg> version`).
+2. Pin ranges with `^` to the latest minor/patch unless a known break requires a temporary hold.
+3. Keep **aligned majors** across related packages (e.g. `next` ↔ `eslint-config-next`, `prisma` ↔ `@prisma/client`, `react` ↔ `react-dom` ↔ `@types/react`).
+4. When starting a phase or adding a major feature library, bump existing deps to latest if the upgrade is low-risk.
+5. After upgrades: `pnpm install` → `pnpm db:generate` (if Prisma changed) → `pnpm typecheck` → `pnpm lint`.
+6. Document any intentional pin (security hold, upstream bug) in `docs/tech-stack.md` under **Version pins**.
+
+## Do not
+
+- Add outdated majors when a newer stable major is available and compatible (e.g. do not stay on Next 15 if Next 16+ is the project target and works).
+- Mix mismatched peer versions (`react` 19 with old `@types/react` 18, etc.).
+- Commit lockfile changes without verifying typecheck/lint.
+
+See `docs/tech-stack.md` → Version policy.

@@ -1,0 +1,137 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { ORDER_STATUSES } from '@vorqen/types';
+import { ErrorState } from '@/components/shared/SectionStates';
+import { Price } from '@/components/shared/Price';
+import { graphqlRequest } from '@/lib/graphql-client';
+import { getErrorMessage } from '@/lib/errors';
+import { ADMIN_ORDERS } from '../graphql';
+import { AdminHeader, AdminPager, AdminTable, Field, fieldClass } from '../ui';
+
+type Row = {
+  id: string;
+  orderNumber: string;
+  status: string;
+  grandTotal: string;
+  currency: string;
+  customerEmail: string;
+  createdAt: string;
+  paymentStatus: string;
+};
+
+type PageInfo = {
+  page: number;
+  totalPages: number;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+};
+
+export function AdminOrdersPage() {
+  const [page, setPage] = useState(1);
+  const [query, setQuery] = useState('');
+  const [status, setStatus] = useState('');
+  const [items, setItems] = useState<Row[]>([]);
+  const [pageInfo, setPageInfo] = useState<PageInfo | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const data = await graphqlRequest<{
+          adminOrders: { items: Row[]; pageInfo: PageInfo };
+        }>(ADMIN_ORDERS, {
+          input: {
+            page,
+            ...(query ? { query } : {}),
+            ...(status ? { status } : {}),
+          },
+        });
+        if (cancelled) return;
+        setItems(data.adminOrders.items);
+        setPageInfo(data.adminOrders.pageInfo);
+      } catch (err) {
+        if (!cancelled) setError(getErrorMessage(err));
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [page, query, status]);
+
+  if (error && items.length === 0) return <ErrorState message={error} />;
+
+  return (
+    <div>
+      <AdminHeader title="Orders" description="Fulfillment only. Paid status comes from Stripe webhooks." />
+      <div className="mb-4 grid gap-3 sm:grid-cols-2">
+        <Field label="Search">
+          <input
+            className={fieldClass}
+            value={query}
+            onChange={(e) => {
+              setQuery(e.target.value);
+              setPage(1);
+            }}
+            placeholder="Order number or email"
+          />
+        </Field>
+        <Field label="Status">
+          <select
+            className={fieldClass}
+            value={status}
+            onChange={(e) => {
+              setStatus(e.target.value);
+              setPage(1);
+            }}
+          >
+            <option value="">All</option>
+            {ORDER_STATUSES.map((s) => (
+              <option key={s} value={s}>
+                {s}
+              </option>
+            ))}
+          </select>
+        </Field>
+      </div>
+      <AdminTable>
+        <thead className="bg-surface text-[11px] text-muted uppercase">
+          <tr>
+            <th className="px-3 py-2">Order</th>
+            <th className="px-3 py-2">Customer</th>
+            <th className="px-3 py-2">Status</th>
+            <th className="px-3 py-2">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          {items.map((row) => (
+            <tr key={row.id} className="border-t border-border">
+              <td className="px-3 py-2">
+                <Link href={`/admin/orders/${row.id}`} className="font-mono hover:text-accent">
+                  {row.orderNumber}
+                </Link>
+              </td>
+              <td className="px-3 py-2 text-xs">{row.customerEmail}</td>
+              <td className="px-3 py-2 text-xs">{row.status}</td>
+              <td className="px-3 py-2">
+                <Price amount={row.grandTotal} currency={row.currency} />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </AdminTable>
+      {pageInfo ? (
+        <AdminPager
+          page={pageInfo.page}
+          totalPages={pageInfo.totalPages}
+          hasPrev={pageInfo.hasPreviousPage}
+          hasNext={pageInfo.hasNextPage}
+          onPrev={() => setPage((n) => Math.max(1, n - 1))}
+          onNext={() => setPage((n) => n + 1)}
+        />
+      ) : null}
+    </div>
+  );
+}

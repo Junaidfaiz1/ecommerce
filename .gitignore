@@ -1,0 +1,41 @@
+# Dependencies
+node_modules
+.pnpm-store
+
+# Builds
+dist
+.next
+.turbo
+out
+build
+coverage
+
+# Env
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# IDE / OS
+.DS_Store
+Thumbs.db
+*.log
+.idea
+.vscode/*
+!.vscode/extensions.json
+
+# Prisma
+prisma/*.db
+prisma/*.db-journal
+apps/web/src/generated/
+
+# Tests
+test-results
+playwright-report
+blob-report
+playwright/.cache
+
+
+# Misc
+*.tsbuildinfo
+next-env.d.ts

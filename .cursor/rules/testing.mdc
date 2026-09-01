@@ -1,0 +1,12 @@
+---
+description: Testing expectations for critical VORQEN domains
+alwaysApply: true
+---
+
+# Testing
+
+- Prefer tests for money, stock, auth, compatibility, and webhooks over cosmetic UI snapshots.
+- CompatibilityEngine, cart pricing, coupons, inventory, Stripe webhook, auth/RBAC, abandoned-cart job, order creation = **required** coverage by Phase 17 (add earlier when the module lands).
+- Unit-test pure domain logic; integration-test Prisma + services; E2E for checkout/builder smoke.
+- Do not merge Phase work that breaks existing tests — fix before finishing.
+- No tests that assert on leaked internal error strings.

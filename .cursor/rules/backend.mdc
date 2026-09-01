@@ -1,0 +1,15 @@
+---
+description: Next.js server-domain patterns (no NestJS)
+globs: apps/web/src/server/**/*.ts,apps/web/src/app/api/**/*.ts
+alwaysApply: false
+---
+
+# Server (`apps/web/src/server`)
+
+- One folder per domain; **business logic in services**, not in route handlers/resolvers.
+- Validate all inputs with Zod. RBAC on every sensitive mutation.
+- Cart totals, coupons, inventory, compatibility, payment confirmation = **server only**.
+- Stripe: verify webhook signatures; never mark paid from client redirect alone.
+- Abandoned carts: PostgreSQL + cron Route Handler (`/api/cron/...`) or Vercel Cron — **no** Redis/BullMQ/Nest schedule.
+- Email + R2: dedicated server modules; never expose secrets to the browser.
+- Structured logging; GraphQL errors use stable codes — no stack/DB leaks to clients.
