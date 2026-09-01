@@ -42,6 +42,14 @@ function moneyLabel(value: number): string {
   }).format(value);
 }
 
+function ChartEmpty({ message }: { message: string }) {
+  return (
+    <p className="flex h-64 items-center justify-center text-center text-sm text-muted">
+      {message}
+    </p>
+  );
+}
+
 export function RevenueChart({
   data,
 }: {
@@ -51,6 +59,10 @@ export function RevenueChart({
     day: shortDay(row.day),
     net: Number(row.value),
   }));
+
+  if (series.length === 0 || series.every((row) => row.net === 0)) {
+    return <ChartEmpty message="No paid revenue in this range yet." />;
+  }
 
   return (
     <div className="h-64 w-full">
@@ -108,6 +120,10 @@ export function CountChart({
     fill: SERIES[index % SERIES.length],
   }));
 
+  if (series.length === 0 || series.every((row) => row.count === 0)) {
+    return <ChartEmpty message="No records in this range yet." />;
+  }
+
   return (
     <div className="h-64 w-full">
       <ResponsiveContainer width="100%" height="100%">
@@ -148,6 +164,10 @@ export function DayCountChart({
     day: shortDay(row.day),
     count: Number(row.value),
   }));
+
+  if (series.length === 0 || series.every((row) => row.count === 0)) {
+    return <ChartEmpty message="No PC builds saved in this range yet." />;
+  }
 
   return (
     <div className="h-64 w-full">
@@ -255,6 +275,9 @@ export function FunnelChart({
 }: {
   steps: Array<{ label: string; count: number }>;
 }) {
+  if (steps.every((step) => step.count === 0)) {
+    return <ChartEmpty message="No abandoned-cart activity in this range yet." />;
+  }
   const max = Math.max(...steps.map((s) => s.count), 1);
   return (
     <ul className="space-y-3">

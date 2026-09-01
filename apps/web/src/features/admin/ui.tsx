@@ -89,7 +89,27 @@ export function Field({
 }
 
 export const fieldClass =
-  'rounded-lg border border-white/12 bg-surface px-3 py-2 text-sm outline-none transition focus:border-sage/60';
+  'rounded-lg border border-white/12 bg-surface px-3 py-2 text-sm outline-none transition placeholder:text-muted/70 focus:border-sage/60';
+
+export function AdminEmptyState({
+  title,
+  description,
+  action,
+}: {
+  title: string;
+  description?: string;
+  action?: React.ReactNode;
+}) {
+  return (
+    <div className="rounded-2xl border border-dashed border-white/15 bg-elevated/30 px-6 py-12 text-center">
+      <h3 className="font-display text-lg tracking-tight">{title}</h3>
+      {description ? (
+        <p className="mx-auto mt-2 max-w-md text-sm text-muted">{description}</p>
+      ) : null}
+      {action ? <div className="mt-5 flex justify-center">{action}</div> : null}
+    </div>
+  );
+}
 
 export function StatusBadge({ status }: { status: string }) {
   const tone =

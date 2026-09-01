@@ -2,11 +2,11 @@
 
 import { useEffect, useState } from 'react';
 import { AUDIT_ACTIONS, AUDIT_ENTITY_TYPES } from '@vorqen/types';
-import { ErrorState, EmptyState } from '@/components/shared/SectionStates';
+import { ErrorState } from '@/components/shared/SectionStates';
 import { graphqlRequest } from '@/lib/graphql-client';
 import { getErrorMessage } from '@/lib/errors';
 import { ADMIN_AUDIT_LOGS } from '../graphql';
-import { AdminHeader, AdminPager, AdminTable, Field, fieldClass } from '../ui';
+import { AdminHeader, AdminPager, AdminTable, AdminEmptyState, Field, fieldClass } from '../ui';
 
 type Row = {
   id: string;
@@ -33,6 +33,7 @@ export function AdminAuditPage() {
   const [items, setItems] = useState<Row[]>([]);
   const [pageInfo, setPageInfo] = useState<PageInfo | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let cancelled = false;
@@ -53,6 +54,8 @@ export function AdminAuditPage() {
         setError(null);
       } catch (err) {
         if (!cancelled) setError(getErrorMessage(err));
+      } finally {
+        if (!cancelled) setLoading(false);
       }
     })();
     return () => {
@@ -77,7 +80,7 @@ export function AdminAuditPage() {
               setAction(e.target.value);
             }}
           >
-            <option value="">All</option>
+            <option value="">All actions</option>
             {AUDIT_ACTIONS.map((value) => (
               <option key={value} value={value}>
                 {value}
@@ -94,7 +97,7 @@ export function AdminAuditPage() {
               setEntityType(e.target.value);
             }}
           >
-            <option value="">All</option>
+            <option value="">All entities</option>
             {AUDIT_ENTITY_TYPES.map((value) => (
               <option key={value} value={value}>
                 {value}
@@ -103,12 +106,18 @@ export function AdminAuditPage() {
           </select>
         </Field>
       </div>
-      {items.length === 0 && !error ? (
-        <EmptyState
-          title="No audit rows"
-          description="Admin mutations will appear here."
+      {loading && items.length === 0 && !error ? (
+        <p className="text-sm text-muted">Loading audit log…</p>
+      ) : items.length === 0 && !error ? (
+        <AdminEmptyState
+          title={action || entityType ? 'No matching audit rows' : 'No audit rows yet'}
+          description={
+            action || entityType
+              ? 'Try a different action or entity filter.'
+              : 'Staff catalog, order, inventory, and coupon writes will appear here.'
+          }
         />
-      ) : (
+      ) : items.length === 0 ? null : (
         <AdminTable>
           <thead>
             <tr className="border-b border-border text-[11px] text-muted uppercase">

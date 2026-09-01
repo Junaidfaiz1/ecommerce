@@ -7,7 +7,7 @@ import { ErrorState } from '@/components/shared/SectionStates';
 import { graphqlRequest } from '@/lib/graphql-client';
 import { getErrorMessage } from '@/lib/errors';
 import { ADMIN_REVIEWS, MODERATE_REVIEW } from '../graphql';
-import { AdminHeader, AdminPager, AdminTable, Field, fieldClass } from '../ui';
+import { AdminHeader, AdminPager, AdminTable, AdminEmptyState, Field, fieldClass } from '../ui';
 
 type Row = {
   id: string;
@@ -33,6 +33,7 @@ export function AdminReviewsPage() {
   const [items, setItems] = useState<Row[]>([]);
   const [pageInfo, setPageInfo] = useState<PageInfo | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
   async function load(nextPage = page, nextStatus = status) {
     const data = await graphqlRequest<{
@@ -61,6 +62,8 @@ export function AdminReviewsPage() {
         setPageInfo(data.adminReviews.pageInfo);
       } catch (err) {
         if (!cancelled) setError(getErrorMessage(err));
+      } finally {
+        if (!cancelled) setLoading(false);
       }
     })();
     return () => {
@@ -93,12 +96,24 @@ export function AdminReviewsPage() {
             setPage(1);
           }}
         >
-          <option value="">All</option>
+          <option value="">All statuses</option>
           {REVIEW_STATUSES.map((s) => (
             <option key={s}>{s}</option>
           ))}
         </select>
       </Field>
+      {loading && items.length === 0 ? (
+        <p className="text-sm text-muted">Loading reviews…</p>
+      ) : items.length === 0 ? (
+        <AdminEmptyState
+          title={status ? `No ${status.toLowerCase()} reviews` : 'No reviews yet'}
+          description={
+            status
+              ? 'Switch status above, or wait for customers to submit reviews.'
+              : 'Product reviews appear here after a customer posts one.'
+          }
+        />
+      ) : (
       <AdminTable>
         <thead className="bg-surface text-[11px] text-muted uppercase">
           <tr>
@@ -145,6 +160,7 @@ export function AdminReviewsPage() {
           ))}
         </tbody>
       </AdminTable>
+      )}
       {pageInfo ? (
         <AdminPager
           page={pageInfo.page}

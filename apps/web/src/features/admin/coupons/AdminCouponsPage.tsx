@@ -7,7 +7,7 @@ import { ErrorState } from '@/components/shared/SectionStates';
 import { graphqlRequest } from '@/lib/graphql-client';
 import { getErrorMessage } from '@/lib/errors';
 import { ADMIN_COUPONS, UPSERT_ADMIN_COUPON } from '../graphql';
-import { AdminHeader, AdminTable, Field, fieldClass } from '../ui';
+import { AdminHeader, AdminTable, AdminEmptyState, Field, fieldClass } from '../ui';
 
 type Coupon = {
   id: string;
@@ -26,6 +26,7 @@ export function AdminCouponsPage() {
   const [type, setType] = useState<(typeof COUPON_TYPES)[number]>('PERCENTAGE');
   const [value, setValue] = useState('10');
   const [pending, setPending] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   async function load() {
     const data = await graphqlRequest<{ adminCoupons: Coupon[] }>(ADMIN_COUPONS);
@@ -39,6 +40,8 @@ export function AdminCouponsPage() {
         await load();
       } catch (err) {
         if (!cancelled) setError(getErrorMessage(err));
+      } finally {
+        if (!cancelled) setLoading(false);
       }
     })();
     return () => {
@@ -78,7 +81,12 @@ export function AdminCouponsPage() {
       {error ? <p className="mb-3 text-sm text-red-400">{error}</p> : null}
       <form onSubmit={(e) => void onCreate(e)} className="mb-6 flex max-w-2xl flex-wrap items-end gap-3">
         <Field label="Code">
-          <input className={fieldClass} value={code} onChange={(e) => setCode(e.target.value)} />
+          <input
+            className={fieldClass}
+            value={code}
+            onChange={(e) => setCode(e.target.value)}
+            placeholder="BUILD10"
+          />
         </Field>
         <Field label="Type">
           <select
@@ -92,12 +100,25 @@ export function AdminCouponsPage() {
           </select>
         </Field>
         <Field label="Value">
-          <input className={fieldClass} value={value} onChange={(e) => setValue(e.target.value)} />
+          <input
+            className={fieldClass}
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            placeholder="10 for percent, or 25.00 off"
+          />
         </Field>
         <Button type="submit" disabled={pending}>
           Save coupon
         </Button>
       </form>
+      {loading && items.length === 0 ? (
+        <p className="text-sm text-muted">Loading coupons…</p>
+      ) : items.length === 0 ? (
+        <AdminEmptyState
+          title="No coupons yet"
+          description="Create a code above. Checkout applies the discount on the server."
+        />
+      ) : (
       <AdminTable>
         <thead className="bg-surface text-[11px] text-muted uppercase">
           <tr>
@@ -123,6 +144,7 @@ export function AdminCouponsPage() {
           ))}
         </tbody>
       </AdminTable>
+      )}
     </div>
   );
 }

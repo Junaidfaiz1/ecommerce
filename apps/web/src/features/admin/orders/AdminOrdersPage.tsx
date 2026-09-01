@@ -8,7 +8,7 @@ import { Price } from '@/components/shared/Price';
 import { graphqlRequest } from '@/lib/graphql-client';
 import { getErrorMessage } from '@/lib/errors';
 import { ADMIN_ORDERS } from '../graphql';
-import { AdminHeader, AdminPager, AdminTable, Field, fieldClass } from '../ui';
+import { AdminHeader, AdminPager, AdminTable, AdminEmptyState, Field, fieldClass } from '../ui';
 
 type Row = {
   id: string;
@@ -35,6 +35,7 @@ export function AdminOrdersPage() {
   const [items, setItems] = useState<Row[]>([]);
   const [pageInfo, setPageInfo] = useState<PageInfo | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let cancelled = false;
@@ -54,6 +55,8 @@ export function AdminOrdersPage() {
         setPageInfo(data.adminOrders.pageInfo);
       } catch (err) {
         if (!cancelled) setError(getErrorMessage(err));
+      } finally {
+        if (!cancelled) setLoading(false);
       }
     })();
     return () => {
@@ -75,7 +78,7 @@ export function AdminOrdersPage() {
               setQuery(e.target.value);
               setPage(1);
             }}
-            placeholder="Order number or email"
+            placeholder="Search by order number or email…"
           />
         </Field>
         <Field label="Status">
@@ -87,7 +90,7 @@ export function AdminOrdersPage() {
               setPage(1);
             }}
           >
-            <option value="">All</option>
+            <option value="">All statuses</option>
             {ORDER_STATUSES.map((s) => (
               <option key={s} value={s}>
                 {s}
@@ -96,6 +99,18 @@ export function AdminOrdersPage() {
           </select>
         </Field>
       </div>
+      {loading && items.length === 0 ? (
+        <p className="text-sm text-muted">Loading orders…</p>
+      ) : items.length === 0 ? (
+        <AdminEmptyState
+          title={query || status ? 'No orders match these filters' : 'No orders yet'}
+          description={
+            query || status
+              ? 'Try a different order number, email, or status.'
+              : 'Orders appear here after a customer starts checkout.'
+          }
+        />
+      ) : (
       <AdminTable>
         <thead className="bg-surface text-[11px] text-muted uppercase">
           <tr>
@@ -122,6 +137,7 @@ export function AdminOrdersPage() {
           ))}
         </tbody>
       </AdminTable>
+      )}
       {pageInfo ? (
         <AdminPager
           page={pageInfo.page}

@@ -18,7 +18,7 @@ import {
   UPSERT_ADMIN_PRODUCT,
   UPSERT_ADMIN_VARIANT,
 } from '../graphql';
-import { AdminHeader, Field, fieldClass } from '../ui';
+import { AdminHeader, AdminEmptyState, Field, fieldClass } from '../ui';
 import {
   ProductMediaPanel,
   type AdminProductImage,
@@ -277,10 +277,20 @@ export function ProductEditPage({ productId }: { productId?: string }) {
       <form onSubmit={(e) => void onSave(e)} className="space-y-4 rounded-2xl border border-white/10 bg-elevated/40 p-5">
         <div className="grid gap-3 sm:grid-cols-2">
           <Field label="Name">
-            <input className={fieldClass} value={name} onChange={(e) => setName(e.target.value)} />
+            <input
+              className={fieldClass}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="ASUS ROG Strix RTX 4080 SUPER"
+            />
           </Field>
           <Field label="Slug">
-            <input className={fieldClass} value={slug} onChange={(e) => setSlug(e.target.value)} />
+            <input
+              className={fieldClass}
+              value={slug}
+              onChange={(e) => setSlug(e.target.value)}
+              placeholder="asus-rog-strix-rtx-4080-super"
+            />
           </Field>
           <Field label="Type">
             <select
@@ -308,6 +318,9 @@ export function ProductEditPage({ productId }: { productId?: string }) {
           </Field>
           <Field label="Brand">
             <select className={fieldClass} value={brandId} onChange={(e) => setBrandId(e.target.value)}>
+              {brands.length === 0 ? (
+                <option value="">No brands yet</option>
+              ) : null}
               {brands.map((b) => (
                 <option key={b.id} value={b.id}>
                   {b.name}
@@ -321,6 +334,9 @@ export function ProductEditPage({ productId }: { productId?: string }) {
               value={categoryId}
               onChange={(e) => setCategoryId(e.target.value)}
             >
+              {categories.length === 0 ? (
+                <option value="">No categories yet</option>
+              ) : null}
               {categories.map((c) => (
                 <option key={c.id} value={c.id}>
                   {c.name}
@@ -335,6 +351,7 @@ export function ProductEditPage({ productId }: { productId?: string }) {
             rows={4}
             value={description}
             onChange={(e) => setDescription(e.target.value)}
+            placeholder="Short storefront copy: specs, who it is for, and what ships in the box."
           />
         </Field>
         <label className="flex items-center gap-2 text-sm">
@@ -349,44 +366,104 @@ export function ProductEditPage({ productId }: { productId?: string }) {
         {type === 'CPU' ? (
           <div className="grid gap-3 border border-border p-4 sm:grid-cols-3">
             <Field label="Socket">
-              <input className={fieldClass} value={cpuSocket} onChange={(e) => setCpuSocket(e.target.value)} />
+              <input
+                className={fieldClass}
+                value={cpuSocket}
+                onChange={(e) => setCpuSocket(e.target.value)}
+                placeholder="AM5"
+              />
             </Field>
             <Field label="Cores">
-              <input className={fieldClass} value={cpuCores} onChange={(e) => setCpuCores(e.target.value)} />
+              <input
+                className={fieldClass}
+                value={cpuCores}
+                onChange={(e) => setCpuCores(e.target.value)}
+                placeholder="8"
+              />
             </Field>
             <Field label="Threads">
-              <input className={fieldClass} value={cpuThreads} onChange={(e) => setCpuThreads(e.target.value)} />
+              <input
+                className={fieldClass}
+                value={cpuThreads}
+                onChange={(e) => setCpuThreads(e.target.value)}
+                placeholder="16"
+              />
             </Field>
             <Field label="Base GHz">
-              <input className={fieldClass} value={cpuBase} onChange={(e) => setCpuBase(e.target.value)} />
+              <input
+                className={fieldClass}
+                value={cpuBase}
+                onChange={(e) => setCpuBase(e.target.value)}
+                placeholder="4.2"
+              />
             </Field>
             <Field label="Boost GHz">
-              <input className={fieldClass} value={cpuBoost} onChange={(e) => setCpuBoost(e.target.value)} />
+              <input
+                className={fieldClass}
+                value={cpuBoost}
+                onChange={(e) => setCpuBoost(e.target.value)}
+                placeholder="5.0"
+              />
             </Field>
             <Field label="TDP W">
-              <input className={fieldClass} value={cpuTdp} onChange={(e) => setCpuTdp(e.target.value)} />
+              <input
+                className={fieldClass}
+                value={cpuTdp}
+                onChange={(e) => setCpuTdp(e.target.value)}
+                placeholder="120"
+              />
             </Field>
             <Field label="Memory">
-              <input className={fieldClass} value={cpuMem} onChange={(e) => setCpuMem(e.target.value)} />
+              <input
+                className={fieldClass}
+                value={cpuMem}
+                onChange={(e) => setCpuMem(e.target.value)}
+                placeholder="DDR5"
+              />
             </Field>
           </div>
         ) : null}
         {type === 'GPU' ? (
           <div className="grid gap-3 border border-border p-4 sm:grid-cols-3">
             <Field label="Chipset">
-              <input className={fieldClass} value={gpuChipset} onChange={(e) => setGpuChipset(e.target.value)} />
+              <input
+                className={fieldClass}
+                value={gpuChipset}
+                onChange={(e) => setGpuChipset(e.target.value)}
+                placeholder="AD103"
+              />
             </Field>
             <Field label="Length mm">
-              <input className={fieldClass} value={gpuLength} onChange={(e) => setGpuLength(e.target.value)} />
+              <input
+                className={fieldClass}
+                value={gpuLength}
+                onChange={(e) => setGpuLength(e.target.value)}
+                placeholder="336"
+              />
             </Field>
             <Field label="TDP W">
-              <input className={fieldClass} value={gpuTdp} onChange={(e) => setGpuTdp(e.target.value)} />
+              <input
+                className={fieldClass}
+                value={gpuTdp}
+                onChange={(e) => setGpuTdp(e.target.value)}
+                placeholder="320"
+              />
             </Field>
             <Field label="VRAM GB">
-              <input className={fieldClass} value={gpuVram} onChange={(e) => setGpuVram(e.target.value)} />
+              <input
+                className={fieldClass}
+                value={gpuVram}
+                onChange={(e) => setGpuVram(e.target.value)}
+                placeholder="16"
+              />
             </Field>
             <Field label="Power connectors">
-              <input className={fieldClass} value={gpuConnectors} onChange={(e) => setGpuConnectors(e.target.value)} />
+              <input
+                className={fieldClass}
+                value={gpuConnectors}
+                onChange={(e) => setGpuConnectors(e.target.value)}
+                placeholder="1x 16-pin or 3x 8-pin"
+              />
             </Field>
           </div>
         ) : null}
@@ -410,6 +487,12 @@ export function ProductEditPage({ productId }: { productId?: string }) {
       {productId ? (
         <section className="mt-10 max-w-3xl rounded-2xl border border-white/10 bg-elevated/40 p-5">
           <h2 className="text-lg">Variants</h2>
+          {variants.length === 0 ? (
+            <AdminEmptyState
+              title="No variants yet"
+              description="Add a SKU, price, and starting stock. Storefront prices come from these rows."
+            />
+          ) : (
           <ul className="mt-3 space-y-2 text-sm">
             {variants.map((v) => (
               <li key={v.id} className="rounded-lg border border-white/10 px-3 py-2">
@@ -419,15 +502,31 @@ export function ProductEditPage({ productId }: { productId?: string }) {
               </li>
             ))}
           </ul>
+          )}
           <form onSubmit={(e) => void onAddVariant(e)} className="mt-4 grid gap-3 sm:grid-cols-3">
             <Field label="SKU">
-              <input className={fieldClass} value={sku} onChange={(e) => setSku(e.target.value)} />
+              <input
+                className={fieldClass}
+                value={sku}
+                onChange={(e) => setSku(e.target.value)}
+                placeholder="VOR-GPU-4080S"
+              />
             </Field>
             <Field label="Price">
-              <input className={fieldClass} value={price} onChange={(e) => setPrice(e.target.value)} />
+              <input
+                className={fieldClass}
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                placeholder="1199.00"
+              />
             </Field>
             <Field label="Initial on-hand">
-              <input className={fieldClass} value={onHand} onChange={(e) => setOnHand(e.target.value)} />
+              <input
+                className={fieldClass}
+                value={onHand}
+                onChange={(e) => setOnHand(e.target.value)}
+                placeholder="12"
+              />
             </Field>
             <Button type="submit" disabled={pending}>
               Add variant

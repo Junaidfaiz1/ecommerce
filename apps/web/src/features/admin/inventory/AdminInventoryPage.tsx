@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { graphqlRequest } from '@/lib/graphql-client';
 import { getErrorMessage } from '@/lib/errors';
 import { ADJUST_INVENTORY, ADMIN_INVENTORY } from '../graphql';
-import { AdminHeader, AdminPager, AdminTable, Field, fieldClass } from '../ui';
+import { AdminHeader, AdminPager, AdminTable, AdminEmptyState, Field, fieldClass } from '../ui';
 
 type Row = {
   variantId: string;
@@ -33,6 +33,7 @@ export function AdminInventoryPage() {
   const [items, setItems] = useState<Row[]>([]);
   const [pageInfo, setPageInfo] = useState<PageInfo | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
   const [delta, setDelta] = useState('0');
   const [reason, setReason] = useState('cycle count');
   const [selected, setSelected] = useState<string>('');
@@ -55,6 +56,8 @@ export function AdminInventoryPage() {
         setPageInfo(data.adminInventory.pageInfo);
       } catch (err) {
         if (!cancelled) setError(getErrorMessage(err));
+      } finally {
+        if (!cancelled) setLoading(false);
       }
     })();
     return () => {
@@ -105,6 +108,7 @@ export function AdminInventoryPage() {
               setQuery(e.target.value);
               setPage(1);
             }}
+            placeholder="Search by SKU or product name…"
           />
         </Field>
         <label className="flex items-center gap-2 text-sm">
@@ -119,6 +123,18 @@ export function AdminInventoryPage() {
           Low stock only
         </label>
       </div>
+      {loading && items.length === 0 ? (
+        <p className="text-sm text-muted">Loading inventory…</p>
+      ) : items.length === 0 ? (
+        <AdminEmptyState
+          title={query || lowOnly ? 'No SKUs match these filters' : 'No inventory rows yet'}
+          description={
+            query || lowOnly
+              ? 'Try a different SKU search, or turn off low-stock only.'
+              : 'Inventory appears after a product variant is created with stock.'
+          }
+        />
+      ) : (
       <AdminTable>
         <thead className="bg-surface text-[11px] text-muted uppercase">
           <tr>
@@ -151,17 +167,30 @@ export function AdminInventoryPage() {
           ))}
         </tbody>
       </AdminTable>
+      )}
+      {items.length > 0 ? (
       <form onSubmit={(e) => void onAdjust(e)} className="mt-4 flex max-w-xl flex-wrap items-end gap-3">
         <Field label="Delta">
-          <input className={fieldClass} value={delta} onChange={(e) => setDelta(e.target.value)} />
+          <input
+            className={fieldClass}
+            value={delta}
+            onChange={(e) => setDelta(e.target.value)}
+            placeholder="+5 or -3"
+          />
         </Field>
         <Field label="Reason">
-          <input className={fieldClass} value={reason} onChange={(e) => setReason(e.target.value)} />
+          <input
+            className={fieldClass}
+            value={reason}
+            onChange={(e) => setReason(e.target.value)}
+            placeholder="Cycle count, received stock…"
+          />
         </Field>
         <Button type="submit" disabled={!selected}>
           Adjust selected
         </Button>
       </form>
+      ) : null}
       {pageInfo ? (
         <AdminPager
           page={pageInfo.page}

@@ -9,7 +9,7 @@ import { Price } from '@/components/shared/Price';
 import { graphqlRequest } from '@/lib/graphql-client';
 import { getErrorMessage } from '@/lib/errors';
 import { ADMIN_PRODUCTS } from '../graphql';
-import { AdminHeader, AdminPager, AdminTable, Field, StatusBadge, fieldClass } from '../ui';
+import { AdminHeader, AdminPager, AdminTable, AdminEmptyState, Field, StatusBadge, fieldClass } from '../ui';
 
 type Product = {
   id: string;
@@ -96,7 +96,7 @@ export function CatalogListPage() {
               setQuery(e.target.value);
               setPage(1);
             }}
-            placeholder="Name or slug"
+            placeholder="Search by name or slug…"
           />
         </Field>
         <Field label="Status">
@@ -108,7 +108,7 @@ export function CatalogListPage() {
               setPage(1);
             }}
           >
-            <option value="">All</option>
+            <option value="">All statuses</option>
             {PRODUCT_STATUSES.map((s) => (
               <option key={s} value={s}>
                 {s}
@@ -125,7 +125,7 @@ export function CatalogListPage() {
               setPage(1);
             }}
           >
-            <option value="">All</option>
+            <option value="">All types</option>
             {PRODUCT_TYPES.map((t) => (
               <option key={t} value={t}>
                 {t}
@@ -136,6 +136,25 @@ export function CatalogListPage() {
       </div>
       {loading && items.length === 0 ? (
         <p className="text-sm text-muted">Loading catalog…</p>
+      ) : items.length === 0 ? (
+        <AdminEmptyState
+          title={query || status || type ? 'No products match these filters' : 'No products yet'}
+          description={
+            query || status || type
+              ? 'Try a different search, status, or hardware type.'
+              : 'Add a product to start the catalog. Photos are saved to the database after upload.'
+          }
+          action={
+            query || status || type ? undefined : (
+              <Link
+                href="/admin/catalog/new"
+                className="inline-flex h-10 items-center rounded-lg bg-accent px-4 text-sm font-medium text-cream"
+              >
+                New product
+              </Link>
+            )
+          }
+        />
       ) : (
         <AdminTable>
           <thead className="bg-elevated/80 text-[11px] tracking-wide text-muted uppercase">

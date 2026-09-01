@@ -7,7 +7,7 @@ import { ErrorState } from '@/components/shared/SectionStates';
 import { graphqlRequest } from '@/lib/graphql-client';
 import { getErrorMessage } from '@/lib/errors';
 import { ADMIN_BUNDLES, UPSERT_ADMIN_BUNDLE } from '../graphql';
-import { AdminHeader, AdminTable, Field, fieldClass } from '../ui';
+import { AdminHeader, AdminTable, AdminEmptyState, Field, fieldClass } from '../ui';
 
 type Bundle = {
   id: string;
@@ -26,6 +26,7 @@ export function AdminBundlesPage() {
   const [variantId, setVariantId] = useState('');
   const [status, setStatus] = useState<(typeof PRODUCT_STATUSES)[number]>('DRAFT');
   const [pending, setPending] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   async function load() {
     const data = await graphqlRequest<{ adminBundles: Bundle[] }>(ADMIN_BUNDLES);
@@ -39,6 +40,8 @@ export function AdminBundlesPage() {
         await load();
       } catch (err) {
         if (!cancelled) setError(getErrorMessage(err));
+      } finally {
+        if (!cancelled) setLoading(false);
       }
     })();
     return () => {
@@ -84,13 +87,28 @@ export function AdminBundlesPage() {
       {error ? <p className="mb-3 text-sm text-red-400">{error}</p> : null}
       <form onSubmit={(e) => void onCreate(e)} className="mb-6 grid max-w-2xl gap-3 sm:grid-cols-2">
         <Field label="Name">
-          <input className={fieldClass} value={name} onChange={(e) => setName(e.target.value)} />
+          <input
+            className={fieldClass}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="1440p starter kit"
+          />
         </Field>
         <Field label="Slug">
-          <input className={fieldClass} value={slug} onChange={(e) => setSlug(e.target.value)} />
+          <input
+            className={fieldClass}
+            value={slug}
+            onChange={(e) => setSlug(e.target.value)}
+            placeholder="1440p-starter-kit"
+          />
         </Field>
         <Field label="Variant id">
-          <input className={fieldClass} value={variantId} onChange={(e) => setVariantId(e.target.value)} />
+          <input
+            className={fieldClass}
+            value={variantId}
+            onChange={(e) => setVariantId(e.target.value)}
+            placeholder="Variant ID from catalog"
+          />
         </Field>
         <Field label="Status">
           <select
@@ -107,6 +125,14 @@ export function AdminBundlesPage() {
           Save bundle
         </Button>
       </form>
+      {loading && items.length === 0 ? (
+        <p className="text-sm text-muted">Loading bundles…</p>
+      ) : items.length === 0 ? (
+        <AdminEmptyState
+          title="No bundles yet"
+          description="Save a bundle above. Checkout still prices each variant on the server."
+        />
+      ) : (
       <AdminTable>
         <thead className="bg-surface text-[11px] text-muted uppercase">
           <tr>
@@ -130,6 +156,7 @@ export function AdminBundlesPage() {
           ))}
         </tbody>
       </AdminTable>
+      )}
     </div>
   );
 }

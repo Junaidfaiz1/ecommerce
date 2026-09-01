@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { graphqlRequest } from '@/lib/graphql-client';
 import { getErrorMessage } from '@/lib/errors';
 import { ADMIN_CUSTOMERS, SET_CUSTOMER_ACTIVE } from '../graphql';
-import { AdminHeader, AdminPager, AdminTable, Field, fieldClass } from '../ui';
+import { AdminHeader, AdminPager, AdminTable, AdminEmptyState, Field, fieldClass } from '../ui';
 
 type Row = {
   id: string;
@@ -31,6 +31,7 @@ export function AdminCustomersPage() {
   const [items, setItems] = useState<Row[]>([]);
   const [pageInfo, setPageInfo] = useState<PageInfo | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
   async function load(nextPage = page) {
     const data = await graphqlRequest<{
@@ -56,6 +57,8 @@ export function AdminCustomersPage() {
         setPageInfo(data.adminCustomers.pageInfo);
       } catch (err) {
         if (!cancelled) setError(getErrorMessage(err));
+      } finally {
+        if (!cancelled) setLoading(false);
       }
     })();
     return () => {
@@ -89,8 +92,21 @@ export function AdminCustomersPage() {
             setQuery(e.target.value);
             setPage(1);
           }}
+          placeholder="Search by email or name…"
         />
       </Field>
+      {loading && items.length === 0 ? (
+        <p className="text-sm text-muted">Loading customers…</p>
+      ) : items.length === 0 ? (
+        <AdminEmptyState
+          title={query ? 'No customers match this search' : 'No customers yet'}
+          description={
+            query
+              ? 'Try a different email or name.'
+              : 'Customer accounts appear here after someone registers.'
+          }
+        />
+      ) : (
       <AdminTable>
         <thead className="bg-surface text-[11px] text-muted uppercase">
           <tr>
@@ -120,6 +136,7 @@ export function AdminCustomersPage() {
           ))}
         </tbody>
       </AdminTable>
+      )}
       {pageInfo ? (
         <AdminPager
           page={pageInfo.page}

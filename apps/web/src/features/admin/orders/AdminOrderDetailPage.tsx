@@ -132,7 +132,12 @@ export function AdminOrderDetailPage({ orderId }: { orderId: string }) {
       {error ? <p className="mb-4 text-sm text-red-400">{error}</p> : null}
       <p className="font-mono text-xs text-muted uppercase">{order.status}</p>
       <ul className="mt-6 space-y-2">
-        {order.items.map((item) => (
+        {order.items.length === 0 ? (
+          <li className="rounded-xl border border-dashed border-white/15 px-4 py-8 text-center text-sm text-muted">
+            This order has no line items.
+          </li>
+        ) : (
+          order.items.map((item) => (
           <li key={item.id} className="flex justify-between border border-border px-3 py-2 text-sm">
             <span>
               {item.quantity}× {item.productName}{' '}
@@ -140,7 +145,8 @@ export function AdminOrderDetailPage({ orderId }: { orderId: string }) {
             </span>
             <Price amount={item.lineTotal} currency={order.currency} />
           </li>
-        ))}
+        ))
+        )}
       </ul>
       <p className="mt-4 text-sm">
         Total <Price amount={order.grandTotal} currency={order.currency} /> · Refunded{' '}
@@ -180,6 +186,7 @@ export function AdminOrderDetailPage({ orderId }: { orderId: string }) {
               className={fieldClass}
               value={refundAmount}
               onChange={(e) => setRefundAmount(e.target.value)}
+              placeholder="25.00"
             />
           </Field>
           <label className="flex items-center gap-2 text-sm">
