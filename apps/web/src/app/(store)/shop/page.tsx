@@ -75,12 +75,16 @@ export default async function ShopPage({
   let loadError: string | null = null;
 
   try {
-    const meta = await fetchShopMeta();
+    const [meta, list] = await Promise.all([
+      fetchShopMeta(),
+      parsed.success
+        ? fetchCatalogList(parsed.data)
+        : Promise.resolve(null),
+    ]);
     brands = meta.brands;
     categories = meta.categories;
-    if (parsed.success) {
-      catalog = await fetchCatalogList(parsed.data);
-    } else {
+    catalog = list;
+    if (!parsed.success) {
       loadError = parsed.error.issues[0]?.message ?? 'Invalid filters.';
     }
   } catch {

@@ -1,6 +1,7 @@
 'use client';
 
 import type { ProceduralKind } from '@vorqen/types';
+import { useThreeDBudgetValue } from '@/components/3d/useThreeDBudget';
 import { SLOT_COLORS, kindToSlot } from '../lib';
 import { ProceduralPc } from './ProceduralPc';
 
@@ -23,6 +24,8 @@ function tone(color: string) {
  * Single-component procedural mesh for PDP when no GLB is uploaded.
  */
 export function ProceduralPart({ kind, explode = 0 }: Props) {
+  const { shadows, cylinderSegments } = useThreeDBudgetValue();
+
   if (kind === 'pc') {
     return <ProceduralPc explode={explode} />;
   }
@@ -30,16 +33,17 @@ export function ProceduralPart({ kind, explode = 0 }: Props) {
   const slot = kindToSlot(kind);
   const color = slot ? SLOT_COLORS[slot] : '#4a5060';
   const lift = explode * 0.35;
+  const shadow = { castShadow: shadows, receiveShadow: shadows };
 
   switch (kind) {
     case 'gpu':
       return (
         <group position={[0, lift, 0]}>
-          <mesh castShadow receiveShadow>
+          <mesh {...shadow}>
             <boxGeometry args={[1.4, 0.22, 0.55]} />
             {tone(color)}
           </mesh>
-          <mesh position={[-0.55, 0, 0]} castShadow>
+          <mesh position={[-0.55, 0, 0]} castShadow={shadows}>
             <boxGeometry args={[0.25, 0.18, 0.2]} />
             {tone('#2a3040')}
           </mesh>
@@ -47,14 +51,18 @@ export function ProceduralPart({ kind, explode = 0 }: Props) {
       );
     case 'cpu':
       return (
-        <mesh position={[0, lift, 0]} castShadow receiveShadow>
+        <mesh position={[0, lift, 0]} {...shadow}>
           <boxGeometry args={[0.55, 0.12, 0.55]} />
           {tone(color)}
         </mesh>
       );
     case 'motherboard':
       return (
-        <mesh position={[0, lift, 0]} castShadow receiveShadow rotation={[-Math.PI / 2.4, 0, 0]}>
+        <mesh
+          position={[0, lift, 0]}
+          {...shadow}
+          rotation={[-Math.PI / 2.4, 0, 0]}
+        >
           <boxGeometry args={[1.2, 1.5, 0.06]} />
           {tone(color)}
         </mesh>
@@ -62,11 +70,11 @@ export function ProceduralPart({ kind, explode = 0 }: Props) {
     case 'ram':
       return (
         <group position={[0, lift, 0]}>
-          <mesh position={[-0.12, 0, 0]} castShadow>
+          <mesh position={[-0.12, 0, 0]} castShadow={shadows}>
             <boxGeometry args={[0.08, 0.55, 0.28]} />
             {tone(color)}
           </mesh>
-          <mesh position={[0.12, 0, 0]} castShadow>
+          <mesh position={[0.12, 0, 0]} castShadow={shadows}>
             <boxGeometry args={[0.08, 0.55, 0.28]} />
             {tone(color)}
           </mesh>
@@ -74,14 +82,14 @@ export function ProceduralPart({ kind, explode = 0 }: Props) {
       );
     case 'storage':
       return (
-        <mesh position={[0, lift, 0]} castShadow receiveShadow>
+        <mesh position={[0, lift, 0]} {...shadow}>
           <boxGeometry args={[0.7, 0.08, 1]} />
           {tone(color)}
         </mesh>
       );
     case 'psu':
       return (
-        <mesh position={[0, lift, 0]} castShadow receiveShadow>
+        <mesh position={[0, lift, 0]} {...shadow}>
           <boxGeometry args={[1.1, 0.4, 0.75]} />
           {tone(color)}
         </mesh>
@@ -89,11 +97,11 @@ export function ProceduralPart({ kind, explode = 0 }: Props) {
     case 'cooler':
       return (
         <group position={[0, lift, 0]}>
-          <mesh castShadow>
-            <cylinderGeometry args={[0.35, 0.35, 0.7, 24]} />
+          <mesh castShadow={shadows}>
+            <cylinderGeometry args={[0.35, 0.35, 0.7, cylinderSegments]} />
             {tone(color)}
           </mesh>
-          <mesh position={[0, 0.4, 0]} castShadow>
+          <mesh position={[0, 0.4, 0]} castShadow={shadows}>
             <boxGeometry args={[0.7, 0.08, 0.7]} />
             {tone('#6a7388')}
           </mesh>
@@ -102,7 +110,7 @@ export function ProceduralPart({ kind, explode = 0 }: Props) {
     case 'case':
       return (
         <group position={[0, lift, 0]}>
-          <mesh castShadow receiveShadow>
+          <mesh {...shadow}>
             <boxGeometry args={[1.1, 1.6, 0.65]} />
             {tone(color)}
           </mesh>
@@ -110,7 +118,7 @@ export function ProceduralPart({ kind, explode = 0 }: Props) {
       );
     default:
       return (
-        <mesh position={[0, lift, 0]} castShadow>
+        <mesh position={[0, lift, 0]} castShadow={shadows}>
           <boxGeometry args={[0.8, 0.8, 0.8]} />
           {tone(color)}
         </mesh>

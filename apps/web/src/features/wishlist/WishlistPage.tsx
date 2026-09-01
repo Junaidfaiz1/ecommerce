@@ -10,6 +10,8 @@ import { graphqlRequest, GraphQLClientError } from '@/lib/graphql-client';
 import { getErrorMessage } from '@/lib/errors';
 import { productHref } from '@/features/products/product-path';
 import type { ProductType } from '@vorqen/types';
+import { IMAGE_SIZES } from '@vorqen/types';
+import { CatalogImage } from '@/components/shared/CatalogImage';
 import { syncCartUi } from '@/features/cart/sync';
 import {
   MOVE_WISHLIST_TO_CART,
@@ -182,11 +184,10 @@ export function WishlistPage() {
                   className="relative block aspect-[4/3] w-full shrink-0 overflow-hidden bg-elevated sm:w-28"
                 >
                   {item.product.imageUrl ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
+                    <CatalogImage
                       src={item.product.imageUrl}
                       alt={item.product.name}
-                      className="h-full w-full object-cover"
+                      sizes={IMAGE_SIZES.wishlistThumb}
                     />
                   ) : null}
                 </Link>

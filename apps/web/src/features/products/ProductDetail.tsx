@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { productJsonLd } from '@vorqen/types';
+import { IMAGE_SIZES, productJsonLd } from '@vorqen/types';
 import type { CatalogProduct } from '@/server/catalog/catalog.mappers';
 import { prisma } from '@/server/common/prisma';
 import { getProductBySlug } from '@/server/catalog/catalog.service';
@@ -14,6 +14,7 @@ import { CompareToggle } from '@/components/shared/CompareToggle';
 import { AddToCartButton } from '@/components/shared/AddToCartButton';
 import { WishlistToggle } from '@/components/shared/WishlistToggle';
 import { ErrorState } from '@/components/shared/SectionStates';
+import { CatalogImage } from '@/components/shared/CatalogImage';
 import { JsonLd } from '@/components/shared/JsonLd';
 import {
   keySpecLabel,
@@ -61,25 +62,16 @@ export async function ProductDetailView({ slug, expectedType }: Props) {
   const product = await loadProduct(slug, expectedType);
   if (!product) notFound();
 
-  let reviews = null;
-  try {
-    reviews = await listProductReviews(prisma, {
+  const [reviews, viewerAsset] = await Promise.all([
+    listProductReviews(prisma, {
       productId: product.id,
       page: 1,
       pageSize: 10,
-    });
-  } catch {
-    reviews = null;
-  }
-
-  let viewerAsset = null;
-  try {
-    viewerAsset = await getProductViewerAsset(prisma, {
+    }).catch(() => null),
+    getProductViewerAsset(prisma, {
       productId: product.id,
-    });
-  } catch {
-    viewerAsset = null;
-  }
+    }).catch(() => null),
+  ]);
 
   const images = product.images;
   const primary = images.find((i) => i.isPrimary) ?? images[0];
@@ -124,13 +116,13 @@ export async function ProductDetailView({ slug, expectedType }: Props) {
               label={viewerAsset.label}
             />
           ) : (
-            <div className="aspect-[4/3] overflow-hidden border border-border bg-elevated">
+            <div className="relative aspect-[4/3] overflow-hidden border border-border bg-elevated">
               {primary?.url ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
+                <CatalogImage
                   src={primary.url}
                   alt={primary.alt ?? product.name}
-                  className="h-full w-full object-cover"
+                  sizes={IMAGE_SIZES.productGallery}
+                  priority
                 />
               ) : (
                 <div className="flex h-full items-center justify-center font-mono text-xs text-muted">
@@ -144,14 +136,13 @@ export async function ProductDetailView({ slug, expectedType }: Props) {
               {images.map((img) => (
                 <div
                   key={img.id}
-                  className="h-16 w-20 shrink-0 overflow-hidden border border-border bg-surface"
+                  className="relative h-16 w-20 shrink-0 overflow-hidden border border-border bg-surface"
                 >
                   {img.url ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
+                    <CatalogImage
                       src={img.url}
                       alt={img.alt ?? ''}
-                      className="h-full w-full object-cover"
+                      sizes={IMAGE_SIZES.productThumb}
                     />
                   ) : null}
                 </div>

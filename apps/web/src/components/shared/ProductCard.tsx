@@ -1,12 +1,16 @@
 'use client';
 
 import Link from 'next/link';
-import type { ProductType } from '@vorqen/types';
+import {
+  IMAGE_SIZES,
+  type ProductType,
+} from '@vorqen/types';
 import { Price } from '@/components/shared/Price';
 import { StockBadge } from '@/components/shared/StockBadge';
 import { CompareToggle } from '@/components/shared/CompareToggle';
 import { AddToCartButton } from '@/components/shared/AddToCartButton';
 import { WishlistToggle } from '@/components/shared/WishlistToggle';
+import { CatalogImage } from '@/components/shared/CatalogImage';
 import {
   keySpecLabel,
   productHref,
@@ -42,12 +46,16 @@ type ProductCardProps = {
   product: ProductCardData;
   className?: string;
   showCompare?: boolean;
+  priority?: boolean;
+  imageSizes?: string;
 };
 
 export function ProductCard({
   product,
   className,
   showCompare = true,
+  priority = false,
+  imageSizes = IMAGE_SIZES.productCard,
 }: ProductCardProps) {
   const image =
     product.images.find((img) => img.isPrimary) ?? product.images[0];
@@ -64,11 +72,12 @@ export function ProductCard({
     >
       <Link href={href} className="relative block aspect-[4/3] overflow-hidden bg-elevated">
         {image ? (
-          // eslint-disable-next-line @next/next/no-img-element -- catalog URLs may be absolute placeholders
-          <img
+          <CatalogImage
             src={image.url}
             alt={image.alt ?? product.name}
-            className="h-full w-full object-cover opacity-90 transition duration-500 group-hover:scale-[1.03] group-hover:opacity-100"
+            sizes={imageSizes}
+            priority={priority}
+            className="opacity-90 transition duration-500 group-hover:scale-[1.03] group-hover:opacity-100"
           />
         ) : (
           <div className="flex h-full items-center justify-center font-mono text-xs text-muted">

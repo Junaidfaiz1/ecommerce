@@ -312,6 +312,8 @@ model Product {
   @@index([brandId])
   @@index([categoryId])
   @@index([type, status])
+  @@index([status, isFeatured])
+  @@index([status, createdAt])
   @@map("products")
 }
 
@@ -338,6 +340,7 @@ model ProductVariant {
   bundleItems  BundleItem[]
 
   @@index([productId])
+  @@index([isDefault, isActive, price])
   @@map("product_variants")
 }
 
@@ -353,6 +356,7 @@ model ProductImage {
   product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
   @@index([productId])
+  @@index([productId, isPrimary])
   @@map("product_images")
 }
 

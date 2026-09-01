@@ -17,6 +17,7 @@ export * from './email';
 export * from './analytics';
 export * from './security';
 export * from './seo';
+export * from './perf';
 
 /** Stable API / GraphQL error codes — keep in sync with docs/error-handling.md */
 

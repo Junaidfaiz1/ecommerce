@@ -5,13 +5,14 @@ import Link from 'next/link';
 import { Price } from '@/components/shared/Price';
 import { StockBadge } from '@/components/shared/StockBadge';
 import { QuantityStepper } from '@/components/shared/QuantityStepper';
+import { CatalogImage } from '@/components/shared/CatalogImage';
 import { EmptyState, ErrorState } from '@/components/shared/SectionStates';
 import { Button } from '@/components/ui/button';
 import { graphqlRequest } from '@/lib/graphql-client';
 import { getErrorMessage } from '@/lib/errors';
 import { productHref } from '@/features/products/product-path';
 import type { ProductType } from '@vorqen/types';
-import { CART_MAX_LINE_QUANTITY } from '@vorqen/types';
+import { CART_MAX_LINE_QUANTITY, IMAGE_SIZES } from '@vorqen/types';
 import {
   APPLY_COUPON,
   CART_QUERY,
@@ -210,11 +211,10 @@ export function CartPage() {
                       className="relative block aspect-[4/3] w-full shrink-0 overflow-hidden bg-elevated sm:w-36"
                     >
                       {line.product.imageUrl ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
+                        <CatalogImage
                           src={line.product.imageUrl}
                           alt={line.product.name}
-                          className="h-full w-full object-cover"
+                          sizes={IMAGE_SIZES.cartThumb}
                         />
                       ) : (
                         <div className="flex h-full items-center justify-center font-mono text-[10px] text-muted">

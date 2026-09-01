@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import {
+  IMAGE_SIZES,
   organizationJsonLd,
   SITE_DESCRIPTION,
   SITE_NAME,
@@ -114,8 +115,13 @@ export default async function HomePage() {
         />
         {featured && featured.items.length > 0 ? (
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-            {featured.items.map((product) => (
-              <ProductCard key={product.id} product={product} />
+            {featured.items.map((product, index) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                priority={index < 4}
+                imageSizes={IMAGE_SIZES.productCardDense}
+              />
             ))}
           </div>
         ) : (
@@ -165,7 +171,11 @@ export default async function HomePage() {
         {gpus && gpus.items.length > 0 ? (
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {gpus.items.map((product) => (
-              <ProductCard key={product.id} product={product} />
+              <ProductCard
+                key={product.id}
+                product={product}
+                imageSizes={IMAGE_SIZES.productCardDense}
+              />
             ))}
           </div>
         ) : (

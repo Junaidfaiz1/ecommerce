@@ -4,6 +4,7 @@ import { useFrame } from '@react-three/fiber';
 import { useRef, type ReactNode } from 'react';
 import type { Group } from 'three';
 import type { ComponentSlot } from '@vorqen/types';
+import { useThreeDBudgetValue } from '@/components/3d/useThreeDBudget';
 import {
   SLOT_COLORS,
   SLOT_EXPLODE,
@@ -62,8 +63,9 @@ function Box({
   position?: [number, number, number];
   tone: MeshTone;
 }) {
+  const { shadows } = useThreeDBudgetValue();
   return (
-    <mesh position={position} castShadow receiveShadow>
+    <mesh position={position} castShadow={shadows} receiveShadow={shadows}>
       <boxGeometry args={args} />
       <meshStandardMaterial
         color={tone.color}
@@ -112,17 +114,11 @@ export function ProceduralPc({
       <SlotGroup slot="CASE" explode={explode} highlight={highlight} filled={filled}>
         {/* Outer shell */}
         <Box args={[0.95, 1.35, 0.55]} tone={partTone('CASE', highlight, filled)} />
-        {/* Glass side panel hint */}
-        <mesh position={[0.48, 0.05, 0]} castShadow>
-          <boxGeometry args={[0.02, 1.15, 0.42]} />
-          <meshStandardMaterial
-            color="#8a9bb8"
-            metalness={0.1}
-            roughness={0.15}
-            transparent
-            opacity={0.18}
-          />
-        </mesh>
+        <Box
+          args={[0.02, 1.15, 0.42]}
+          position={[0.48, 0.05, 0]}
+          tone={{ color: '#8a9bb8', opacity: 0.18 }}
+        />
       </SlotGroup>
 
       <SlotGroup slot="MOTHERBOARD" explode={explode} highlight={highlight} filled={filled}>

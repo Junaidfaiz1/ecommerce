@@ -1,5 +1,9 @@
-import type { ProductListInput } from '@vorqen/types';
-import type { PrismaClient } from '@/generated/prisma/client';
+import {
+  PRODUCT_LIST_IMAGE_TAKE,
+  PRODUCT_LIST_VARIANT_TAKE,
+  type ProductListInput,
+} from '@vorqen/types';
+import type { Prisma, PrismaClient } from '@/generated/prisma/client';
 import { NotFoundError, ValidationError } from '../common/errors';
 import {
   buildProductOrderBy,
@@ -17,11 +21,7 @@ import {
   type ProductWithRelations,
 } from './catalog.mappers';
 
-const productInclude = {
-  brand: true,
-  category: true,
-  images: true,
-  variants: { include: { inventory: true } },
+const hardwareInclude = {
   cpu: true,
   gpu: true,
   motherboard: true,
@@ -31,6 +31,34 @@ const productInclude = {
   pcCase: true,
   cooler: true,
 } as const;
+
+/** Shop / homepage cards — primary image + default variant only. */
+export const productListInclude = {
+  brand: true,
+  category: true,
+  images: {
+    orderBy: [{ isPrimary: 'desc' as const }, { sortOrder: 'asc' as const }],
+    take: PRODUCT_LIST_IMAGE_TAKE,
+  },
+  variants: {
+    where: { isActive: true },
+    orderBy: [{ isDefault: 'desc' as const }, { createdAt: 'asc' as const }],
+    take: PRODUCT_LIST_VARIANT_TAKE,
+    include: { inventory: true },
+  },
+  ...hardwareInclude,
+} satisfies Prisma.ProductInclude;
+
+/** PDP / compare / SKU lookup — full gallery and variants. */
+export const productDetailInclude = {
+  brand: true,
+  category: true,
+  images: {
+    orderBy: [{ sortOrder: 'asc' as const }, { isPrimary: 'desc' as const }],
+  },
+  variants: { include: { inventory: true } },
+  ...hardwareInclude,
+} satisfies Prisma.ProductInclude;
 
 export type ProductConnection = {
   items: CatalogProduct[];
@@ -52,7 +80,7 @@ async function loadProductsByIds(
 
   const rows = (await prisma.product.findMany({
     where: { id: { in: ids } },
-    include: productInclude,
+    include: productListInclude,
   })) as ProductWithRelations[];
 
   const byId = new Map(rows.map((row) => [row.id, mapProduct(row)]));
@@ -72,7 +100,7 @@ export async function getProductsByIds(
 
   const rows = (await prisma.product.findMany({
     where: { id: { in: ids }, status: 'ACTIVE' },
-    include: productInclude,
+    include: productDetailInclude,
   })) as ProductWithRelations[];
 
   const byId = new Map(rows.map((row) => [row.id, mapProduct(row)]));
@@ -131,7 +159,7 @@ export async function listProducts(
       orderBy: buildProductOrderBy(input.sort),
       skip: meta.skip,
       take: meta.pageSize,
-      include: productInclude,
+      include: productListInclude,
     })) as ProductWithRelations[];
     items = rows.map((row) => mapProduct(row));
   }
@@ -155,7 +183,7 @@ export async function getProductBySlug(
 ): Promise<CatalogProduct> {
   const product = (await prisma.product.findFirst({
     where: { slug, status: 'ACTIVE' },
-    include: productInclude,
+    include: productDetailInclude,
   })) as ProductWithRelations | null;
 
   if (!product) {
@@ -171,7 +199,7 @@ export async function getProductById(
 ): Promise<CatalogProduct> {
   const product = (await prisma.product.findFirst({
     where: { id, status: 'ACTIVE' },
-    include: productInclude,
+    include: productDetailInclude,
   })) as ProductWithRelations | null;
 
   if (!product) {
@@ -247,7 +275,7 @@ export async function getVariantBySku(prisma: PrismaClient, sku: string) {
     },
     include: {
       inventory: true,
-      product: { include: productInclude },
+      product: { include: productDetailInclude },
     },
   });
 
