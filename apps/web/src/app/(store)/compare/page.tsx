@@ -10,6 +10,7 @@ import {
   productHref,
 } from '@/features/products/product-path';
 import { CompareClientSync } from '@/features/comparison/CompareClientSync';
+import { CompareProductMedia } from '@/features/comparison/CompareProductMedia';
 import { publicPageMetadata } from '@/server/seo';
 
 export const metadata = publicPageMetadata({
@@ -136,15 +137,23 @@ export default async function ComparePage({
       ) : null}
 
       {products.length > 0 ? (
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto rounded-3xl glass-panel p-4">
           <table className="w-full min-w-[640px] border-collapse text-left text-sm">
             <thead>
-              <tr className="border-b border-border">
+              <tr className="border-b border-white/40">
                 <th className="py-3 pr-4 font-mono text-[10px] tracking-wide text-muted uppercase">
                   Spec
                 </th>
                 {products.map((p) => (
-                  <th key={p.id} className="px-3 py-3 align-bottom">
+                  <th key={p.id} className="min-w-[180px] px-3 py-3 align-bottom">
+                    <CompareProductMedia
+                      type={p.type}
+                      name={p.name}
+                      imageUrl={
+                        p.images.find((img) => img.isPrimary)?.url ??
+                        p.images[0]?.url
+                      }
+                    />
                     <Link
                       href={productHref(p)}
                       className="font-display text-base tracking-tight hover:text-accent"

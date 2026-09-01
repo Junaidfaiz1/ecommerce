@@ -2,10 +2,10 @@
 
 import { useState, type FormEvent } from 'react';
 import Link from 'next/link';
-import { BrandMark } from '@vorqen/ui';
 import { requestPasswordResetInputSchema } from '@vorqen/types';
 import { graphqlRequest } from '@/lib/graphql-client';
 import { getErrorMessage } from '@/lib/errors';
+import { AuthShell } from '@/components/layout/AuthShell';
 
 const REQUEST_RESET = `
   mutation RequestPasswordReset($input: RequestPasswordResetInput!) {
@@ -39,50 +39,43 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <main className="relative flex min-h-screen flex-col">
-      <header className="relative z-10 border-b border-border px-6 py-4 md:px-10">
-        <BrandMark />
-      </header>
-      <section className="relative z-10 mx-auto flex w-full max-w-md flex-1 flex-col justify-center px-6 py-16">
-        <h1 className="font-display text-3xl tracking-tight">Reset password</h1>
-        <p className="mt-2 text-sm text-muted">
-          We will email a reset link if an account exists for that address.
+    <AuthShell
+      eyebrow="Account"
+      title="Reset password"
+      subtitle="We will email a reset link if an account exists for that address."
+    >
+      {done ? (
+        <p className="mt-8 text-sm text-foreground">
+          If an account exists, a reset link was sent. Check your inbox (or
+          server logs in development).
         </p>
-
-        {done ? (
-          <p className="mt-8 text-sm text-foreground">
-            If an account exists, a reset link was sent. Check your inbox (or server logs in
-            development).
-          </p>
-        ) : (
-          <form onSubmit={onSubmit} className="mt-8 flex flex-col gap-4">
-            <label className="flex flex-col gap-1.5 text-sm">
-              <span className="text-muted">Email</span>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="rounded-md border border-border bg-surface px-3 py-2 outline-none focus:border-accent"
-                required
-              />
-            </label>
-            {error ? <p className="text-sm text-red-400">{error}</p> : null}
-            <button
-              type="submit"
-              disabled={pending}
-              className="rounded-md bg-accent px-5 py-2.5 text-sm font-medium text-background disabled:opacity-60"
-            >
-              {pending ? 'Sending…' : 'Send reset link'}
-            </button>
-          </form>
-        )}
-
-        <p className="mt-6 text-sm text-muted">
-          <Link href="/login" className="underline-offset-4 hover:underline">
-            Back to sign in
-          </Link>
-        </p>
-      </section>
-    </main>
+      ) : (
+        <form onSubmit={onSubmit} className="mt-8 flex flex-col gap-4">
+          <label className="flex flex-col gap-1.5 text-sm">
+            <span className="text-muted">Email</span>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="glass-input h-11 rounded-2xl px-4 outline-none focus:border-accent"
+              required
+            />
+          </label>
+          {error ? <p className="text-sm text-accent">{error}</p> : null}
+          <button
+            type="submit"
+            disabled={pending}
+            className="glass-btn h-12 rounded-full px-5 text-sm font-medium disabled:opacity-60"
+          >
+            {pending ? 'Sending…' : 'Send reset link'}
+          </button>
+        </form>
+      )}
+      <p className="mt-6 text-sm text-muted">
+        <Link href="/login" className="underline-offset-4 hover:underline">
+          Back to sign in
+        </Link>
+      </p>
+    </AuthShell>
   );
 }

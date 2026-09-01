@@ -35,7 +35,7 @@ export function CompatPanel({ compatibility, pending, className }: Props) {
         <span
           className={cn(
             'font-medium',
-            compatibility.compatible ? 'text-emerald-400' : 'text-amber-400',
+            compatibility.compatible ? 'text-ink' : 'text-accent',
           )}
         >
           {status}
@@ -52,7 +52,7 @@ export function CompatPanel({ compatibility, pending, className }: Props) {
       ) : null}
 
       {compatibility.errors.length > 0 ? (
-        <ul className="space-y-1.5 border-l-2 border-red-500/50 pl-3 text-red-300">
+        <ul className="space-y-1.5 border-l-2 border-red-800/50 pl-3 text-red-800">
           {compatibility.errors.map((msg) => (
             <li key={msg}>{msg}</li>
           ))}
@@ -60,7 +60,7 @@ export function CompatPanel({ compatibility, pending, className }: Props) {
       ) : null}
 
       {compatibility.warnings.length > 0 ? (
-        <ul className="space-y-1.5 border-l-2 border-amber-500/40 pl-3 text-amber-200/90">
+        <ul className="space-y-1.5 border-l-2 border-accent/50 pl-3 text-accent">
           {compatibility.warnings.map((msg) => (
             <li key={msg}>{msg}</li>
           ))}

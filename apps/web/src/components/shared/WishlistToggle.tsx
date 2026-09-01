@@ -2,8 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { graphqlRequest, GraphQLClientError } from '@/lib/graphql-client';
 import { getErrorMessage } from '@/lib/errors';
+import { loginHref } from '@/lib/auth-redirect';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import {
@@ -24,6 +26,7 @@ export function WishlistToggle({
   className,
   size = 'sm',
 }: WishlistToggleProps) {
+  const pathname = usePathname();
   const [saved, setSaved] = useState(false);
   const [pending, setPending] = useState(false);
   const [needsAuth, setNeedsAuth] = useState(false);
@@ -101,7 +104,7 @@ export function WishlistToggle({
       </Button>
       {needsAuth && error ? (
         <p className="text-xs text-muted">
-          <Link href="/login" className="text-accent hover:underline">
+          <Link href={loginHref(pathname)} className="text-accent hover:underline">
             Sign in
           </Link>{' '}
           to use wishlist.

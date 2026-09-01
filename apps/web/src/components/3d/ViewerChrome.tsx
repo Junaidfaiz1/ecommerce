@@ -56,13 +56,13 @@ export function ViewerChrome({
     <div
       ref={rootRef}
       className={cn(
-        'relative overflow-hidden border border-border bg-[#0a0b0d]',
+        'relative overflow-hidden border border-border bg-ink',
         className,
       )}
     >
       {children}
       {demoLabel ? (
-        <p className="pointer-events-none absolute top-3 left-3 font-mono text-[10px] tracking-widest text-muted uppercase">
+        <p className="pointer-events-none absolute top-3 left-3 font-mono text-[10px] tracking-widest text-sage uppercase">
           {demoLabel}
         </p>
       ) : null}
@@ -74,8 +74,8 @@ export function ViewerChrome({
             className={cn(
               'inline-flex h-8 items-center gap-1.5 rounded-md border px-2.5 font-mono text-[10px] tracking-wider uppercase transition-colors',
               explode
-                ? 'border-accent/50 bg-accent/15 text-accent'
-                : 'border-border bg-surface/90 text-muted hover:text-foreground',
+                ? 'border-sage bg-sage/20 text-cream'
+                : 'border-sage/50 bg-cream/90 text-ink hover:bg-cream',
             )}
             aria-pressed={explode}
           >
@@ -89,8 +89,8 @@ export function ViewerChrome({
           className={cn(
             'inline-flex h-8 items-center gap-1.5 rounded-md border px-2.5 font-mono text-[10px] tracking-wider uppercase transition-colors',
             autoRotate
-              ? 'border-accent/50 bg-accent/15 text-accent'
-              : 'border-border bg-surface/90 text-muted hover:text-foreground',
+              ? 'border-sage bg-sage/20 text-cream'
+              : 'border-sage/50 bg-cream/90 text-ink hover:bg-cream',
           )}
           aria-pressed={autoRotate}
         >
@@ -100,7 +100,7 @@ export function ViewerChrome({
         <button
           type="button"
           onClick={() => void toggleFullscreen()}
-          className="inline-flex h-8 items-center gap-1.5 rounded-md border border-border bg-surface/90 px-2.5 font-mono text-[10px] tracking-wider text-muted uppercase transition-colors hover:text-foreground"
+          className="inline-flex h-8 items-center gap-1.5 rounded-md border border-sage/50 bg-cream/90 px-2.5 font-mono text-[10px] tracking-wider text-ink uppercase transition-colors hover:bg-cream"
           aria-label={fullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
         >
           {fullscreen ? (

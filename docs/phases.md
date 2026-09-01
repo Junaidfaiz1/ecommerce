@@ -340,7 +340,19 @@ Work **one phase at a time**. Sync with [`../PROGRESS.md`](../PROGRESS.md) and [
 
 ## Phase 18 — Performance optimization
 
-3D budgets, query efficiency, images.
+**Goal:** 3D frame budgets, slimmer catalog queries, and `next/image` for storefront media.
+
+**Deliver:**
+
+- Shared `resolveThreeDBudget` (`@vorqen/types` `perf.ts`) + `SceneCanvas` pause/DPR/shadow/HDRI caps
+- Catalog list include: 1 primary image + 1 default variant; shop meta+list in parallel; PDP reviews+3D in parallel
+- Prisma indexes on `products(status, is_featured)`, `(status, created_at)`, variant price sort, image primary
+- `CatalogImage` (`next/image`, AVIF/WebP, sizes) on cards, PDP, cart, wishlist
+- Unit tests for budget helpers + list-include caps
+
+**Exit criteria:** typecheck + lint + `pnpm test`; 3D still lazy-only on hero/builder/PDP; list queries do not load full galleries.
+
+**Deferred to Phase 19:** Vercel + Neon + CI deploy.
 
 ---
 

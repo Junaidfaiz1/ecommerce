@@ -49,7 +49,7 @@ export function SceneCanvas({
           style={{ touchAction: 'none' }}
         >
           <ThreeDBudgetContext.Provider value={budget}>
-            <color attach="background" args={['#0a0b0d']} />
+            <color attach="background" args={['#08091A']} />
             <ambientLight intensity={0.35} />
             <directionalLight
               position={[4, 6, 3]}

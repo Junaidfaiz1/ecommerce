@@ -13,9 +13,9 @@
 
 | Item | Status |
 |------|--------|
-| Overall progress | **Phase 17 / 19 complete** (~89%) |
-| Current phase | Phase 18 — Performance optimization (**not started**) |
-| Next work | Phase 18 when the user requests it |
+| Overall progress | **Phase 18 / 19 complete** (~95%) |
+| Current phase | Phase 19 — Deployment (**not started**) |
+| Next work | Phase 19 when the user requests it |
 | Architecture | Next.js-only modular monolith (NestJS / Docker / Redis nahi) |
 
 ---
@@ -153,7 +153,7 @@
 | 15 | Analytics | ✅ Done |
 | 16 | SEO + security hardening | ✅ Done |
 | 17 | Testing (critical paths) | ✅ Done |
-| 18 | Performance optimization | ⬜ Pending |
+| 18 | Performance optimization | ✅ Done |
 | 19 | Deployment (Vercel + Neon + CI) | ⬜ Pending |
 
 ### Abhi pending major product features
@@ -165,7 +165,8 @@
 - Email (Resend) + abandoned-cart recovery — ✅ Phase 14
 - SEO, rate limits, audit log — ✅ Phase 16
 - Critical-path tests — ✅ Phase 17
-- Performance pass + production deploy  
+- 3D budgets + catalog/image performance — ✅ Phase 18
+- Production deploy  
 
 Detailed feature rows: [`features.md`](./features.md).
 
@@ -284,16 +285,16 @@ Yeh **business / product requirements** hain — end product mein yeh capabiliti
 | Analytics | ✅ Done | Phase 15 — `/admin` KPIs + Recharts |
 | SEO / security harden | ✅ Done | Phase 16 — metadata, sitemap, JSON-LD, rate limits, audit |
 | Testing suite | ✅ Done | Phase 17 — unit + in-memory integration + build→paid E2E |
-| Performance pass | ❌ Not started | Phase 18 |
+| Performance pass | ✅ Done | Phase 18 — 3D budgets, list queries, next/image |
 | Deployment | ❌ Not started | Phase 19 |
 
 ---
 
 ## 6. Aghla qadam (Next)
 
-1. User **Phase 18** request kare.
-2. Phase 18 = 3D budgets, query efficiency, images.
-3. Us se pehle Phase 18 start mat karo.
+1. User **Phase 19** request kare.
+2. Phase 19 = Vercel + Neon + CI + `docs/deployment.md`.
+3. Us se pehle Phase 19 start mat karo.
 4. Local DB: Neon URL `.env` mein set karke `pnpm exec prisma migrate deploy && pnpm db:seed`.
 
 ---

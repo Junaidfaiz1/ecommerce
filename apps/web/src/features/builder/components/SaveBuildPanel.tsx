@@ -5,6 +5,7 @@ import Link from 'next/link';
 import type { BuildVisibility } from '@vorqen/types';
 import { graphqlRequest } from '@/lib/graphql-client';
 import { getErrorMessage } from '@/lib/errors';
+import { loginHref, registerHref } from '@/lib/auth-redirect';
 import { ADD_BUILD_TO_CART, type CartData } from '@/features/cart/graphql';
 import { syncCartUi } from '@/features/cart/sync';
 import { ME_QUERY, SAVE_BUILD_MUTATION } from '../graphql';
@@ -135,7 +136,7 @@ export function SaveBuildPanel() {
         <input
           value={buildName}
           onChange={(e) => setBuildName(e.target.value)}
-          className="rounded-md border border-border bg-surface px-3 py-2 outline-none focus:border-accent"
+          className="glass-input rounded-2xl px-3 py-2 outline-none focus:border-accent"
           maxLength={120}
           required
         />
@@ -148,7 +149,7 @@ export function SaveBuildPanel() {
           onChange={(e) => setNotes(e.target.value)}
           rows={2}
           maxLength={2000}
-          className="resize-y rounded-md border border-border bg-surface px-3 py-2 outline-none focus:border-accent"
+          className="resize-y glass-input rounded-2xl px-3 py-2 outline-none focus:border-accent"
         />
       </label>
 
@@ -157,7 +158,7 @@ export function SaveBuildPanel() {
         <select
           value={visibility}
           onChange={(e) => setVisibility(e.target.value as BuildVisibility)}
-          className="rounded-md border border-border bg-surface px-3 py-2 outline-none focus:border-accent"
+          className="glass-input rounded-2xl px-3 py-2 outline-none focus:border-accent"
         >
           <option value="PRIVATE">Private</option>
           <option value="UNLISTED">Unlisted (link)</option>
@@ -172,21 +173,21 @@ export function SaveBuildPanel() {
             value={slug}
             onChange={(e) => setSlug(e.target.value)}
             placeholder={slugify(buildName) || 'my-build'}
-            className="rounded-md border border-border bg-surface px-3 py-2 font-mono text-sm outline-none focus:border-accent"
+            className="glass-input rounded-2xl px-3 py-2 font-mono text-sm outline-none focus:border-accent"
           />
         </label>
       ) : null}
 
       {error ? <p className="text-sm text-red-400">{error}</p> : null}
-      {success ? <p className="text-sm text-emerald-400">{success}</p> : null}
+      {success ? <p className="text-sm text-ink">{success}</p> : null}
       {needsAuth ? (
         <p className="text-sm text-muted">
-          <Link href="/login" className="text-foreground underline-offset-4 hover:underline">
+          <Link href={loginHref('/build')} className="text-foreground underline-offset-4 hover:underline">
             Sign in
           </Link>{' '}
           or{' '}
           <Link
-            href="/register"
+            href={registerHref('/build')}
             className="text-foreground underline-offset-4 hover:underline"
           >
             create an account
@@ -199,7 +200,7 @@ export function SaveBuildPanel() {
         <button
           type="submit"
           disabled={pending || parts.length === 0}
-          className="rounded-md bg-accent px-5 py-2.5 text-sm font-medium text-background transition-opacity hover:opacity-90 disabled:opacity-50"
+          className="glass-btn rounded-2xl px-5 py-2.5 text-sm font-medium disabled:opacity-50"
         >
           {pending ? 'Saving…' : buildId ? 'Update build' : 'Save build'}
         </button>
@@ -212,7 +213,7 @@ export function SaveBuildPanel() {
               : 'Save the build first'
           }
           onClick={() => void onAddToCart()}
-          className="rounded-md border border-border px-5 py-2.5 text-sm transition-colors hover:bg-elevated disabled:opacity-60"
+          className="glass-panel rounded-2xl px-5 py-2.5 text-sm disabled:opacity-60"
         >
           {cartPending ? 'Adding…' : 'Add to cart'}
         </button>

@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import {
+  CATALOG_PLACEHOLDER_IMAGE,
   IMAGE_SIZES,
   type ProductType,
 } from '@vorqen/types';
@@ -66,24 +67,18 @@ export function ProductCard({
   return (
     <article
       className={cn(
-        'group relative flex flex-col border-b border-border pb-6 transition-colors',
+        'group relative flex flex-col rounded-3xl glass-panel p-4 transition-transform hover:-translate-y-0.5',
         className,
       )}
     >
-      <Link href={href} className="relative block aspect-[4/3] overflow-hidden bg-elevated">
-        {image ? (
-          <CatalogImage
-            src={image.url}
-            alt={image.alt ?? product.name}
-            sizes={imageSizes}
-            priority={priority}
-            className="opacity-90 transition duration-500 group-hover:scale-[1.03] group-hover:opacity-100"
-          />
-        ) : (
-          <div className="flex h-full items-center justify-center font-mono text-xs text-muted">
-            No image
-          </div>
-        )}
+      <Link href={href} className="relative block aspect-[4/3] overflow-hidden rounded-2xl bg-white/5">
+        <CatalogImage
+          src={image?.url ?? CATALOG_PLACEHOLDER_IMAGE}
+          alt={image?.alt ?? product.name}
+          sizes={imageSizes}
+          priority={priority}
+          className="opacity-90 transition duration-500 group-hover:scale-[1.03] group-hover:opacity-100"
+        />
       </Link>
 
       <div className="mt-4 flex flex-1 flex-col gap-2">

@@ -1,8 +1,10 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import {
+  CATALOG_PLACEHOLDER_IMAGE,
   productListFilterSchema,
   productListInputSchema,
+  resolveCatalogImageUrl,
   slugSchema,
 } from '@vorqen/types';
 import {
@@ -35,6 +37,20 @@ describe('catalog filter schemas', () => {
   it('caps pageSize at 48', () => {
     const result = productListInputSchema.safeParse({ pageSize: 100 });
     assert.equal(result.success, false);
+  });
+});
+
+describe('catalog image URLs', () => {
+  it('replaces the fake seed host with the local catalog photo', () => {
+    assert.equal(
+      resolveCatalogImageUrl('https://placeholder.vorqen.local/gpu.jpg'),
+      CATALOG_PLACEHOLDER_IMAGE,
+    );
+    assert.equal(resolveCatalogImageUrl(''), CATALOG_PLACEHOLDER_IMAGE);
+    assert.equal(
+      resolveCatalogImageUrl('/assets/catalog/product.jpg'),
+      '/assets/catalog/product.jpg',
+    );
   });
 });
 

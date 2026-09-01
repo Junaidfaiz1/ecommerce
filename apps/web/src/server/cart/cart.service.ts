@@ -21,6 +21,7 @@ import {
   ValidationError,
 } from '../common/errors';
 import { checkCompatibility } from '../compatibility/compatibility.service';
+import { catalogPhotoPath } from '../catalog/image-url';
 import { softEvaluateCoupon, requireValidCoupon } from '../coupons';
 
 const cartInclude = {
@@ -135,7 +136,11 @@ function mapCart(row: CartRow, couponEval: {
         slug: product.slug,
         type: product.type,
         brandName: product.brand.name,
-        imageUrl: product.images[0]?.url ?? null,
+        imageUrl: catalogPhotoPath(
+          product.type,
+          product.slug,
+          product.images[0]?.url,
+        ),
       },
       variant: {
         id: variant.id,

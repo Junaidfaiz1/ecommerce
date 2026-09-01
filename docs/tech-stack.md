@@ -70,7 +70,8 @@ Cursor rule: `.cursor/rules/latest-versions.mdc`
 | Zod | Validation |
 | React Hook Form | Forms |
 | Zustand | Client UI state |
-| R3F + Three.js + drei | 3D |
+| R3F + Three.js + drei | 3D (lazy canvases; Phase 18 DPR/shadow budgets) |
+| `next/image` | Storefront catalog images (AVIF/WebP; unoptimized placeholders) |
 | Framer Motion | Motion |
 | Recharts | Admin charts |
 | Lucide React | Icons |
@@ -122,3 +123,5 @@ SENTRY_DSN=
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 NEXT_PUBLIC_GRAPHQL_URL=http://localhost:3000/api/graphql
 ```
+
+Store these in the **repo-root** `.env` (never commit it). Next.js loads that file via `loadRootEnv()` so `apps/web` does not need a duplicate `.env`.

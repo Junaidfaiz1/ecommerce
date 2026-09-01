@@ -26,7 +26,7 @@ export function BuilderSummary() {
   );
 
   return (
-    <aside className="flex h-full flex-col gap-6 border-border lg:border-l lg:pl-6">
+    <aside className="flex h-full flex-col gap-6 rounded-3xl glass-panel p-4 lg:p-6">
       <div>
         <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted">
           Build summary

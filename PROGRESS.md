@@ -7,9 +7,9 @@
 
 | Field | Value |
 |-------|-------|
-| **Current phase** | Phase 18 — Performance optimization |
+| **Current phase** | Phase 19 — Deployment |
 | **Status** | ⬜ Pending |
-| **Next phase** | Phase 19 — Deployment |
+| **Next phase** | — |
 | **Blocked by** | — |
 
 ## Phase checklist
@@ -33,16 +33,16 @@
 | 15 | Analytics | ✅ Done |
 | 16 | SEO + security hardening | ✅ Done |
 | 17 | Testing | ✅ Done |
-| 18 | Performance optimization | ⬜ Pending |
+| 18 | Performance optimization | ✅ Done |
 | 19 | Deployment | ⬜ Pending |
 
 **Legend:** ⬜ Not started · 🟡 In progress · ✅ Done · ⛔ Blocked
 
 ## What to do next (for agents)
 
-1. Wait for the user to request **Phase 18**.
-2. Phase 18 = 3D budgets, query efficiency, images.
-3. Do not start Phase 18 until asked.
+1. Wait for the user to request **Phase 19**.
+2. Phase 19 = Vercel + Neon + CI + `docs/deployment.md`.
+3. Do not start Phase 19 until asked.
 
 ## Architecture decision
 
@@ -51,6 +51,18 @@
 - `apps/web` — UI + `/api/graphql` (Yoga) + `/api/health` + future webhooks/cron
 - `apps/web/src/server/*` — domain services
 - No `apps/api`
+
+## Phase 18 verification
+
+| Check | Result |
+|-------|--------|
+| 3D budget: DPR cap, off-screen/tab pause, constrained shadows/HDRI | Pass |
+| Catalog list include: 1 image + 1 default variant | Pass |
+| Shop meta+list and PDP reviews+3D in parallel | Pass |
+| Prisma catalog indexes migration | Pass (SQL present) |
+| `CatalogImage` / `next/image` on cards, PDP, cart, wishlist | Pass |
+| `pnpm typecheck` / lint / test | Pass |
+| Production deploy | Deferred Phase 19 |
 
 ## Phase 17 verification
 
@@ -62,7 +74,7 @@
 | In-process E2E: build → cart → coupon → PaymentIntent stub → webhook PAID + SALE | Pass |
 | Optional HTTP smoke (`E2E_BASE_URL`) | Skip unless origin set |
 | `pnpm typecheck` / lint / `pnpm test` | Pass |
-| 3D budgets / query / images | Deferred Phase 18 |
+| 3D budgets / query / images | ✅ Phase 18 |
 
 ## Phase 16 verification
 
@@ -294,6 +306,11 @@
 
 | Date | Note |
 |------|------|
+| 2026-09-01 | **UI** — night glassmorphism storefront + auth (orbs, frost cards, gradient CTAs). Login returns to `next` via full navigation. Per-SKU catalog photos + procedural 3D on PDP/compare/builder. |
+| 2026-09-01 | **Theme** — page background `#FBFBFB` on all routes; ice/sky/navy for surfaces, accent, and ink. |
+| 2026-09-01 | **Fix** — catalog photos: local `/assets/catalog/product.jpg` fallback; seed no longer uses `placeholder.vorqen.local`. |
+| 2026-09-01 | **Fix** — load repo-root `.env` in Next.js (`loadRootEnv`) so `DATABASE_URL` is available to Prisma. |
+| 2026-09-01 | **Phase 18 complete** — 3D budgets, catalog list includes + indexes, `next/image` storefront. |
 | 2026-09-01 | **Phase 17 complete** — in-memory integration + critical-path E2E (build→paid), GraphQL authority tests, `pnpm test` / typecheck / lint. |
 | 2026-09-01 | **Phase 16 complete** — SEO metadata/sitemap/JSON-LD, GraphQL rate limits, audit hardening, security headers. |
 | 2026-09-01 | **Phase 14 complete** — Resend templates, auth + order-paid email, abandoned-cart cron/click/recovered. |

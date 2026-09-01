@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { SITE_DESCRIPTION, SITE_NAME, SITE_TAGLINE } from '@vorqen/types';
 import { Space_Grotesk, Inter, JetBrains_Mono } from 'next/font/google';
 import { metadataBaseUrl } from '@/server/seo';
+import { AuraBackground } from '@/components/layout/AuraBackground';
 import './globals.css';
 
 const spaceGrotesk = Space_Grotesk({
@@ -52,8 +53,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable}`}>
-      <body className="min-h-screen bg-background font-sans text-foreground antialiased">
-        {children}
+      <body className="relative min-h-screen bg-background font-sans text-foreground antialiased">
+        <AuraBackground />
+        <div className="relative z-10">{children}</div>
       </body>
     </html>
   );

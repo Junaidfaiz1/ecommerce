@@ -7,14 +7,14 @@ export type ViewerMode = 'hero' | 'builder' | 'product';
 export type FilledSlots = Partial<Record<ComponentSlot, boolean>>;
 
 export const SLOT_COLORS: Record<ComponentSlot, string> = {
-  CASE: '#2a2e36',
-  MOTHERBOARD: '#1a3d2a',
-  CPU: '#c4a574',
-  COOLER: '#5a6578',
-  GPU: '#3d4a6b',
-  RAM: '#4a6b8a',
-  STORAGE: '#3a3a42',
-  PSU: '#2c3038',
+  CASE: '#0D47A1',
+  MOTHERBOARD: '#1565C0',
+  CPU: '#2196F3',
+  COOLER: '#90CAF9',
+  GPU: '#1976D2',
+  RAM: '#64B5F6',
+  STORAGE: '#42A5F5',
+  PSU: '#0A3A85',
 };
 
 /** Rest positions (local) for assembled chassis parts. */

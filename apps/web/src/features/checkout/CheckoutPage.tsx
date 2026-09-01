@@ -146,7 +146,7 @@ export function CheckoutPage() {
           action={
             <Link
               href="/shop"
-              className="inline-flex h-10 items-center rounded-md bg-accent px-4 text-sm font-medium text-background"
+              className="glass-btn inline-flex h-10 items-center rounded-2xl px-4 text-sm font-medium"
             >
               Shop hardware
             </Link>
@@ -184,7 +184,7 @@ export function CheckoutPage() {
               {addresses.map((addr) => (
                 <label
                   key={addr.id}
-                  className="flex cursor-pointer gap-3 border border-border bg-surface p-4 has-[:checked]:border-accent"
+                  className="flex cursor-pointer gap-3 rounded-2xl glass-panel p-4 has-[:checked]:ring-2 has-[:checked]:ring-accent"
                 >
                   <input
                     type="radio"
@@ -214,7 +214,7 @@ export function CheckoutPage() {
                   </span>
                 </label>
               ))}
-              <label className="flex cursor-pointer gap-3 border border-border bg-surface p-4 has-[:checked]:border-accent">
+              <label className="flex cursor-pointer gap-3 rounded-2xl glass-panel p-4 has-[:checked]:ring-2 has-[:checked]:ring-accent">
                 <input
                   type="radio"
                   name="shipping-address"
@@ -227,7 +227,7 @@ export function CheckoutPage() {
             </fieldset>
 
             {selectedId === 'new' ? (
-              <div className="grid gap-3 border border-border bg-surface/40 p-4">
+              <div className="grid gap-3 rounded-2xl glass-panel p-4">
                 {(
                   [
                     ['line1', 'Line 1', 'address-line1', true],
@@ -252,7 +252,7 @@ export function CheckoutPage() {
                       onChange={(e) =>
                         setForm((prev) => ({ ...prev, [key]: e.target.value }))
                       }
-                      className="h-10 rounded-md border border-border bg-background px-3 text-sm text-foreground outline-none focus:border-accent"
+                      className="glass-input h-10 rounded-2xl px-3 text-sm text-foreground outline-none focus:border-accent"
                     />
                   </label>
                 ))}
@@ -279,7 +279,7 @@ export function CheckoutPage() {
           </form>
 
           {payment ? (
-            <div className="border border-border bg-surface p-6">
+            <div className="rounded-3xl glass-panel p-6">
               <h2 className="font-display text-xl tracking-tight">Payment</h2>
               <p className="mt-1 font-mono text-[11px] text-muted">
                 Order {payment.orderNumber}
@@ -314,7 +314,7 @@ export function CheckoutPage() {
           ) : null}
         </section>
 
-        <aside className="h-fit border border-border bg-surface p-6">
+        <aside className="h-fit rounded-3xl glass-panel p-6">
           <h2 className="font-display text-xl tracking-tight">Order</h2>
           <ul className="mt-4 space-y-3 text-sm">
             {cart.items.map((line) => (

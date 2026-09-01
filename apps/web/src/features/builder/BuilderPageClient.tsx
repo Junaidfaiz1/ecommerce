@@ -101,11 +101,11 @@ export function BuilderPageClient() {
     <div className="relative flex min-h-screen flex-col">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 h-[420px] bg-[radial-gradient(ellipse_at_top,_rgba(109,124,255,0.09),_transparent_55%)]"
+        className="pointer-events-none absolute inset-x-0 top-0 h-[420px] theme-wash"
       />
-      <header className="relative z-10 flex items-center justify-between border-b border-border px-4 py-4 md:px-8">
+      <header className="relative z-10 mx-3 mt-3 flex flex-wrap items-center justify-between gap-3 rounded-[1.75rem] glass-nav px-4 py-4 md:mx-8 md:px-8">
         <BrandMark />
-        <nav className="flex items-center gap-4 text-sm text-muted">
+        <nav className="flex flex-wrap items-center gap-3 text-sm text-muted sm:gap-4">
           <Link href="/shop" className="hover:text-foreground">
             Shop
           </Link>
@@ -116,7 +116,7 @@ export function BuilderPageClient() {
           >
             New build
           </button>
-          <Link href="/login" className="hover:text-foreground">
+          <Link href="/login?next=/build" className="hover:text-foreground">
             Account
           </Link>
         </nav>

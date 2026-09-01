@@ -1,7 +1,9 @@
 'use client';
 
 import type { ComponentSlot } from '@vorqen/types';
+import { CATALOG_PLACEHOLDER_IMAGE, IMAGE_SIZES } from '@vorqen/types';
 import { cn } from '@/lib/utils';
+import { CatalogImage } from '@/components/shared/CatalogImage';
 import {
   catalogPickToDraft,
   useSlotProducts,
@@ -86,12 +88,24 @@ export function BuilderPartPicker({ slot }: Props) {
                 type="button"
                 onClick={() => onPick(product)}
                 className={cn(
-                  'flex w-full flex-col gap-1 rounded-md border px-4 py-3 text-left transition-colors',
+                  'flex w-full gap-3 rounded-2xl glass-panel px-3 py-3 text-left transition-colors',
                   active
-                    ? 'border-accent bg-elevated'
-                    : 'border-border bg-surface hover:border-muted',
+                    ? 'ring-2 ring-accent'
+                    : 'hover:bg-white/40',
                 )}
               >
+                <span className="relative h-16 w-20 shrink-0 overflow-hidden rounded-xl bg-white/30">
+                  <CatalogImage
+                    src={
+                      product.images.find((img) => img.isPrimary)?.url ??
+                      product.images[0]?.url ??
+                      CATALOG_PLACEHOLDER_IMAGE
+                    }
+                    alt={product.name}
+                    sizes={IMAGE_SIZES.productThumb}
+                  />
+                </span>
+                <span className="flex min-w-0 flex-1 flex-col gap-1">
                 <span className="font-mono text-[10px] uppercase tracking-wider text-muted">
                   {product.brand.name}
                 </span>
@@ -105,6 +119,7 @@ export function BuilderPartPicker({ slot }: Props) {
                       ? `${variant.availableQuantity} in stock`
                       : 'Out of stock'}
                   </span>
+                </span>
                 </span>
               </button>
             </li>

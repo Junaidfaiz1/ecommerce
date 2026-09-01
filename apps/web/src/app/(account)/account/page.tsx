@@ -143,7 +143,7 @@ export default function AccountProfilePage() {
           <input
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
-            className="rounded-md border border-border bg-surface px-3 py-2 outline-none focus:border-accent"
+            className="glass-input rounded-2xl px-3 py-2 outline-none focus:border-accent"
           />
         </label>
         <label className="flex flex-col gap-1.5 text-sm">
@@ -151,11 +151,11 @@ export default function AccountProfilePage() {
           <input
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
-            className="rounded-md border border-border bg-surface px-3 py-2 outline-none focus:border-accent"
+            className="glass-input rounded-2xl px-3 py-2 outline-none focus:border-accent"
           />
         </label>
         {error ? <p className="text-sm text-red-400">{error}</p> : null}
-        {notice ? <p className="text-sm text-emerald-400/90">{notice}</p> : null}
+        {notice ? <p className="text-sm text-ink">{notice}</p> : null}
         <Button type="submit" disabled={pending}>
           {pending ? 'Saving…' : 'Save profile'}
         </Button>

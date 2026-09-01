@@ -146,7 +146,7 @@
 | F-120 | Metadata, OG, sitemap, robots, JSON-LD | 16 | done |
 | F-121 | Rate limiting, audit log, hardening | 16 | done |
 | F-122 | Unit/integration/E2E critical paths | 17 | done |
-| F-123 | 3D + query performance pass | 18 | todo |
+| F-123 | 3D + query performance pass | 18 | done |
 | F-124 | Production deployment | 19 | todo |
 
 ---

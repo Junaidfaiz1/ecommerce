@@ -24,6 +24,7 @@ HTTP UI smoke is skipped unless `E2E_BASE_URL` points at a running Next.js origi
 | Order creation / ownership | Integration | `orders.integration.test.ts` |
 | Builder save → add to cart → checkout → paid | In-process E2E | `critical-path.e2e.test.ts` |
 | Public route / checkout auth smoke | HTTP E2E (opt-in) | `e2e-ui.smoke.test.ts` |
+| 3D budgets + catalog list include + image optimizer allowlist | Unit | `perf.test.ts` |
 
 ## Conventions
 

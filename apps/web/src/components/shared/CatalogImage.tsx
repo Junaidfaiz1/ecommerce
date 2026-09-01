@@ -1,5 +1,13 @@
+'use client';
+
+import { useState } from 'react';
 import Image from 'next/image';
-import { IMAGE_SIZES, shouldOptimizeRemoteImage } from '@vorqen/types';
+import {
+  CATALOG_PLACEHOLDER_IMAGE,
+  IMAGE_SIZES,
+  resolveCatalogImageUrl,
+  shouldOptimizeRemoteImage,
+} from '@vorqen/types';
 import { cn } from '@/lib/utils';
 
 export type CatalogImageProps = {
@@ -28,11 +36,15 @@ export function CatalogImage({
   width,
   height,
 }: CatalogImageProps) {
-  const optimize = shouldOptimizeRemoteImage(src);
+  const resolved = resolveCatalogImageUrl(src);
+  const [failedFor, setFailedFor] = useState<string | null>(null);
+  const displaySrc =
+    failedFor === resolved ? CATALOG_PLACEHOLDER_IMAGE : resolved;
+  const optimize = shouldOptimizeRemoteImage(displaySrc);
 
   return (
     <Image
-      src={src}
+      src={displaySrc}
       alt={alt}
       fill={fill}
       width={fill ? undefined : width}
@@ -40,6 +52,9 @@ export function CatalogImage({
       sizes={sizes}
       priority={priority}
       unoptimized={!optimize}
+      onError={() => {
+        if (resolved !== CATALOG_PLACEHOLDER_IMAGE) setFailedFor(resolved);
+      }}
       className={cn('object-cover', className)}
     />
   );

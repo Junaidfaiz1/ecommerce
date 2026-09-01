@@ -1,4 +1,5 @@
 import { loadStripe, type Stripe } from '@stripe/stripe-js';
+import { THEME } from '@/theme/palette';
 
 let stripePromise: Promise<Stripe | null> | null = null;
 
@@ -16,22 +17,22 @@ export function getStripeJs(): Promise<Stripe | null> {
 export const PAYMENT_ELEMENT_APPEARANCE = {
   theme: 'night' as const,
   variables: {
-    colorPrimary: '#8B9CFF',
-    colorBackground: '#101010',
-    colorText: '#F5F5F5',
-    colorDanger: '#F87171',
-    colorTextSecondary: '#8A8A8A',
+    colorPrimary: THEME.clay,
+    colorBackground: '#12162C',
+    colorText: THEME.cream,
+    colorDanger: '#FF8A8A',
+    colorTextSecondary: THEME.sage,
     fontFamily: 'Inter, system-ui, sans-serif',
-    borderRadius: '6px',
+    borderRadius: '16px',
     spacingUnit: '4px',
   },
   rules: {
     '.Input': {
-      backgroundColor: '#070707',
-      border: '1px solid #252525',
+      backgroundColor: 'rgba(255,255,255,0.08)',
+      border: '1px solid rgba(255,255,255,0.16)',
     },
     '.Input:focus': {
-      border: '1px solid #8B9CFF',
+      border: `1px solid ${THEME.clay}`,
       boxShadow: 'none',
     },
   },

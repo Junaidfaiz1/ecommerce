@@ -59,4 +59,9 @@ Signed or public URLs via backend storage abstraction — **no R2 secrets in the
 - Dynamic-import 3D canvases only on hero / builder / PDP.
 - Do not load catalog-wide 3D on list pages.
 - Placeholder/demo assets until licensed GLBs exist (label clearly).
-- Deeper budget pass in Phase 18.
+- **Phase 18 budgets** (`resolveThreeDBudget` in `@vorqen/types`):
+  - Cap DPR at 1.5 (1.25 on mobile / Save-Data / reduced motion).
+  - Pause `frameloop` when the canvas is off-screen or the tab is hidden.
+  - Skip HDRI `Environment` and contact shadows on constrained devices.
+  - Shadow maps 512 (256 constrained); cooler cylinders 12 / 8 segments.
+  - `powerPreference: low-power` + no antialias when constrained.

@@ -59,42 +59,54 @@ export default async function HomePage() {
           }),
         ]}
       />
-      <section className="relative overflow-hidden border-b border-border">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_70%_20%,_rgba(109,124,255,0.14),_transparent_50%),linear-gradient(180deg,_rgba(23,23,23,0.4),_transparent_60%)]"
-        />
-        <div className="relative mx-auto grid min-h-[78vh] max-w-6xl items-center gap-10 px-4 py-16 md:grid-cols-2 md:px-8 md:py-20">
-          <div>
-            <p className="animate-fade-up mb-4 font-mono text-[11px] tracking-[0.22em] text-muted uppercase">
-              VORQEN
-            </p>
-            <h1 className="animate-fade-up font-display text-5xl leading-[0.95] tracking-tight md:text-7xl">
-              BUILD BEYOND
-              <br />
-              LIMITS.
-            </h1>
-            <p className="animate-fade-up mt-5 max-w-md text-base text-muted md:text-lg">
-              Configure high-performance machines with server-checked compatibility
-              and laboratory-grade hardware.
-            </p>
-            <div className="animate-fade-up mt-9 flex flex-wrap gap-3">
-              <Link
-                href="/build"
-                className="rounded-md bg-accent px-5 py-2.5 text-sm font-medium text-background transition-opacity hover:opacity-90"
-              >
-                Build Your PC
-              </Link>
-              <Link
-                href="/shop"
-                className="rounded-md border border-border bg-surface px-5 py-2.5 text-sm font-medium transition-colors hover:bg-elevated"
-              >
-                Explore Hardware
-              </Link>
+      <section className="px-3 pt-3 md:px-6">
+        <div className="hero-stage relative mx-auto min-h-[78vh] max-w-6xl overflow-hidden rounded-[2rem] md:rounded-[2.5rem]">
+          <div className="relative z-10 mx-auto grid items-center gap-10 px-5 py-14 md:grid-cols-2 md:px-12 md:py-20">
+            <div>
+              <p className="animate-fade-up mb-4 font-mono text-[11px] tracking-[0.22em] text-sage uppercase">
+                VORQEN · hardware lab
+              </p>
+              <h1 className="animate-fade-up font-display text-5xl leading-[0.92] tracking-tight md:text-7xl">
+                Shopping
+                <br />
+                to stay
+                <br />
+                <span className="bg-gradient-to-r from-sage via-cream to-accent bg-clip-text text-transparent">
+                  limitless.
+                </span>
+              </h1>
+              <p className="animate-fade-up mt-5 max-w-md text-base text-muted md:text-lg">
+                Configure high-performance machines with live 3D, server-checked
+                compatibility, and laboratory-grade hardware.
+              </p>
+              <div className="animate-fade-up mt-9 flex flex-wrap gap-3">
+                <Link
+                  href="/build"
+                  className="glass-btn rounded-full px-6 py-3 text-sm font-medium"
+                >
+                  Build Your PC
+                </Link>
+                <Link
+                  href="/shop"
+                  className="glass-panel rounded-full px-6 py-3 text-sm font-medium"
+                >
+                  Explore Hardware
+                </Link>
+              </div>
             </div>
-          </div>
-          <div className="animate-fade-up h-[320px] md:h-[420px]">
-            <HeroPcViewer className="h-full w-full rounded-lg" />
+            <div className="relative">
+              <div className="h-[280px] overflow-hidden rounded-[1.75rem] glass-panel sm:h-[340px] md:h-[440px]">
+                <HeroPcViewer className="h-full w-full" />
+              </div>
+              <div className="absolute -left-2 top-6 hidden max-w-[160px] rounded-2xl glass-panel px-4 py-3 sm:block">
+                <p className="font-display text-lg">Live 3D</p>
+                <p className="text-xs text-muted">Rotate the chassis</p>
+              </div>
+              <div className="absolute -right-2 bottom-8 hidden rounded-2xl glass-panel px-4 py-3 sm:block">
+                <p className="font-display text-lg">Server prices</p>
+                <p className="text-xs text-muted">Never trust the client</p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -107,14 +119,14 @@ export default async function HomePage() {
           action={
             <Link
               href="/shop?featured=true"
-              className="text-sm text-muted transition-colors hover:text-accent"
+              className="text-sm text-muted transition-colors hover:text-sage"
             >
               View all →
             </Link>
           }
         />
         {featured && featured.items.length > 0 ? (
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {featured.items.map((product, index) => (
               <ProductCard
                 key={product.id}
@@ -131,10 +143,10 @@ export default async function HomePage() {
         )}
       </section>
 
-      <section className="border-y border-border bg-surface/30">
-        <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 py-16 md:flex-row md:items-center md:justify-between md:px-8 md:py-20">
+      <section className="mx-auto max-w-6xl px-4 pb-8 md:px-8">
+        <div className="flex flex-col gap-8 rounded-[2rem] glass-panel p-6 md:flex-row md:items-center md:justify-between md:p-10">
           <div className="max-w-lg">
-            <p className="mb-2 font-mono text-[11px] tracking-[0.2em] text-muted uppercase">
+            <p className="mb-2 font-mono text-[11px] tracking-[0.2em] text-sage uppercase">
               PC Builder
             </p>
             <h2 className="font-display text-3xl tracking-tight md:text-4xl">
@@ -147,7 +159,7 @@ export default async function HomePage() {
           </div>
           <Link
             href="/build"
-            className="inline-flex h-11 items-center justify-center rounded-md bg-accent px-6 text-sm font-medium text-background transition-opacity hover:opacity-90"
+            className="glass-btn inline-flex h-12 items-center justify-center rounded-full px-7 text-sm font-medium"
           >
             Open Builder
           </Link>
@@ -162,14 +174,14 @@ export default async function HomePage() {
           action={
             <Link
               href="/shop?type=GPU"
-              className="text-sm text-muted transition-colors hover:text-accent"
+              className="text-sm text-muted transition-colors hover:text-sage"
             >
               Shop GPUs →
             </Link>
           }
         />
         {gpus && gpus.items.length > 0 ? (
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {gpus.items.map((product) => (
               <ProductCard
                 key={product.id}
@@ -183,8 +195,8 @@ export default async function HomePage() {
         )}
       </section>
 
-      <section className="border-t border-border">
-        <div className="mx-auto max-w-6xl px-4 py-16 md:px-8">
+      <section className="mx-auto max-w-6xl px-4 pb-16 md:px-8 md:pb-24">
+        <div className="rounded-[2rem] glass-panel p-6 md:p-10">
           <SectionHeader
             eyebrow="Compare"
             title="Side-by-side specs"
@@ -192,7 +204,7 @@ export default async function HomePage() {
           />
           <Link
             href="/compare"
-            className="inline-flex h-10 items-center rounded-md border border-border bg-surface px-4 text-sm transition-colors hover:bg-elevated"
+            className="glass-btn inline-flex h-11 items-center rounded-full px-6 text-sm font-medium"
           >
             Open compare
           </Link>

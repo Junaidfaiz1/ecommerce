@@ -28,13 +28,13 @@ function CancelBody() {
       <div className="mt-8 flex flex-wrap gap-3">
         <Link
           href="/checkout"
-          className="inline-flex h-10 items-center rounded-md bg-accent px-4 text-sm font-medium text-background"
+          className="glass-btn inline-flex h-10 items-center rounded-full px-4 text-sm font-medium"
         >
           Return to checkout
         </Link>
         <Link
           href="/cart"
-          className="inline-flex h-10 items-center rounded-md border border-border px-4 text-sm"
+          className="glass-panel inline-flex h-10 items-center rounded-full px-4 text-sm"
         >
           View cart
         </Link>

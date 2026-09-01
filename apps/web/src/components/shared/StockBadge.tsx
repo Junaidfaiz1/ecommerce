@@ -26,7 +26,7 @@ export function StockBadge({ inStock, quantity, className }: StockBadgeProps) {
     <span
       className={cn(
         'font-mono text-[11px] tracking-wide uppercase',
-        low ? 'text-amber-400/90' : 'text-emerald-400/80',
+        low ? 'text-accent' : 'text-sage',
         className,
       )}
     >

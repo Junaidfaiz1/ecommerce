@@ -100,3 +100,21 @@ export const productListInputSchema = z
 export type ProductListFilter = z.infer<typeof productListFilterSchema>;
 export type ProductListInput = z.infer<typeof productListInputSchema>;
 export type PaginationInput = z.infer<typeof paginationInputSchema>;
+
+/** Local storefront photo until licensed SKUs are uploaded to R2. */
+export const CATALOG_PLACEHOLDER_IMAGE = '/assets/catalog/product.jpg';
+
+export function isUnusableCatalogImageUrl(
+  url: string | null | undefined,
+): boolean {
+  const value = url?.trim() ?? '';
+  if (!value) return true;
+  return value.includes('placeholder.vorqen.local');
+}
+
+export function resolveCatalogImageUrl(
+  url: string | null | undefined,
+): string {
+  if (isUnusableCatalogImageUrl(url)) return CATALOG_PLACEHOLDER_IMAGE;
+  return url!.trim();
+}

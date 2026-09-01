@@ -118,7 +118,7 @@ export default async function ShopPage({
 
       <form
         method="get"
-        className="mb-10 grid gap-3 border border-border bg-surface/40 p-4 md:grid-cols-6"
+        className="mb-10 grid gap-3 rounded-3xl glass-panel p-4 sm:grid-cols-2 md:grid-cols-6"
       >
         <label className="flex flex-col gap-1.5 text-xs text-muted md:col-span-2">
           Search
@@ -126,7 +126,7 @@ export default async function ShopPage({
             name="q"
             defaultValue={query ?? ''}
             placeholder="Name or slug"
-            className="h-10 rounded-md border border-border bg-background px-3 text-sm text-foreground outline-none focus:border-accent"
+            className="glass-input h-10 rounded-2xl px-3 text-sm text-foreground outline-none focus:border-accent"
           />
         </label>
         <label className="flex flex-col gap-1.5 text-xs text-muted">
@@ -134,7 +134,7 @@ export default async function ShopPage({
           <select
             name="type"
             defaultValue={type ?? ''}
-            className="h-10 rounded-md border border-border bg-background px-3 text-sm text-foreground outline-none focus:border-accent"
+            className="glass-input h-10 rounded-2xl px-3 text-sm text-foreground outline-none focus:border-accent"
           >
             <option value="">All</option>
             {PRODUCT_TYPES.map((t) => (
@@ -149,7 +149,7 @@ export default async function ShopPage({
           <select
             name="brand"
             defaultValue={brandSlug ?? ''}
-            className="h-10 rounded-md border border-border bg-background px-3 text-sm text-foreground outline-none focus:border-accent"
+            className="glass-input h-10 rounded-2xl px-3 text-sm text-foreground outline-none focus:border-accent"
           >
             <option value="">All</option>
             {brands.map((b) => (
@@ -164,7 +164,7 @@ export default async function ShopPage({
           <select
             name="category"
             defaultValue={categorySlug ?? ''}
-            className="h-10 rounded-md border border-border bg-background px-3 text-sm text-foreground outline-none focus:border-accent"
+            className="glass-input h-10 rounded-2xl px-3 text-sm text-foreground outline-none focus:border-accent"
           >
             <option value="">All</option>
             {categories.map((c) => (
@@ -179,7 +179,7 @@ export default async function ShopPage({
           <select
             name="sort"
             defaultValue={sort}
-            className="h-10 rounded-md border border-border bg-background px-3 text-sm text-foreground outline-none focus:border-accent"
+            className="glass-input h-10 rounded-2xl px-3 text-sm text-foreground outline-none focus:border-accent"
           >
             {PRODUCT_SORTS.map((s) => (
               <option key={s} value={s}>
@@ -211,7 +211,7 @@ export default async function ShopPage({
           </label>
           <button
             type="submit"
-            className="ml-auto h-10 rounded-md bg-accent px-4 text-sm font-medium text-background transition-opacity hover:opacity-90"
+          className="glass-btn ml-auto h-10 rounded-2xl px-4 text-sm font-medium"
           >
             Apply
           </button>

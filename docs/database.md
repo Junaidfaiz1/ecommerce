@@ -127,6 +127,8 @@ Relations: addresses, builds, cart, wishlist, orders, reviews, couponUsages, not
 
 Relations: variants, images, assets3d, reviews, cpu/gpu/motherboard/ram/storage/psu/pcCase/cooler, buildItems, bundleItems.
 
+Indexes (Phase 18): `(type, status)`, `(status, isFeatured)`, `(status, createdAt)`.
+
 ### ProductVariant (`product_variants`)
 
 | Field | Type | Notes |
@@ -140,9 +142,13 @@ Relations: variants, images, assets3d, reviews, cpu/gpu/motherboard/ram/storage/
 | isDefault, isActive | Boolean | |
 | weightGrams | Int? | |
 
+Index (Phase 18): `(isDefault, isActive, price)` for shop price sort.
+
 ### ProductImage (`product_images`)
 
 `productId`, `url`, `alt?`, `sortOrder`, `isPrimary`
+
+Index (Phase 18): `(productId, isPrimary)` for list-card image take(1).
 
 ### Product3DAsset (`product_3d_assets`)
 
@@ -328,7 +334,7 @@ Admin mutations write rows for catalog, order status, refunds, inventory adjust,
 | Item | Detail |
 |------|--------|
 | Users | `admin@vorqen.local` (ADMIN), `builder@vorqen.local` (CUSTOMER) — password `Password123!` |
-| Catalog | Brands, categories, CPU/GPU/MB/RAM/Storage/PSU/Case/Cooler SKUs + inventory |
+| Catalog | Brands, categories, CPU/GPU/MB/RAM/Storage/PSU/Case/Cooler SKUs + inventory; shared `/assets/catalog/product.jpg` until R2 SKUs exist |
 | Compatible build | AM5 + DDR5 + 4080 SUPER + Meshify 2 + 850W (`am5-1440p-compatible`) |
 | Incompatible builds | DDR4/ITX/undersized PSU stress build; Intel CPU on AM5 board |
 | Rules | Seeded CompatibilityRule codes for Phase 6 engine |

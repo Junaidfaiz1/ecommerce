@@ -1,13 +1,16 @@
 @import 'tailwindcss';
 
 @theme inline {
-  --color-background: #070707;
-  --color-surface: #101010;
-  --color-elevated: #171717;
-  --color-foreground: #f5f5f5;
-  --color-muted: #8a8a8a;
-  --color-border: #252525;
-  --color-accent: #6d7cff;
+  --color-background: #08091a;
+  --color-surface: #12162c;
+  --color-elevated: #1b2140;
+  --color-foreground: #f4f7ff;
+  --color-muted: #b8c0e0;
+  --color-border: rgb(255 255 255 / 0.16);
+  --color-accent: #ff5c8a;
+  --color-ink: #08091a;
+  --color-cream: #f4f7ff;
+  --color-sage: #7ae0ff;
   --font-sans: var(--font-sans);
   --font-display: var(--font-display);
   --font-mono: var(--font-mono);
@@ -17,16 +20,155 @@
   border-color: var(--color-border);
 }
 
+html {
+  color-scheme: dark;
+}
+
 body {
-  background: var(--color-background);
+  background-color: #08091a;
   color: var(--color-foreground);
   font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+::selection {
+  background: rgb(255 92 138 / 0.45);
+  color: #fff;
+}
+
+.aura-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.orb {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(80px);
+  opacity: 0.72;
+  will-change: transform;
+}
+
+.orb-a {
+  width: 42vw;
+  height: 42vw;
+  min-width: 280px;
+  min-height: 280px;
+  top: -12%;
+  left: -8%;
+  background: radial-gradient(circle, #ff5c8a 0%, #7c3aed 55%, transparent 70%);
+  animation: orb-drift 18s ease-in-out infinite;
+}
+
+.orb-b {
+  width: 38vw;
+  height: 38vw;
+  min-width: 240px;
+  min-height: 240px;
+  top: 8%;
+  right: -10%;
+  background: radial-gradient(circle, #7ae0ff 0%, #2563eb 50%, transparent 70%);
+  animation: orb-drift 22s ease-in-out infinite reverse;
+}
+
+.orb-c {
+  width: 34vw;
+  height: 34vw;
+  min-width: 220px;
+  min-height: 220px;
+  bottom: -12%;
+  left: 28%;
+  background: radial-gradient(circle, #ffb347 0%, #ff5c8a 45%, transparent 70%);
+  animation: orb-drift 26s ease-in-out infinite;
+}
+
+@keyframes orb-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(4%, 6%, 0) scale(1.08);
+  }
+}
+
+.glass-panel {
+  background: rgb(255 255 255 / 0.08);
+  backdrop-filter: blur(28px) saturate(1.45);
+  -webkit-backdrop-filter: blur(28px) saturate(1.45);
+  border: 1px solid rgb(255 255 255 / 0.18);
+  box-shadow:
+    0 24px 80px rgb(0 0 0 / 0.35),
+    inset 0 1px 0 rgb(255 255 255 / 0.12);
+}
+
+.glass-nav {
+  background: rgb(8 9 26 / 0.42);
+  backdrop-filter: blur(28px) saturate(1.6);
+  -webkit-backdrop-filter: blur(28px) saturate(1.6);
+  border: 1px solid rgb(255 255 255 / 0.16);
+  box-shadow: 0 12px 40px rgb(0 0 0 / 0.28);
+}
+
+.glass-dark {
+  background: rgb(8 9 26 / 0.55);
+  backdrop-filter: blur(28px) saturate(1.4);
+  -webkit-backdrop-filter: blur(28px) saturate(1.4);
+  border-top: 1px solid rgb(255 255 255 / 0.12);
+}
+
+.glass-btn {
+  background: linear-gradient(135deg, #ff8a4c 0%, #ff5c8a 52%, #c026d3 100%);
+  border: 1px solid rgb(255 255 255 / 0.22);
+  color: #fff;
+  box-shadow: 0 10px 28px rgb(255 92 138 / 0.35);
+}
+
+.glass-btn:hover {
+  filter: brightness(1.08);
+}
+
+.glass-btn-dark {
+  background: rgb(8 9 26 / 0.88);
+  border: 1px solid rgb(255 255 255 / 0.14);
+  color: #f4f7ff;
+}
+
+.glass-btn-dark:hover {
+  background: rgb(0 0 0 / 0.92);
+}
+
+.glass-input {
+  background: rgb(255 255 255 / 0.08);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgb(255 255 255 / 0.16);
+  color: #f4f7ff;
+}
+
+.glass-input::placeholder {
+  color: rgb(244 247 255 / 0.45);
+}
+
+.hero-stage {
+  background: linear-gradient(
+    160deg,
+    rgb(18 22 48 / 0.72) 0%,
+    rgb(8 9 26 / 0.5) 55%,
+    rgb(124 58 237 / 0.22) 100%
+  );
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgb(255 255 255 / 0.14);
+  box-shadow: 0 30px 80px rgb(0 0 0 / 0.4);
 }
 
 @keyframes fade-up {
   from {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(16px);
   }
   to {
     opacity: 1;
@@ -35,7 +177,7 @@ body {
 }
 
 .animate-fade-up {
-  animation: fade-up 0.7s ease-out both;
+  animation: fade-up 0.75s ease-out both;
 }
 
 .animate-fade-up:nth-child(1) {
@@ -49,4 +191,15 @@ body {
 }
 .animate-fade-up:nth-child(4) {
   animation-delay: 0.28s;
+}
+
+.theme-wash {
+  background: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orb,
+  .animate-fade-up {
+    animation: none;
+  }
 }

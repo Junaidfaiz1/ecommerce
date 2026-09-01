@@ -13,6 +13,7 @@ import {
   ValidationError,
 } from '../common/errors';
 import { checkCompatibility } from '../compatibility/compatibility.service';
+import { catalogPhotoPath } from '../catalog/image-url';
 import { priceBuildComponents, type BuildPriceResult } from './pricing';
 
 const buildInclude = {
@@ -89,7 +90,11 @@ function mapBuild(row: BuildRow): MappedBuild {
       productName: item.product.name,
       productSlug: item.product.slug,
       brandName: item.product.brand.name,
-      imageUrl: item.product.images[0]?.url ?? null,
+      imageUrl: catalogPhotoPath(
+        item.product.type,
+        item.product.slug,
+        item.product.images[0]?.url,
+      ),
       unitPrice: item.variant ? item.variant.price.toFixed(2) : null,
     })),
   };

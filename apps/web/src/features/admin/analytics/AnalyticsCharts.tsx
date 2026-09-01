@@ -12,15 +12,17 @@ import {
   YAxis,
 } from 'recharts';
 
-const GRID = '#252525';
-const TICK = '#8a8a8a';
-const ACCENT = '#6d7cff';
+import { THEME } from '@/theme/palette';
+
+const GRID = THEME.sage;
+const TICK = THEME.clay;
+const ACCENT = THEME.clay;
 const TOOLTIP_STYLE = {
-  background: '#101010',
-  border: '1px solid #252525',
+  background: THEME.cream,
+  border: `1px solid ${THEME.sage}`,
   borderRadius: 0,
   fontSize: 12,
-  color: '#f5f5f5',
+  color: THEME.ink,
 };
 
 function shortDay(day: string): string {

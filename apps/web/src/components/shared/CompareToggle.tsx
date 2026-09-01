@@ -48,7 +48,7 @@ export function CompareTray() {
   const href = `/compare?ids=${ids.join(',')}`;
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-surface/95 px-4 py-3 backdrop-blur md:px-8">
+    <div className="fixed inset-x-3 bottom-3 z-40 rounded-3xl glass-nav px-4 py-3 md:inset-x-6 md:px-6">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4">
         <p className="text-sm text-muted">
           <span className="font-medium text-foreground">{ids.length}</span> selected
@@ -60,7 +60,7 @@ export function CompareTray() {
           </Button>
           <Link
             href={href}
-            className="inline-flex h-8 items-center justify-center rounded-md bg-accent px-3 text-xs font-medium text-background transition-opacity hover:opacity-90"
+            className="glass-btn inline-flex h-8 items-center justify-center rounded-full px-3 text-xs font-medium"
           >
             Open compare
           </Link>

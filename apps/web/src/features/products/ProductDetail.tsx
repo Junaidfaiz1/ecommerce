@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { IMAGE_SIZES, productJsonLd } from '@vorqen/types';
+import { CATALOG_PLACEHOLDER_IMAGE, IMAGE_SIZES, productJsonLd } from '@vorqen/types';
 import type { CatalogProduct } from '@/server/catalog/catalog.mappers';
 import { prisma } from '@/server/common/prisma';
 import { getProductBySlug } from '@/server/catalog/catalog.service';
@@ -49,7 +49,10 @@ export async function productMetadata(
   const path = productHref(product);
   const description =
     product.description ?? `${product.brand.name} ${product.name}`;
-  const image = product.images.find((i) => i.isPrimary)?.url ?? product.images[0]?.url;
+  const image =
+    product.images.find((i) => i.isPrimary)?.url ??
+    product.images[0]?.url ??
+    CATALOG_PLACEHOLDER_IMAGE;
   return publicPageMetadata({
     title: product.name,
     description,
@@ -88,7 +91,7 @@ export async function ProductDetailView({ slug, expectedType }: Props) {
           description:
             product.description ?? `${product.brand.name} ${product.name}`,
           brandName: product.brand.name,
-          imageUrl: primary?.url,
+          imageUrl: primary?.url ?? CATALOG_PLACEHOLDER_IMAGE,
           sku: variant?.sku,
           price: variant?.price,
           currency: variant?.currency,
@@ -108,43 +111,36 @@ export async function ProductDetailView({ slug, expectedType }: Props) {
       </nav>
 
       <div className="grid gap-10 lg:grid-cols-2">
-        <div>
+        <div className="space-y-4">
           {viewerAsset ? (
-            <Product3DViewer
-              className="w-full overflow-hidden"
-              glbUrl={viewerAsset.glbUrl}
-              label={viewerAsset.label}
-            />
-          ) : (
-            <div className="relative aspect-[4/3] overflow-hidden border border-border bg-elevated">
-              {primary?.url ? (
-                <CatalogImage
-                  src={primary.url}
-                  alt={primary.alt ?? product.name}
-                  sizes={IMAGE_SIZES.productGallery}
-                  priority
-                />
-              ) : (
-                <div className="flex h-full items-center justify-center font-mono text-xs text-muted">
-                  No preview
-                </div>
-              )}
+            <div className="glass-panel overflow-hidden rounded-3xl">
+              <Product3DViewer
+                className="w-full"
+                glbUrl={viewerAsset.glbUrl}
+                label={viewerAsset.label}
+              />
             </div>
-          )}
-          {images.length > 0 ? (
-            <div className="mt-3 flex gap-2 overflow-x-auto">
+          ) : null}
+          <div className="relative aspect-[4/3] overflow-hidden rounded-3xl glass-panel">
+            <CatalogImage
+              src={primary?.url ?? CATALOG_PLACEHOLDER_IMAGE}
+              alt={primary?.alt ?? product.name}
+              sizes={IMAGE_SIZES.productGallery}
+              priority
+            />
+          </div>
+          {images.length > 1 ? (
+            <div className="flex gap-2 overflow-x-auto pb-1">
               {images.map((img) => (
                 <div
                   key={img.id}
-                  className="relative h-16 w-20 shrink-0 overflow-hidden border border-border bg-surface"
+                  className="relative h-16 w-20 shrink-0 overflow-hidden rounded-xl glass-panel"
                 >
-                  {img.url ? (
-                    <CatalogImage
-                      src={img.url}
-                      alt={img.alt ?? ''}
-                      sizes={IMAGE_SIZES.productThumb}
-                    />
-                  ) : null}
+                  <CatalogImage
+                    src={img.url}
+                    alt={img.alt ?? ''}
+                    sizes={IMAGE_SIZES.productThumb}
+                  />
                 </div>
               ))}
             </div>
@@ -152,6 +148,7 @@ export async function ProductDetailView({ slug, expectedType }: Props) {
         </div>
 
         <div>
+          <div className="rounded-3xl glass-panel p-5 sm:p-6">
           <p className="font-mono text-[11px] tracking-[0.18em] text-muted uppercase">
             {product.brand.name} · {product.type}
           </p>
@@ -207,7 +204,7 @@ export async function ProductDetailView({ slug, expectedType }: Props) {
             <CompareToggle productId={product.id} />
             <Link
               href={`/build`}
-              className="inline-flex h-8 items-center rounded-md border border-border bg-surface px-3 text-xs font-medium transition-colors hover:bg-elevated"
+              className="glass-panel inline-flex h-8 items-center rounded-2xl px-3 text-xs font-medium"
             >
               Open Builder
             </Link>
@@ -236,17 +233,18 @@ export async function ProductDetailView({ slug, expectedType }: Props) {
               </ul>
             </div>
           ) : null}
+          </div>
         </div>
       </div>
 
-      <section className="mt-14">
+      <section className="mt-14 rounded-[2rem] glass-panel p-5 sm:p-6">
         <h2 className="font-display text-2xl tracking-tight">Specifications</h2>
         <div className="mt-4">
           <SpecTable product={product} />
         </div>
       </section>
 
-      <section className="mt-14">
+      <section className="mt-8 rounded-[2rem] glass-panel p-5 sm:p-6">
         <h2 className="font-display text-2xl tracking-tight">Reviews</h2>
         {reviews ? (
           <ProductReviewsPanel

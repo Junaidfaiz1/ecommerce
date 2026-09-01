@@ -84,19 +84,20 @@ export function resolveThreeDBudget(
   };
 }
 
+function hostnameFromUrl(url: string): string | null {
+  const match = /^https?:\/\/([^/?#]+)/i.exec(url.trim());
+  return match?.[1]?.split('@').pop()?.toLowerCase() ?? null;
+}
+
 /** Next/Image optimizer allowlist — unknown hosts stay `unoptimized`. */
 export function shouldOptimizeRemoteImage(url: string): boolean {
-  try {
-    const { hostname, protocol } = new URL(url);
-    if (protocol !== 'https:' && protocol !== 'http:') return false;
-    if (hostname === 'placeholder.vorqen.local' || hostname === 'localhost') {
-      return false;
-    }
-    if (OPTIMIZED_IMAGE_HOSTS.has(hostname)) return true;
-    return OPTIMIZED_IMAGE_HOST_SUFFIXES.some((suffix) =>
-      hostname.endsWith(suffix),
-    );
-  } catch {
+  const hostname = hostnameFromUrl(url);
+  if (!hostname) return false;
+  if (hostname === 'placeholder.vorqen.local' || hostname === 'localhost') {
     return false;
   }
+  if (OPTIMIZED_IMAGE_HOSTS.has(hostname)) return true;
+  return OPTIMIZED_IMAGE_HOST_SUFFIXES.some((suffix) =>
+    hostname.endsWith(suffix),
+  );
 }

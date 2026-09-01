@@ -9,8 +9,8 @@ export function createLazyCanvas<P extends object>(
   return dynamic(loader, {
     ssr: false,
     loading: () => (
-      <div className="flex h-full min-h-[220px] w-full items-center justify-center bg-[#0a0b0d]">
-        <p className="font-mono text-[10px] tracking-widest text-muted uppercase">
+      <div className="flex h-full min-h-[220px] w-full items-center justify-center bg-ink">
+        <p className="font-mono text-[10px] tracking-widest text-sage uppercase">
           Loading 3D…
         </p>
       </div>

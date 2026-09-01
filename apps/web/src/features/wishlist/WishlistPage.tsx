@@ -10,8 +10,9 @@ import { graphqlRequest, GraphQLClientError } from '@/lib/graphql-client';
 import { getErrorMessage } from '@/lib/errors';
 import { productHref } from '@/features/products/product-path';
 import type { ProductType } from '@vorqen/types';
-import { IMAGE_SIZES } from '@vorqen/types';
+import { CATALOG_PLACEHOLDER_IMAGE, IMAGE_SIZES } from '@vorqen/types';
 import { CatalogImage } from '@/components/shared/CatalogImage';
+import { loginHref } from '@/lib/auth-redirect';
 import { syncCartUi } from '@/features/cart/sync';
 import {
   MOVE_WISHLIST_TO_CART,
@@ -119,8 +120,8 @@ export function WishlistPage() {
           description="Saved parts sync across devices once you’re authenticated."
           action={
             <Link
-              href="/login"
-              className="inline-flex h-10 items-center rounded-md bg-accent px-4 text-sm font-medium text-background"
+              href={loginHref('/wishlist')}
+              className="glass-btn inline-flex h-10 items-center rounded-2xl px-4 text-sm font-medium"
             >
               Sign in
             </Link>
@@ -161,7 +162,7 @@ export function WishlistPage() {
           action={
             <Link
               href="/shop"
-              className="inline-flex h-10 items-center rounded-md bg-accent px-4 text-sm font-medium text-background"
+              className="glass-btn inline-flex h-10 items-center rounded-2xl px-4 text-sm font-medium"
             >
               Browse shop
             </Link>
@@ -181,15 +182,13 @@ export function WishlistPage() {
               >
                 <Link
                   href={href}
-                  className="relative block aspect-[4/3] w-full shrink-0 overflow-hidden bg-elevated sm:w-28"
+                  className="relative block aspect-[4/3] w-full shrink-0 overflow-hidden rounded-2xl glass-panel sm:w-28"
                 >
-                  {item.product.imageUrl ? (
-                    <CatalogImage
-                      src={item.product.imageUrl}
-                      alt={item.product.name}
-                      sizes={IMAGE_SIZES.wishlistThumb}
-                    />
-                  ) : null}
+                  <CatalogImage
+                    src={item.product.imageUrl ?? CATALOG_PLACEHOLDER_IMAGE}
+                    alt={item.product.name}
+                    sizes={IMAGE_SIZES.wishlistThumb}
+                  />
                 </Link>
                 <div className="min-w-0 flex-1">
                   <p className="font-mono text-[10px] tracking-[0.16em] text-muted uppercase">

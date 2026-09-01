@@ -50,8 +50,8 @@ export function BuilderShell() {
                 onClick={() => useBuilderStore.getState().setStep(s)}
                 className={
                   s === step
-                    ? 'shrink-0 rounded-md bg-elevated px-3 py-1.5 text-xs text-foreground'
-                    : 'shrink-0 rounded-md px-3 py-1.5 text-xs text-muted'
+                    ? 'shrink-0 rounded-2xl glass-btn px-3 py-1.5 text-xs'
+                    : 'shrink-0 rounded-2xl glass-panel px-3 py-1.5 text-xs text-muted'
                 }
               >
                 {slotLabel(s)}
@@ -90,7 +90,7 @@ export function BuilderShell() {
             <button
               type="button"
               onClick={nextStep}
-              className="rounded-md border border-border bg-elevated px-4 py-2 text-sm hover:border-muted"
+              className="glass-btn rounded-2xl px-4 py-2 text-sm"
             >
               {step === 'REVIEW' ? 'Done' : 'Continue'}
             </button>

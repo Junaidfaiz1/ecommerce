@@ -6,7 +6,7 @@ Premium gaming hardware marketplace with PC Builder, compatibility engine, perfo
 
 ## Status
 
-**Phase 17 complete** — critical-path tests (compat, cart, inventory, webhook, auth, orders). Next: Phase 18 (Performance). See [`PROGRESS.md`](./PROGRESS.md).
+**Phase 18 complete** — 3D budgets, catalog query pass, `next/image`. Next: Phase 19 (Deployment). See [`PROGRESS.md`](./PROGRESS.md).
 
 ## Monorepo layout
 
@@ -62,7 +62,7 @@ pnpm format
 
 ## Environment
 
-See [`.env.example`](./.env.example) and [`docs/tech-stack.md`](./docs/tech-stack.md).
+Keep a single `.env` at the **repo root** (see [`.env.example`](./.env.example) and [`docs/tech-stack.md`](./docs/tech-stack.md)). Next.js loads it via `loadRootEnv()` — do not duplicate secrets under `apps/web`.
 
 ## Documentation
 

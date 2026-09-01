@@ -17,7 +17,7 @@ export function EmptyState({
   return (
     <div
       className={cn(
-        'flex flex-col items-start gap-3 border border-dashed border-border bg-surface/40 px-6 py-10',
+        'flex flex-col items-start gap-3 rounded-3xl glass-panel px-6 py-10',
         className,
       )}
     >
@@ -48,7 +48,7 @@ export function ErrorState({
   return (
     <div
       className={cn(
-        'flex flex-col items-start gap-3 border border-border bg-surface px-6 py-8',
+        'flex flex-col items-start gap-3 rounded-3xl glass-panel px-6 py-8',
         className,
       )}
       role="alert"

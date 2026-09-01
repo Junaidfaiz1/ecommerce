@@ -23,7 +23,7 @@ export function BuilderViewport() {
 
   return (
     <BuilderPcViewer
-      className="min-h-[280px] flex-1 rounded-lg lg:min-h-[420px]"
+      className="min-h-[240px] flex-1 overflow-hidden rounded-3xl glass-panel sm:min-h-[280px] lg:min-h-[420px]"
       highlight={highlight}
       filled={filled}
     />

@@ -153,7 +153,7 @@ export function ProductReviewsPanel({ productId, initial, className }: Props) {
           />
         </label>
         {error ? <p className="text-sm text-red-400">{error}</p> : null}
-        {notice ? <p className="text-sm text-emerald-400/90">{notice}</p> : null}
+        {notice ? <p className="text-sm text-ink">{notice}</p> : null}
         <Button type="submit" disabled={pending}>
           {pending ? 'Submitting…' : 'Submit review'}
         </Button>

@@ -173,9 +173,15 @@ async function main() {
         isFeatured: true,
         images: {
           create: {
-            url: `https://placeholder.vorqen.local/${input.slug}.jpg`,
+            url: `/assets/catalog/${input.slug}.jpg`,
             alt: input.name,
             isPrimary: true,
+          },
+        },
+        threeDAssets: {
+          create: {
+            glbUrl: `procedural://${input.type.toLowerCase()}`,
+            label: `${input.name} 3D`,
           },
         },
         variants: {
@@ -506,7 +512,7 @@ async function main() {
     data: {
       name: 'Cyberpunk 2077',
       slug: 'cyberpunk-2077',
-      coverUrl: 'https://placeholder.vorqen.local/games/cyberpunk.jpg',
+      coverUrl: '/assets/catalog/product.jpg',
     },
   });
 

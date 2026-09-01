@@ -5,6 +5,7 @@ import { useRef, type ReactNode } from 'react';
 import type { Group } from 'three';
 import type { ComponentSlot } from '@vorqen/types';
 import { useThreeDBudgetValue } from '@/components/3d/useThreeDBudget';
+import { THEME } from '@/theme/palette';
 import {
   SLOT_COLORS,
   SLOT_EXPLODE,
@@ -90,7 +91,7 @@ function partTone(
   return {
     color: SLOT_COLORS[slot],
     opacity: isFilled ? 1 : 0.2,
-    emissive: isHighlight ? '#6d7cff' : '#000000',
+    emissive: isHighlight ? THEME.sage : '#000000',
     emissiveIntensity: isHighlight ? 0.5 : 0,
   };
 }

@@ -14,6 +14,7 @@ import type {
   StorageDrive,
   Inventory,
 } from '@/generated/prisma/client';
+import { catalogPhotoPath, toPublicCatalogImageUrl } from './image-url';
 
 type DecimalLike = { toFixed: (digits?: number) => string; toNumber: () => number };
 
@@ -73,7 +74,7 @@ export function mapCategory(category: Category) {
 export function mapImage(image: ProductImage) {
   return {
     id: image.id,
-    url: image.url,
+    url: toPublicCatalogImageUrl(image.url),
     alt: image.alt,
     sortOrder: image.sortOrder,
     isPrimary: image.isPrimary,
@@ -224,7 +225,10 @@ export function mapProduct(
     category: mapCategory(product.category),
     images: [...product.images]
       .sort((a, b) => a.sortOrder - b.sortOrder)
-      .map(mapImage),
+      .map((image) => ({
+        ...mapImage(image),
+        url: catalogPhotoPath(product.type, product.slug, image.url),
+      })),
     variants,
     defaultVariant,
     cpu: product.cpu ? mapCpu(product.cpu) : null,

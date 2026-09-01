@@ -4,23 +4,38 @@
 
 - **Name:** VORQEN  
 - **Tagline:** Build Beyond Limits.  
-- **Feel:** Premium hardware laboratory + automotive configurator + modern gaming tech  
+- **Feel:** Night laboratory glass — deep navy canvas, frost panels, cyan + magenta light.  
 
-**Not:** neon RGB gamer template, excessive glow, cheap glassmorphism.
+**Not:** neon RGB gamer template, earth-tone vintage, or a flat “simple” catalog.
+
+## Surfaces
+
+Storefront and auth use **frosted glassmorphism** over drifting color orbs:
+
+- `.glass-panel` — cards, filters, PDP buy column
+- `.glass-nav` — floating pill navbar
+- `.hero-stage` — rounded homepage hero
+- `.glass-btn` — orange→magenta gradient CTAs
+- `.glass-input` — translucent fields
+
+Auth uses a two-column shell (`AuthShell`): brand story + glass form.
 
 ## Color tokens
 
 | Token | Value | Usage |
 |-------|-------|--------|
-| `--bg` | `#070707` | Page background |
-| `--surface` | `#101010` | Panels |
-| `--elevated` | `#171717` | Raised surfaces |
-| `--text` | `#F5F5F5` | Primary text |
-| `--muted` | `#8A8A8A` | Secondary text |
-| `--border` | `#252525` | Borders / dividers |
-| `--accent` | Electric violet / cool blue | Sparse CTAs, focus, key highlights |
+| `--background` | `#08091A` | Page canvas |
+| `--surface` | `#12162C` | Solid fallback panels |
+| `--elevated` | `#1B2140` | Admin rail / raised |
+| `--foreground` / cream | `#F4F7FF` | Primary text |
+| `--muted` | `#B8C0E0` | Secondary text |
+| `--border` | `white / 16%` | Hairline glass edges |
+| `--accent` | `#FF5C8A` | Magenta highlight / CTA |
+| `--ink` | `#08091A` | Dark fill, 3D studio |
+| `--cream` | `#F4F7FF` | Text on dark |
+| `--sage` | `#7AE0FF` | Cyan glow, eyebrows |
 
-Accent must be **rare** — status, primary CTA, focus rings — not wallpaper.
+Accent stays **sparse** — status, primary CTA, focus rings.
 
 ## Typography
 
@@ -43,7 +58,7 @@ Large editorial type is encouraged; keep contrast and line-length readable.
 1. First viewport = one composition (brand, one headline, one subline, CTA group, dominant visual).
 2. Sections: one job, one headline, short support text.
 3. Cards only when they contain interaction; avoid card soup.
-4. Admin ≠ storefront. Admin is a dense, professional ops UI.
+4. Admin ≠ storefront. Admin uses a navy rail; the storefront is night glass with orbs.
 
 ## Key surfaces
 
@@ -99,13 +114,13 @@ Do not merely shrink desktop layouts.
 
 - Excessive neon / rainbow gradients  
 - Huge glowing text everywhere  
-- Purple-on-white / cream-serif AI clichés  
+- Electric violet / cool-blue gamer accents  
 - Generic dashboard card grids on marketing pages  
 - Overlays/stickers on hero media  
 
 ## Implementation notes
 
-- Define CSS variables early (Phase 1 / 8).  
+- Tokens live in `apps/web/src/app/globals.css`; hex constants in `apps/web/src/theme/palette.ts`.  
 - shadcn/ui themed to the palette above.  
 - Prefer `next/image` for 2D assets; lazy 3D only where needed.
 - **Reuse UI** — see [`components.md`](./components.md). Prefer shared components over page-local duplicates.

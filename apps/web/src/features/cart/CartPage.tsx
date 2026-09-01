@@ -12,7 +12,7 @@ import { graphqlRequest } from '@/lib/graphql-client';
 import { getErrorMessage } from '@/lib/errors';
 import { productHref } from '@/features/products/product-path';
 import type { ProductType } from '@vorqen/types';
-import { CART_MAX_LINE_QUANTITY, IMAGE_SIZES } from '@vorqen/types';
+import { CART_MAX_LINE_QUANTITY, CATALOG_PLACEHOLDER_IMAGE, IMAGE_SIZES } from '@vorqen/types';
 import {
   APPLY_COUPON,
   CART_QUERY,
@@ -163,13 +163,13 @@ export function CartPage() {
             <div className="flex flex-wrap gap-3">
               <Link
                 href="/shop"
-                className="inline-flex h-10 items-center rounded-md bg-accent px-4 text-sm font-medium text-background"
+                className="glass-btn inline-flex h-10 items-center rounded-2xl px-4 text-sm font-medium"
               >
                 Shop hardware
               </Link>
               <Link
                 href="/build"
-                className="inline-flex h-10 items-center rounded-md border border-border px-4 text-sm"
+                className="glass-panel inline-flex h-10 items-center rounded-2xl px-4 text-sm"
               >
                 Open Builder
               </Link>
@@ -208,19 +208,13 @@ export function CartPage() {
                   >
                     <Link
                       href={href}
-                      className="relative block aspect-[4/3] w-full shrink-0 overflow-hidden bg-elevated sm:w-36"
+                      className="relative block aspect-[4/3] w-full shrink-0 overflow-hidden rounded-2xl glass-panel sm:w-36"
                     >
-                      {line.product.imageUrl ? (
-                        <CatalogImage
-                          src={line.product.imageUrl}
-                          alt={line.product.name}
-                          sizes={IMAGE_SIZES.cartThumb}
-                        />
-                      ) : (
-                        <div className="flex h-full items-center justify-center font-mono text-[10px] text-muted">
-                          No image
-                        </div>
-                      )}
+                      <CatalogImage
+                        src={line.product.imageUrl ?? CATALOG_PLACEHOLDER_IMAGE}
+                        alt={line.product.name}
+                        sizes={IMAGE_SIZES.cartThumb}
+                      />
                     </Link>
                     <div className="flex min-w-0 flex-1 flex-col gap-2">
                       <p className="font-mono text-[10px] tracking-[0.16em] text-muted uppercase">
@@ -275,7 +269,7 @@ export function CartPage() {
             </ul>
           </section>
 
-          <aside className="h-fit border border-border bg-surface p-6">
+          <aside className="h-fit rounded-3xl glass-panel p-6">
             <h2 className="font-display text-xl tracking-tight">Summary</h2>
             <dl className="mt-6 space-y-3 text-sm">
               <div className="flex justify-between gap-4">
@@ -333,7 +327,7 @@ export function CartPage() {
                     value={couponInput}
                     onChange={(e) => setCouponInput(e.target.value)}
                     placeholder="BUILD10"
-                    className="h-10 flex-1 border border-border bg-background px-3 font-mono text-sm uppercase outline-none focus:border-accent"
+                    className="glass-input h-10 flex-1 rounded-2xl px-3 font-mono text-sm uppercase outline-none focus:border-accent"
                     disabled={pending}
                   />
                   <Button type="submit" variant="outline" disabled={pending}>
@@ -363,7 +357,7 @@ export function CartPage() {
             ) : (
               <Link
                 href="/checkout"
-                className="mt-8 inline-flex h-10 w-full items-center justify-center rounded-md bg-accent px-4 text-sm font-medium text-background"
+                className="glass-btn mt-8 inline-flex h-10 w-full items-center justify-center rounded-2xl px-4 text-sm font-medium"
               >
                 Checkout
               </Link>

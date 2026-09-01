@@ -45,7 +45,23 @@ _None._
 
 ## Fixed
 
-_None._
+### BUG-002 — Catalog product images did not load
+- **Status:** fixed
+- **Severity:** P1
+- **Phase / area:** storefront / catalog
+- **Repro:** Open `/` or `/shop` after seed
+- **Expected:** Product cards show a photo
+- **Actual:** Seed stored `https://placeholder.vorqen.local/…` which does not resolve
+- **Notes:** Shared local asset `/assets/catalog/product.jpg`; mapper rewrites the fake host. Re-seed optional.
+
+### BUG-001 — Next.js did not load repo-root `DATABASE_URL`
+- **Status:** fixed
+- **Severity:** P0
+- **Phase / area:** local run / Prisma
+- **Repro:** `.env` at repo root; `pnpm dev` from monorepo; open `/`
+- **Expected:** Prisma connects with root `DATABASE_URL`
+- **Actual:** `DATABASE_URL is not set` from `apps/web/src/server/common/prisma.ts`
+- **Notes:** Next.js only auto-loads `apps/web/.env`. `loadRootEnv()` now loads the repo-root file from `next.config.ts` and Prisma. Restart `pnpm dev` after changing `.env`.
 
 ---
 

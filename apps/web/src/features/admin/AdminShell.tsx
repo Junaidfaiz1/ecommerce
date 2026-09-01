@@ -48,13 +48,13 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
   }, [router]);
 
   return (
-    <div className="flex min-h-screen bg-[#0b0b0c] text-foreground">
-      <aside className="hidden w-56 shrink-0 border-r border-border bg-[#101012] md:flex md:flex-col">
-        <div className="border-b border-border px-4 py-4">
-          <Link href="/admin" className="text-foreground">
+    <div className="flex min-h-screen bg-background text-foreground">
+      <aside className="hidden w-56 shrink-0 border-r border-white/10 bg-elevated text-cream md:flex md:flex-col">
+        <div className="border-b border-sage/40 px-4 py-4">
+          <Link href="/admin" className="text-cream">
             <BrandMark />
           </Link>
-          <p className="mt-2 font-mono text-[10px] tracking-[0.18em] text-muted uppercase">
+          <p className="mt-2 font-mono text-[10px] tracking-[0.18em] text-sage uppercase">
             Operations
           </p>
         </div>
@@ -72,8 +72,8 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
                   className={cn(
                     'rounded px-3 py-2 text-[13px]',
                     active
-                      ? 'bg-elevated text-foreground'
-                      : 'text-muted hover:bg-surface hover:text-foreground',
+                      ? 'bg-accent text-cream'
+                      : 'text-sage hover:bg-accent/25 hover:text-cream',
                   )}
                 >
                   {link.label}
@@ -82,10 +82,10 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
             },
           )}
         </nav>
-        <div className="border-t border-border p-3 text-[11px] text-muted">
+        <div className="border-t border-sage/40 p-3 text-[11px] text-sage">
           <p className="truncate">{email}</p>
           <p className="font-mono uppercase">{role}</p>
-          <Link href="/" className="mt-2 inline-block text-accent">
+          <Link href="/" className="mt-2 inline-block text-cream hover:text-sage">
             Storefront
           </Link>
         </div>

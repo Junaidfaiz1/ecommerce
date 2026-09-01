@@ -6,6 +6,7 @@ import type {
 import type { Prisma, PrismaClient } from '@/generated/prisma/client';
 import { formatMoney } from '@vorqen/types';
 import { NotFoundError, ValidationError } from '../common/errors';
+import { catalogPhotoPath } from '../catalog/image-url';
 import { addCartItem, type CartIdentity, type MappedCart } from '../cart';
 
 const wishlistInclude = {
@@ -86,7 +87,11 @@ function mapWishlist(row: WishlistRow): MappedWishlist {
         slug: product.slug,
         type: product.type,
         brandName: product.brand.name,
-        imageUrl: product.images[0]?.url ?? null,
+        imageUrl: catalogPhotoPath(
+          product.type,
+          product.slug,
+          product.images[0]?.url,
+        ),
       },
       variant: {
         id: variant.id,

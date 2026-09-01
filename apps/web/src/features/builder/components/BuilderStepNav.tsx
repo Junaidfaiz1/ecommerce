@@ -18,7 +18,7 @@ export function BuilderStepNav({ className }: Props) {
   return (
     <nav
       aria-label="Builder steps"
-      className={cn('flex flex-col gap-1', className)}
+      className={cn('flex flex-col gap-1 rounded-3xl glass-panel p-3', className)}
     >
       <p className="mb-3 font-mono text-[11px] uppercase tracking-[0.2em] text-muted">
         Components
@@ -36,10 +36,10 @@ export function BuilderStepNav({ className }: Props) {
                 type="button"
                 onClick={() => setStep(s as BuilderStep)}
                 className={cn(
-                  'flex w-full items-center justify-between rounded-md px-3 py-2.5 text-left text-sm transition-colors',
+                  'flex w-full items-center justify-between rounded-2xl px-3 py-2.5 text-left text-sm transition-colors',
                   active
-                    ? 'bg-elevated text-foreground'
-                    : 'text-muted hover:bg-elevated/60 hover:text-foreground',
+                    ? 'glass-btn text-cream'
+                    : 'glass-panel text-muted hover:bg-white/50 hover:text-foreground',
                 )}
               >
                 <span>{slotLabel(s)}</span>

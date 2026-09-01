@@ -1,7 +1,12 @@
-import type { NextConfig, RemotePattern } from 'next';
+import type { NextConfig } from 'next';
+import { loadRootEnv } from './src/server/common/load-root-env';
 import { SECURITY_HEADERS } from './src/server/security/headers';
 
-function r2ImagePattern(): RemotePattern[] {
+loadRootEnv();
+
+function r2ImagePattern(): NonNullable<
+  NonNullable<NextConfig['images']>['remotePatterns']
+> {
   const raw = process.env.R2_PUBLIC_URL?.trim();
   if (!raw) return [];
   try {
