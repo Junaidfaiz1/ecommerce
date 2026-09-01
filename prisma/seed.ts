@@ -516,16 +516,36 @@ async function main() {
     },
   });
 
-  await prisma.benchmark.create({
-    data: {
-      gameId: game.id,
-      cpuProductId: cpuAm5.id,
-      gpuProductId: gpu4080.id,
-      resolution: '1440p',
-      quality: 'ULTRA',
-      avgFps: 98.5,
-      source: 'seed-estimate',
-    },
+  await prisma.benchmark.createMany({
+    data: [
+      {
+        gameId: game.id,
+        cpuProductId: cpuAm5.id,
+        gpuProductId: gpu4080.id,
+        resolution: '1080p',
+        quality: 'ULTRA',
+        avgFps: 142,
+        source: 'seed-estimate',
+      },
+      {
+        gameId: game.id,
+        cpuProductId: cpuAm5.id,
+        gpuProductId: gpu4080.id,
+        resolution: '1440p',
+        quality: 'ULTRA',
+        avgFps: 98.5,
+        source: 'seed-estimate',
+      },
+      {
+        gameId: game.id,
+        cpuProductId: cpuAm5.id,
+        gpuProductId: gpu4080.id,
+        resolution: '4K',
+        quality: 'ULTRA',
+        avgFps: 61,
+        source: 'seed-estimate',
+      },
+    ],
   });
 
   const item = (slot: Prisma.PCBuildItemCreateWithoutBuildInput['slot'], p: CreatedProduct) => ({

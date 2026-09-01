@@ -17,12 +17,11 @@ export default function HeroPcCanvas({
   glbUrl = proceduralAssetUrl('pc'),
 }: HeroPcCanvasProps) {
   const [explode, setExplode] = useState(false);
-  const [autoRotate, setAutoRotate] = useState(true);
   const explodeAmount = useExplodeAmount(explode);
 
   const demo =
     isProceduralAssetUrl(glbUrl) || !/^https?:\/\//i.test(glbUrl)
-      ? 'Demo chassis'
+      ? 'Studio preview'
       : null;
 
   return (
@@ -31,12 +30,10 @@ export default function HeroPcCanvas({
       demoLabel={demo}
       explode={explode}
       onExplodeChange={setExplode}
-      autoRotate={autoRotate}
-      onAutoRotateChange={setAutoRotate}
     >
       <div className="h-full min-h-[280px] w-full">
-        <SceneCanvas autoRotate={autoRotate} cameraPosition={[2.4, 1.5, 2.8]}>
-          <group position={[0, -0.15, 0]} scale={0.95}>
+        <SceneCanvas autoRotate cameraPosition={[2.55, 1.15, 2.7]}>
+          <group position={[0, 0.08, 0]} rotation={[0, 0.42, 0]} scale={0.9}>
             <AssetModel
               glbUrl={glbUrl}
               explode={explodeAmount}

@@ -6,27 +6,28 @@ export type ViewerMode = 'hero' | 'builder' | 'product';
 
 export type FilledSlots = Partial<Record<ComponentSlot, boolean>>;
 
+/** Hardware-accurate studio tones — not brand-blue placeholders. */
 export const SLOT_COLORS: Record<ComponentSlot, string> = {
-  CASE: '#0D47A1',
-  MOTHERBOARD: '#1565C0',
-  CPU: '#2196F3',
-  COOLER: '#90CAF9',
-  GPU: '#1976D2',
-  RAM: '#64B5F6',
-  STORAGE: '#42A5F5',
-  PSU: '#0A3A85',
+  CASE: '#1A1C20',
+  MOTHERBOARD: '#143024',
+  CPU: '#C8CDD4',
+  COOLER: '#3A404A',
+  GPU: '#1C1F26',
+  RAM: '#D5D9E0',
+  STORAGE: '#2A2E36',
+  PSU: '#14161A',
 };
 
 /** Rest positions (local) for assembled chassis parts. */
 export const SLOT_REST: Record<ComponentSlot, [number, number, number]> = {
   CASE: [0, 0, 0],
-  MOTHERBOARD: [-0.12, 0.05, -0.05],
-  CPU: [-0.12, 0.22, -0.02],
-  COOLER: [-0.12, 0.42, -0.02],
-  GPU: [0.05, -0.05, 0.18],
-  RAM: [0.08, 0.18, -0.05],
-  STORAGE: [0.22, -0.25, 0.05],
-  PSU: [0, -0.55, 0.05],
+  MOTHERBOARD: [-0.3, 0.1, -0.02],
+  CPU: [-0.22, 0.24, 0.05],
+  COOLER: [-0.16, 0.4, 0.05],
+  GPU: [0.06, -0.1, 0.06],
+  RAM: [-0.2, 0.24, -0.16],
+  STORAGE: [-0.12, -0.28, 0.14],
+  PSU: [0.02, -0.58, -0.02],
 };
 
 /** Exploded offsets added to rest when explode = 1. */

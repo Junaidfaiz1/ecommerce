@@ -1,6 +1,6 @@
 'use client';
 
-import { Maximize2, Minimize2, RotateCcw, Layers } from 'lucide-react';
+import { Maximize2, Minimize2, Layers } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 
@@ -11,13 +11,11 @@ export type ViewerChromeProps = {
   demoLabel?: string | null;
   explode: boolean;
   onExplodeChange: (next: boolean) => void;
-  autoRotate: boolean;
-  onAutoRotateChange: (next: boolean) => void;
   showExplode?: boolean;
 };
 
 /**
- * Overlay controls: explode, auto-rotate, fullscreen.
+ * Overlay controls: explode, fullscreen.
  */
 export function ViewerChrome({
   children,
@@ -25,8 +23,6 @@ export function ViewerChrome({
   demoLabel,
   explode,
   onExplodeChange,
-  autoRotate,
-  onAutoRotateChange,
   showExplode = true,
 }: ViewerChromeProps) {
   const rootRef = useRef<HTMLDivElement>(null);
@@ -56,7 +52,7 @@ export function ViewerChrome({
     <div
       ref={rootRef}
       className={cn(
-        'relative overflow-hidden border border-border bg-ink',
+        'relative overflow-hidden border border-border bg-[#101218]',
         className,
       )}
     >
@@ -83,20 +79,6 @@ export function ViewerChrome({
             Explode
           </button>
         ) : null}
-        <button
-          type="button"
-          onClick={() => onAutoRotateChange(!autoRotate)}
-          className={cn(
-            'inline-flex h-8 items-center gap-1.5 rounded-md border px-2.5 font-mono text-[10px] tracking-wider uppercase transition-colors',
-            autoRotate
-              ? 'border-sage bg-sage/20 text-cream'
-              : 'border-sage/50 bg-cream/90 text-ink hover:bg-cream',
-          )}
-          aria-pressed={autoRotate}
-        >
-          <RotateCcw className="size-3.5" aria-hidden />
-          Spin
-        </button>
         <button
           type="button"
           onClick={() => void toggleFullscreen()}

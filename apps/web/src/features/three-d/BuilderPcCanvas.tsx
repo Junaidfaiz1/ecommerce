@@ -23,24 +23,18 @@ export default function BuilderPcCanvas({
   glbUrl = proceduralAssetUrl('pc'),
 }: BuilderPcCanvasProps) {
   const [explode, setExplode] = useState(false);
-  const [autoRotate, setAutoRotate] = useState(false);
   const explodeAmount = useExplodeAmount(explode);
 
   return (
     <ViewerChrome
       className={className}
-      demoLabel="Demo chassis"
+      demoLabel="Studio preview"
       explode={explode}
       onExplodeChange={setExplode}
-      autoRotate={autoRotate}
-      onAutoRotateChange={setAutoRotate}
     >
       <div className="h-full min-h-[280px] w-full lg:min-h-[420px]">
-        <SceneCanvas
-          autoRotate={autoRotate}
-          cameraPosition={[2.1, 1.25, 2.5]}
-        >
-          <group position={[0, -0.1, 0]}>
+        <SceneCanvas cameraPosition={[2.35, 1.1, 2.45]}>
+          <group position={[0, 0.06, 0]} rotation={[0, 0.38, 0]}>
             <AssetModel
               glbUrl={glbUrl}
               explode={explodeAmount}

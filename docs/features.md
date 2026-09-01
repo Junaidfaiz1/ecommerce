@@ -84,14 +84,15 @@
 | F-060 | Game / benchmark data model | 6 / 7 | done |
 | F-061 | FPS estimate by game/resolution/quality | 7 / 8 | done |
 | F-062 | Clear “estimated” labeling | 7 | done |
+| F-063 | Homepage performance showcase (server samples) | 8 | done |
 
 ## 3D
 
 | ID | Feature | Phase | Status |
 |----|---------|-------|--------|
-| F-070 | Homepage hero 3D PC | 9 | done |
+| F-070 | Homepage hero 3D PC (studio chassis) | 9 | done |
 | F-071 | Builder 3D PC + component highlight | 9 | done |
-| F-072 | Product detail 3D viewer | 9 | done |
+| F-072 | Product detail 3D viewer (studio parts) | 9 | done |
 | F-073 | Exploded view | 9 | done |
 | F-074 | Lazy GLB / Draco loading | 9 / 18 | done |
 | F-075 | R2-hosted 3D assets | 9 / 11 | done |
@@ -109,6 +110,7 @@
 | F-086 | Inventory + transactions | 12 | done |
 | F-087 | Reviews + review images | 8 / 12 | done |
 | F-088 | Product comparison `/compare` | 8 | done |
+| F-089 | Homepage how-it-works + performance sections | 8 | done |
 
 ## Email & recovery
 

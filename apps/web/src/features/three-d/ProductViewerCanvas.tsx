@@ -19,12 +19,11 @@ export default function ProductViewerCanvas({
   label,
 }: ProductViewerCanvasProps) {
   const [explode, setExplode] = useState(false);
-  const [autoRotate, setAutoRotate] = useState(true);
   const explodeAmount = useExplodeAmount(explode);
 
   const demo =
     isProceduralAssetUrl(glbUrl) || label?.toLowerCase().includes('demo')
-      ? label ?? 'Demo model'
+      ? label ?? 'Studio preview'
       : null;
 
   return (
@@ -33,12 +32,10 @@ export default function ProductViewerCanvas({
       demoLabel={demo}
       explode={explode}
       onExplodeChange={setExplode}
-      autoRotate={autoRotate}
-      onAutoRotateChange={setAutoRotate}
       showExplode
     >
       <div className="aspect-[4/3] h-full w-full">
-        <SceneCanvas autoRotate={autoRotate} cameraPosition={[1.8, 1.1, 2.2]}>
+        <SceneCanvas autoRotate cameraPosition={[1.9, 0.95, 2.15]}>
           <group>
             <AssetModel glbUrl={glbUrl} explode={explodeAmount} />
           </group>

@@ -13,7 +13,11 @@ import {
   fetchFeaturedProducts,
   fetchProductsByType,
 } from '@/features/products/catalog-data';
+import { HowItWorks } from '@/features/storefront/HowItWorks';
+import { PerformanceShowcase } from '@/features/storefront/PerformanceShowcase';
 import { HeroPcViewer } from '@/features/three-d';
+import { prisma } from '@/server/common/prisma';
+import { getHomepagePerformanceShowcase } from '@/server/performance';
 import { absoluteUrl, publicPageMetadata } from '@/server/seo';
 
 export const metadata = publicPageMetadata({
@@ -38,8 +42,20 @@ async function safeGpus() {
   }
 }
 
+async function safeShowcase() {
+  try {
+    return await getHomepagePerformanceShowcase(prisma);
+  } catch {
+    return null;
+  }
+}
+
 export default async function HomePage() {
-  const [featured, gpus] = await Promise.all([safeFeatured(), safeGpus()]);
+  const [featured, gpus, showcase] = await Promise.all([
+    safeFeatured(),
+    safeGpus(),
+    safeShowcase(),
+  ]);
   const origin = absoluteUrl('/');
 
   return (
@@ -94,22 +110,14 @@ export default async function HomePage() {
                 </Link>
               </div>
             </div>
-            <div className="relative">
-              <div className="h-[280px] overflow-hidden rounded-[1.75rem] glass-panel sm:h-[340px] md:h-[440px]">
-                <HeroPcViewer className="h-full w-full" />
-              </div>
-              <div className="absolute -left-2 top-6 hidden max-w-[160px] rounded-2xl glass-panel px-4 py-3 sm:block">
-                <p className="font-display text-lg">Live 3D</p>
-                <p className="text-xs text-muted">Rotate the chassis</p>
-              </div>
-              <div className="absolute -right-2 bottom-8 hidden rounded-2xl glass-panel px-4 py-3 sm:block">
-                <p className="font-display text-lg">Server prices</p>
-                <p className="text-xs text-muted">Never trust the client</p>
-              </div>
+            <div className="h-[280px] overflow-hidden rounded-[1.75rem] glass-panel sm:h-[340px] md:h-[440px]">
+              <HeroPcViewer className="h-full w-full" />
             </div>
           </div>
         </div>
       </section>
+
+      <HowItWorks />
 
       <section className="mx-auto max-w-6xl px-4 py-16 md:px-8 md:py-24">
         <SectionHeader
@@ -194,6 +202,8 @@ export default async function HomePage() {
           <p className="text-sm text-muted">GPU listings load from the catalog.</p>
         )}
       </section>
+
+      <PerformanceShowcase showcase={showcase} />
 
       <section className="mx-auto max-w-6xl px-4 pb-16 md:px-8 md:pb-24">
         <div className="rounded-[2rem] glass-panel p-6 md:p-10">

@@ -17,7 +17,7 @@ export type SceneCanvasProps = {
 };
 
 /**
- * Shared R3F canvas — lights, optional HDRI, orbit.
+ * Shared R3F canvas — studio lighting, optional HDRI, orbit.
  * Always load via next/dynamic ssr:false from parent wrappers.
  * Off-screen / hidden tabs drop to `frameloop="demand"`.
  */
@@ -41,7 +41,7 @@ export function SceneCanvas({
           camera={{ position: cameraPosition, fov: 42, near: 0.1, far: 40 }}
           gl={{
             antialias: budget.antialias,
-            alpha: true,
+            alpha: false,
             powerPreference: budget.powerPreference,
             stencil: false,
             depth: true,
@@ -49,25 +49,31 @@ export function SceneCanvas({
           style={{ touchAction: 'none' }}
         >
           <ThreeDBudgetContext.Provider value={budget}>
-            <color attach="background" args={['#08091A']} />
-            <ambientLight intensity={0.35} />
+            <color attach="background" args={['#101218']} />
+            <hemisphereLight args={['#f3efe6', '#1c1e22', 0.5]} />
+            <ambientLight intensity={0.16} />
             <directionalLight
-              position={[4, 6, 3]}
-              intensity={1.15}
+              position={[4.2, 5.8, 3.2]}
+              intensity={1.28}
+              color="#fff4e8"
               castShadow={budget.shadows}
               shadow-mapSize={[budget.shadowMapSize, budget.shadowMapSize]}
             />
-            <directionalLight position={[-3, 2, -2]} intensity={0.35} />
+            <directionalLight
+              position={[-3.4, 1.8, -1.6]}
+              intensity={0.18}
+              color="#d5d8df"
+            />
             {budget.environment ? (
-              <Environment preset="city" environmentIntensity={0.35} />
+              <Environment preset="studio" environmentIntensity={0.5} />
             ) : null}
             {children}
             {budget.shadows ? (
               <ContactShadows
-                position={[0, -0.85, 0]}
-                opacity={0.45}
+                position={[0, -0.82, 0]}
+                opacity={0.42}
                 scale={8}
-                blur={2.4}
+                blur={2.2}
                 far={4}
               />
             ) : null}

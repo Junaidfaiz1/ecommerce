@@ -43,7 +43,7 @@ type Props = {
 };
 
 export function ProductReviewsPanel({ productId, initial, className }: Props) {
-  const [rating, setRating] = useState(5);
+  const [rating, setRating] = useState(0);
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -119,20 +119,20 @@ export function ProductReviewsPanel({ productId, initial, className }: Props) {
         <p className="text-xs text-muted">
           Requires sign-in. New reviews stay pending until moderation.
         </p>
-        <label className="flex flex-col gap-1.5 text-xs text-muted">
-          Rating
-          <select
-            value={rating}
-            onChange={(e) => setRating(Number(e.target.value))}
-            className="h-10 rounded-md border border-border bg-background px-3 text-sm text-foreground"
-          >
-            {[5, 4, 3, 2, 1].map((n) => (
-              <option key={n} value={n}>
-                {n} stars
-              </option>
-            ))}
-          </select>
-        </label>
+        <div className="flex flex-col gap-1.5">
+          <p className="text-xs text-muted">Rating</p>
+          <div className="flex items-center gap-3">
+            <RatingStars
+              rating={rating}
+              onChange={setRating}
+              size="md"
+              name="rating"
+            />
+            <span className="text-sm text-muted">
+              {rating > 0 ? `${rating} of 5` : 'Choose a rating'}
+            </span>
+          </div>
+        </div>
         <label className="flex flex-col gap-1.5 text-xs text-muted">
           Title
           <input

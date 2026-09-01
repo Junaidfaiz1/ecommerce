@@ -166,7 +166,7 @@ Work **one phase at a time**. Sync with [`../PROGRESS.md`](../PROGRESS.md) and [
 
 - R3F + Three.js + drei in `apps/web` (dynamic import, no checkout)
 - Procedural demo chassis + per-type PDP parts until licensed GLBs ship
-- Exploded view, auto-rotate, fullscreen controls
+- Exploded view, fullscreen controls
 - Builder slot highlight + filled-slot opacity
 - `server/storage` (R2 public URL + keys) and `server/three-d-assets`
 - GraphQL: `product3DAssets`, `productViewerAsset`

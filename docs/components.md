@@ -38,7 +38,7 @@ packages/
 | `Button`, form controls | Everywhere |
 | `ProductCard` | Shop, search, wishlist, bundles, admin previews |
 | `Price` / `PriceRange` | Cards, PDP, cart, builder summary |
-| `RatingStars` | Cards, PDP, reviews |
+| `RatingStars` | Cards, PDP, reviews (read) + write-review picker (`onChange`) |
 | `StockBadge` | Cards, PDP, admin inventory |
 | `QuantityStepper` | Cart, checkout, PDP |
 | `EmptyState` / `ErrorState` / `Skeleton*` | Lists, builder, account |
@@ -49,6 +49,7 @@ packages/
 | `StoreNavbar` / `SignOutButton` | Store + account chrome; session from access cookie |
 | `SceneCanvas` / `ViewerChrome` | Hero, builder, PDP 3D |
 | `JsonLd` | Homepage, PDP structured data |
+| `HowItWorks` / `PerformanceShowcase` | Homepage (`features/storefront`) |
 
 ## API guidelines
 

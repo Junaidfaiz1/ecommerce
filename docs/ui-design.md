@@ -70,11 +70,11 @@ Signed in: Account · Admin (staff) · Sign out. Single store navbar on `/build`
 ### Homepage sections (story order)
 
 1. Hero — BUILD BEYOND LIMITS. + 3D PC  
-2. Featured hardware  
-3. Build Your Machine  
-4. Interactive 3D PC  
+2. How it works — choose parts → server checks → checkout  
+3. Featured hardware  
+4. Build Your Machine  
 5. Popular GPUs  
-6. Performance showcase  
+6. Performance showcase — server FPS samples, labeled estimates  
 7. Hardware comparison  
 8. Featured builds  
 9. Gaming setup  

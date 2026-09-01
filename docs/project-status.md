@@ -158,7 +158,7 @@
 
 ### Abhi pending major product features
 
-- Interactive 3D PC viewer (hero, builder, PDP) — ✅ Phase 9 (procedural demo + R2 GLB path)
+- Interactive 3D PC viewer (hero, builder, PDP) — ✅ Phase 9 (studio chassis + R2 GLB path)
 - Cart, wishlist, coupons, checkout, Stripe webhook — ✅ Phases 10–11
 - Orders + inventory transactions — ✅ Phase 12
 - Admin CRUD — ✅ Phase 13; KPIs/charts — ✅ Phase 15
@@ -189,6 +189,7 @@ Yeh **business / product requirements** hain — end product mein yeh capabiliti
 - Server-side search, filters, sort, pagination.  
 - Product detail pages (e.g. `/gpu/[slug]`).  
 - Product comparison (`/compare`).  
+- Homepage: how-it-works + performance showcase (server FPS samples).  
 - Bundles (optional / admin-managed).
 
 ### FR-03 — Compatibility Engine (core differentiator)
