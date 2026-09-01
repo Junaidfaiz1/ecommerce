@@ -334,7 +334,7 @@ Admin mutations write rows for catalog, order status, refunds, inventory adjust,
 | Item | Detail |
 |------|--------|
 | Users | `admin@vorqen.local` (ADMIN), `builder@vorqen.local` (CUSTOMER) — password `Password123!` |
-| Catalog | Brands, categories, CPU/GPU/MB/RAM/Storage/PSU/Case/Cooler SKUs + inventory; shared `/assets/catalog/product.jpg` until R2 SKUs exist |
+| Catalog | Brands, categories, CPU/GPU/MB/RAM/Storage/PSU/Case/Cooler SKUs + inventory; `ProductImage.url` is `/assets/catalog/{slug}.jpg` (seed) or an uploaded `/uploads/…` / R2 key |
 | Compatible build | AM5 + DDR5 + 4080 SUPER + Meshify 2 + 850W (`am5-1440p-compatible`) |
 | Incompatible builds | DDR4/ITX/undersized PSU stress build; Intel CPU on AM5 board |
 | Rules | Seeded CompatibilityRule codes for Phase 6 engine |

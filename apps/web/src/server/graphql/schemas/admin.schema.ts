@@ -18,6 +18,9 @@ import {
   upsertAdminCouponInputSchema,
   upsertAdminProductInputSchema,
   upsertAdminVariantInputSchema,
+  addAdminProductImageInputSchema,
+  updateAdminProductImageInputSchema,
+  deleteAdminProductImageInputSchema,
 } from '@vorqen/types';
 import { z } from 'zod';
 
@@ -67,6 +70,18 @@ export const upsertAdminProductArgsSchema = z
 
 export const upsertAdminVariantArgsSchema = z
   .object({ input: upsertAdminVariantInputSchema })
+  .strict();
+
+export const addAdminProductImageArgsSchema = z
+  .object({ input: addAdminProductImageInputSchema })
+  .strict();
+
+export const updateAdminProductImageArgsSchema = z
+  .object({ input: updateAdminProductImageInputSchema })
+  .strict();
+
+export const deleteAdminProductImageArgsSchema = z
+  .object({ input: deleteAdminProductImageInputSchema })
   .strict();
 
 export const updateAdminOrderStatusArgsSchema = z

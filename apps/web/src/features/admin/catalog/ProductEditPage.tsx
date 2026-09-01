@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, type FormEvent } from 'react';
+import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   PRODUCT_STATUSES,
@@ -19,6 +19,11 @@ import {
   UPSERT_ADMIN_VARIANT,
 } from '../graphql';
 import { AdminHeader, Field, fieldClass } from '../ui';
+import {
+  ProductMediaPanel,
+  type AdminProductImage,
+} from './ProductMediaPanel';
+import { uploadProductImage } from './upload';
 
 type Brand = { id: string; name: string; slug: string };
 type Category = { id: string; name: string; slug: string };
@@ -67,6 +72,8 @@ export function ProductEditPage({ productId }: { productId?: string }) {
   const [loading, setLoading] = useState(!isNew);
   const [pending, setPending] = useState(false);
   const [variantTick, setVariantTick] = useState(0);
+  const [images, setImages] = useState<AdminProductImage[]>([]);
+  const pendingFilesRef = useRef<File[]>([]);
 
   useEffect(() => {
     let cancelled = false;
@@ -110,6 +117,7 @@ export function ProductEditPage({ productId }: { productId?: string }) {
                 powerConnectors: string;
               } | null;
               variants: Variant[];
+              images: AdminProductImage[];
             };
             adminBrands: Brand[];
             adminCategories: Category[];
@@ -125,6 +133,7 @@ export function ProductEditPage({ productId }: { productId?: string }) {
           setCategoryId(p.category.id);
           setFeatured(p.isFeatured);
           setVariants(p.variants);
+          setImages(p.images ?? []);
           if (p.cpu) {
             setCpuSocket(p.cpu.socket);
             setCpuCores(String(p.cpu.cores));
@@ -204,8 +213,21 @@ export function ProductEditPage({ productId }: { productId?: string }) {
       const data = await graphqlRequest<{
         upsertAdminProduct: { id: string };
       }>(UPSERT_ADMIN_PRODUCT, { input: parsed.data });
+      const savedId = data.upsertAdminProduct.id;
+      const queued = pendingFilesRef.current;
+      if (isNew && queued.length > 0) {
+        for (const [index, file] of queued.entries()) {
+          await uploadProductImage({
+            productId: savedId,
+            file,
+            alt: name || file.name,
+            isPrimary: index === 0,
+          });
+        }
+        pendingFilesRef.current = [];
+      }
       if (isNew) {
-        router.replace(`/admin/catalog/${data.upsertAdminProduct.id}`);
+        router.replace(`/admin/catalog/${savedId}`);
         return;
       }
     } catch (err) {
@@ -248,10 +270,11 @@ export function ProductEditPage({ productId }: { productId?: string }) {
     <div>
       <AdminHeader
         title={isNew ? 'New product' : name || 'Edit product'}
-        description="Prices and stock are stored server-side. Hardware specs feed the compatibility engine."
+        description="Prices, stock, and photos are stored on the server. Hardware specs feed the compatibility engine."
       />
       {error ? <p className="mb-4 text-sm text-red-400">{error}</p> : null}
-      <form onSubmit={(e) => void onSave(e)} className="max-w-3xl space-y-4">
+      <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_minmax(22rem,28rem)]">
+      <form onSubmit={(e) => void onSave(e)} className="space-y-4 rounded-2xl border border-white/10 bg-elevated/40 p-5">
         <div className="grid gap-3 sm:grid-cols-2">
           <Field label="Name">
             <input className={fieldClass} value={name} onChange={(e) => setName(e.target.value)} />
@@ -373,12 +396,23 @@ export function ProductEditPage({ productId }: { productId?: string }) {
         </Button>
       </form>
 
+      <ProductMediaPanel
+        productId={productId}
+        images={images}
+        productName={name}
+        pending={pending}
+        pendingFilesRef={pendingFilesRef}
+        onImagesChange={setImages}
+        onError={setError}
+      />
+      </div>
+
       {productId ? (
-        <section className="mt-10 max-w-3xl">
+        <section className="mt-10 max-w-3xl rounded-2xl border border-white/10 bg-elevated/40 p-5">
           <h2 className="text-lg">Variants</h2>
           <ul className="mt-3 space-y-2 text-sm">
             {variants.map((v) => (
-              <li key={v.id} className="border border-border px-3 py-2">
+              <li key={v.id} className="rounded-lg border border-white/10 px-3 py-2">
                 <span className="font-mono">{v.sku}</span> · {v.price} · on-hand{' '}
                 {v.quantityOnHand}
                 {v.isDefault ? ' · default' : ''}

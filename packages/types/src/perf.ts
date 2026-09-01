@@ -22,6 +22,7 @@ export const IMAGE_SIZES = {
   productThumb: '80px',
   cartThumb: '(min-width: 640px) 144px, 100vw',
   wishlistThumb: '(min-width: 640px) 112px, 100vw',
+  adminThumb: '56px',
 } as const;
 
 const OPTIMIZED_IMAGE_HOSTS = new Set([

@@ -81,6 +81,7 @@ Under `apps/web/src/server/`:
 | `/api/webhooks/stripe` | Stripe webhooks |
 | `/api/cron/abandoned-cart` | Abandoned-cart recovery (`CRON_SECRET`) |
 | `/api/email/abandoned/[id]` | Recovery email click → `/cart` |
+| `/api/admin/catalog/images` | ADMIN product photo upload |
 | `/sitemap.xml` | ACTIVE catalog + public routes |
 | `/robots.txt` | Disallow admin/account/checkout/api |
 

@@ -62,6 +62,7 @@ export const ADMIN_PRODUCTS = `
         brand { id name }
         category { id name }
         defaultVariant { price currency sku }
+        images { id url alt isPrimary sortOrder }
       }
       pageInfo { page pageSize totalCount totalPages hasNextPage hasPreviousPage }
     }
@@ -74,6 +75,7 @@ export const ADMIN_PRODUCT = `
       id name slug description type status isFeatured
       brand { id name slug }
       category { id name slug }
+      images { id url alt isPrimary sortOrder }
       cpu { socket cores threads baseClockGhz boostClockGhz tdpWatts memoryType maxMemoryGhz hasIntegratedGpu }
       gpu { chipset lengthMm slotWidth tdpWatts recommendedPsuWatts vramGb powerConnectors interfaceBus }
       motherboard { socket chipset formFactor memoryType memorySlots maxMemoryGb maxMemorySpeedMhz m2Slots sataPorts wifi }
@@ -108,6 +110,24 @@ export const UPSERT_ADMIN_PRODUCT = `
 export const UPSERT_ADMIN_VARIANT = `
   mutation UpsertAdminVariant($input: UpsertAdminVariantInput!) {
     upsertAdminVariant(input: $input) { id }
+  }
+`;
+
+export const UPDATE_ADMIN_PRODUCT_IMAGE = `
+  mutation UpdateAdminProductImage($input: UpdateAdminProductImageInput!) {
+    updateAdminProductImage(input: $input) {
+      id
+      images { id url alt isPrimary sortOrder }
+    }
+  }
+`;
+
+export const DELETE_ADMIN_PRODUCT_IMAGE = `
+  mutation DeleteAdminProductImage($input: DeleteAdminProductImageInput!) {
+    deleteAdminProductImage(input: $input) {
+      id
+      images { id url alt isPrimary sortOrder }
+    }
   }
 `;
 

@@ -35,6 +35,9 @@ playwright-report
 blob-report
 playwright/.cache
 
+# Local product image uploads (R2 is used in production)
+apps/web/public/uploads/**
+!apps/web/public/uploads/.gitkeep
 
 # Misc
 *.tsbuildinfo

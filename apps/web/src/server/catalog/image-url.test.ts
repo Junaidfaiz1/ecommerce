@@ -20,10 +20,25 @@ describe('toPublicCatalogImageUrl', () => {
 });
 
 describe('catalogPhotoPath', () => {
-  it('maps generic seed photos to the product slug file', () => {
+  it('keeps the stored database URL', () => {
     assert.equal(
-      catalogPhotoPath('GPU', 'rtx-4080-super-16gb', '/assets/catalog/product.jpg'),
+      catalogPhotoPath(
+        'GPU',
+        'rtx-4080-super-16gb',
+        '/assets/catalog/rtx-4080-super-16gb.jpg',
+      ),
       '/assets/catalog/rtx-4080-super-16gb.jpg',
+    );
+  });
+
+  it('does not rewrite uploaded paths to static slug files', () => {
+    assert.equal(
+      catalogPhotoPath(
+        'GPU',
+        'new-card',
+        '/uploads/products/abc/images/photo.jpg',
+      ),
+      '/uploads/products/abc/images/photo.jpg',
     );
   });
 });

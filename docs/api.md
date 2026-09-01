@@ -19,6 +19,7 @@
 | `/api/webhooks/stripe` | Payment events (signature-verified) |
 | `/api/cron/abandoned-cart` | Abandoned-cart recovery (`GET`/`POST`; `Authorization: Bearer ${CRON_SECRET}`) |
 | `/api/email/abandoned/[id]` | Click tracker → 302 `/cart` |
+| `/api/admin/catalog/images` | **ADMIN** multipart product image upload (JPEG/PNG/WebP, magic-byte sniff, R2 or local `/uploads`) |
 | `/sitemap.xml` | Public routes + ACTIVE product URLs |
 | `/robots.txt` | Allow `/`; disallow admin/account/checkout/api |
 
@@ -69,6 +70,7 @@
 | `cancelPendingOrder(id)` | Mutation | Auth — cancel `PENDING_PAYMENT`, release reservation |
 | `adminOverview` / `adminAnalytics` / `adminProducts` / `adminOrders` / … | Query | Staff (`ADMIN`/`SUPPORT`) |
 | `upsertAdminProduct` / `upsertAdminVariant` / brand / category | Mutation | **ADMIN** catalog write |
+| `addAdminProductImage` / `updateAdminProductImage` / `deleteAdminProductImage` | Mutation | **ADMIN** — attach/reorder/remove gallery URLs stored on `ProductImage` |
 | `updateAdminOrderStatus` | Mutation | Staff fulfillment only (cannot set `PAID`) |
 | `refundAdminOrder` | Mutation | **ADMIN** — Stripe refund; amount recomputed vs remaining |
 | `adjustInventory` | Mutation | **ADMIN** — `ADJUSTMENT` txn |

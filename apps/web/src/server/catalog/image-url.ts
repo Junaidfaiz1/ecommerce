@@ -4,7 +4,7 @@ import {
 } from '@vorqen/types';
 import { resolvePublicAssetUrl } from '../storage';
 
-/** Browser-safe catalog image: local fallback, R2 key, or absolute URL. */
+/** Browser-safe catalog image: local path, R2 object key, or absolute URL. */
 export function toPublicCatalogImageUrl(
   stored: string | null | undefined,
 ): string {
@@ -13,21 +13,14 @@ export function toPublicCatalogImageUrl(
   return resolvePublicAssetUrl(resolved);
 }
 
-/** Prefer per-SKU photo; generic seed URLs map to `/assets/catalog/{slug}.jpg`. */
+/**
+ * Resolve the stored ProductImage URL. Does not rewrite to static slug files —
+ * shop and admin show whatever is saved in the database.
+ */
 export function catalogPhotoPath(
-  type: string,
-  slug: string,
+  _type: string,
+  _slug: string,
   stored?: string | null,
 ): string {
-  const slugPath = `/assets/catalog/${slug}.jpg`;
-  const value = stored?.trim() ?? '';
-  if (
-    !value ||
-    value.includes('placeholder.vorqen.local') ||
-    value.endsWith('/product.jpg') ||
-    value.endsWith('/product.png')
-  ) {
-    return slugPath;
-  }
-  return toPublicCatalogImageUrl(value);
+  return toPublicCatalogImageUrl(stored);
 }

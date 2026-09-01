@@ -13,9 +13,9 @@ export function AdminHeader({
   return (
     <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
       <div>
-        <h1 className="text-xl font-medium tracking-tight">{title}</h1>
+        <h1 className="font-display text-2xl tracking-tight">{title}</h1>
         {description ? (
-          <p className="mt-1 text-sm text-muted">{description}</p>
+          <p className="mt-1 max-w-2xl text-sm text-muted">{description}</p>
         ) : null}
       </div>
       {action}
@@ -31,7 +31,12 @@ export function AdminTable({
   className?: string;
 }) {
   return (
-    <div className={cn('overflow-x-auto border border-border', className)}>
+    <div
+      className={cn(
+        'overflow-x-auto rounded-2xl border border-white/10 bg-elevated/40',
+        className,
+      )}
+    >
       <table className="w-full min-w-[640px] text-left text-sm">{children}</table>
     </div>
   );
@@ -84,4 +89,23 @@ export function Field({
 }
 
 export const fieldClass =
-  'rounded-md border border-border bg-surface px-3 py-2 text-sm outline-none focus:border-accent';
+  'rounded-lg border border-white/12 bg-surface px-3 py-2 text-sm outline-none transition focus:border-sage/60';
+
+export function StatusBadge({ status }: { status: string }) {
+  const tone =
+    status === 'ACTIVE' || status === 'PAID' || status === 'DELIVERED'
+      ? 'bg-sage/15 text-sage'
+      : status === 'DRAFT' || status === 'PENDING' || status === 'PENDING_PAYMENT'
+        ? 'bg-accent/15 text-accent'
+        : 'bg-white/8 text-muted';
+  return (
+    <span
+      className={cn(
+        'inline-flex rounded-full px-2 py-0.5 font-mono text-[10px] tracking-wide uppercase',
+        tone,
+      )}
+    >
+      {status.replaceAll('_', ' ')}
+    </span>
+  );
+}

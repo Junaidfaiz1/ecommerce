@@ -2,13 +2,14 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { PRODUCT_STATUSES, PRODUCT_TYPES } from '@vorqen/types';
+import { IMAGE_SIZES, PRODUCT_STATUSES, PRODUCT_TYPES } from '@vorqen/types';
 import { ErrorState } from '@/components/shared/SectionStates';
+import { CatalogImage } from '@/components/shared/CatalogImage';
 import { Price } from '@/components/shared/Price';
 import { graphqlRequest } from '@/lib/graphql-client';
 import { getErrorMessage } from '@/lib/errors';
 import { ADMIN_PRODUCTS } from '../graphql';
-import { AdminHeader, AdminPager, AdminTable, Field, fieldClass } from '../ui';
+import { AdminHeader, AdminPager, AdminTable, Field, StatusBadge, fieldClass } from '../ui';
 
 type Product = {
   id: string;
@@ -20,6 +21,7 @@ type Product = {
   brand: { name: string };
   category: { name: string };
   defaultVariant: { price: string; currency: string; sku: string } | null;
+  images: Array<{ id: string; url: string; alt: string | null; isPrimary: boolean }>;
 };
 
 type PageInfo = {
@@ -57,6 +59,7 @@ export function CatalogListPage() {
         if (cancelled) return;
         setItems(data.adminProducts.items);
         setPageInfo(data.adminProducts.pageInfo);
+        setError(null);
       } catch (err) {
         if (!cancelled) setError(getErrorMessage(err));
       } finally {
@@ -74,11 +77,11 @@ export function CatalogListPage() {
     <div>
       <AdminHeader
         title="Catalog"
-        description="Drafts and archived SKUs are visible here. Storefront stays ACTIVE-only."
+        description="Drafts and archived SKUs stay here. The storefront only lists ACTIVE products with their saved photos."
         action={
           <Link
             href="/admin/catalog/new"
-            className="inline-flex h-10 items-center rounded-md bg-accent px-4 text-sm font-medium text-background"
+            className="inline-flex h-10 items-center rounded-lg bg-accent px-4 text-sm font-medium text-cream"
           >
             New product
           </Link>
@@ -135,39 +138,57 @@ export function CatalogListPage() {
         <p className="text-sm text-muted">Loading catalog…</p>
       ) : (
         <AdminTable>
-          <thead className="bg-surface text-[11px] tracking-wide text-muted uppercase">
+          <thead className="bg-elevated/80 text-[11px] tracking-wide text-muted uppercase">
             <tr>
-              <th className="px-3 py-2 font-medium">Product</th>
-              <th className="px-3 py-2 font-medium">Type</th>
-              <th className="px-3 py-2 font-medium">Status</th>
-              <th className="px-3 py-2 font-medium">Price</th>
+              <th className="px-3 py-2.5 font-medium">Product</th>
+              <th className="px-3 py-2.5 font-medium">Type</th>
+              <th className="px-3 py-2.5 font-medium">Status</th>
+              <th className="px-3 py-2.5 font-medium">Price</th>
             </tr>
           </thead>
           <tbody>
-            {items.map((p) => (
-              <tr key={p.id} className="border-t border-border">
-                <td className="px-3 py-2">
-                  <Link href={`/admin/catalog/${p.id}`} className="hover:text-accent">
-                    {p.name}
-                  </Link>
-                  <p className="font-mono text-[10px] text-muted">
-                    {p.brand.name} · {p.slug}
-                  </p>
-                </td>
-                <td className="px-3 py-2 font-mono text-xs">{p.type}</td>
-                <td className="px-3 py-2 text-xs">{p.status}</td>
-                <td className="px-3 py-2">
-                  {p.defaultVariant ? (
-                    <Price
-                      amount={p.defaultVariant.price}
-                      currency={p.defaultVariant.currency}
-                    />
-                  ) : (
-                    '—'
-                  )}
-                </td>
-              </tr>
-            ))}
+            {items.map((p) => {
+              const image =
+                p.images.find((img) => img.isPrimary) ?? p.images[0];
+              return (
+                <tr key={p.id} className="border-t border-white/10 hover:bg-white/5">
+                  <td className="px-3 py-2.5">
+                    <Link
+                      href={`/admin/catalog/${p.id}`}
+                      className="flex items-center gap-3 hover:text-sage"
+                    >
+                      <span className="relative size-12 shrink-0 overflow-hidden rounded-lg bg-surface">
+                        <CatalogImage
+                          src={image?.url ?? ''}
+                          alt={image?.alt ?? p.name}
+                          sizes={IMAGE_SIZES.adminThumb}
+                        />
+                      </span>
+                      <span>
+                        <span className="block font-medium">{p.name}</span>
+                        <span className="font-mono text-[10px] text-muted">
+                          {p.brand.name} · {p.slug}
+                        </span>
+                      </span>
+                    </Link>
+                  </td>
+                  <td className="px-3 py-2.5 font-mono text-xs">{p.type}</td>
+                  <td className="px-3 py-2.5">
+                    <StatusBadge status={p.status} />
+                  </td>
+                  <td className="px-3 py-2.5">
+                    {p.defaultVariant ? (
+                      <Price
+                        amount={p.defaultVariant.price}
+                        currency={p.defaultVariant.currency}
+                      />
+                    ) : (
+                      '—'
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </AdminTable>
       )}

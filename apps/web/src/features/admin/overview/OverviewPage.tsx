@@ -8,7 +8,14 @@ import { graphqlRequest } from '@/lib/graphql-client';
 import { getErrorMessage } from '@/lib/errors';
 import { ADMIN_DASHBOARD } from '../graphql';
 import { AdminHeader } from '../ui';
-import { CountChart, DayCountChart, RevenueChart } from '../analytics/AnalyticsCharts';
+import {
+  CountChart,
+  DayCountChart,
+  DonutChart,
+  FunnelChart,
+  RankBarChart,
+  RevenueChart,
+} from '../analytics/AnalyticsCharts';
 import { cn } from '@/lib/utils';
 
 type Overview = {
@@ -119,7 +126,7 @@ export function AdminOverviewPage() {
         title="Overview"
         description="Live ops counts plus server-computed revenue, builder, and recovery metrics."
         action={
-          <div className="flex gap-1 border border-border p-0.5">
+          <div className="flex gap-1 rounded-lg border border-white/12 bg-elevated/50 p-0.5">
             {ANALYTICS_RANGES.map((option) => (
               <button
                 key={option}
@@ -128,8 +135,8 @@ export function AdminOverviewPage() {
                 className={cn(
                   'px-2 py-1 font-mono text-[11px] uppercase',
                   range === option
-                    ? 'bg-elevated text-foreground'
-                    : 'text-muted hover:text-foreground',
+                    ? 'rounded-md bg-sage/20 text-sage'
+                    : 'rounded-md text-muted hover:text-foreground',
                 )}
               >
                 {option}
@@ -156,7 +163,7 @@ export function AdminOverviewPage() {
         </h2>
         <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
           {OPS_CARDS.map((card) => (
-            <li key={card.key} className="border border-border bg-surface p-4">
+            <li key={card.key} className="rounded-2xl border border-white/10 bg-elevated/50 p-4">
               <p className="font-mono text-[11px] text-muted uppercase">{card.label}</p>
               <p className="mt-2 text-2xl tabular-nums">{overview[card.key]}</p>
               <Link href={card.href} className="mt-3 inline-block text-xs text-accent">
@@ -172,7 +179,7 @@ export function AdminOverviewPage() {
           <RevenueChart data={analytics.revenueByDay} />
         </ChartPanel>
         <ChartPanel title="Orders created" subtitle="By status">
-          <CountChart data={analytics.ordersByStatus} />
+          <DonutChart data={analytics.ordersByStatus} />
         </ChartPanel>
         <ChartPanel title="Builder saves" subtitle="PC builds created per day">
           <DayCountChart data={analytics.buildsByDay} />
@@ -193,54 +200,38 @@ export function AdminOverviewPage() {
       </section>
 
       <section className="mt-8 grid gap-4 lg:grid-cols-2">
-        <div className="border border-border bg-surface p-4">
+        <div className="rounded-2xl border border-white/10 bg-elevated/50 p-5">
           <h2 className="font-mono text-[11px] tracking-[0.16em] text-muted uppercase">
             Recovery funnel
           </h2>
           <p className="mt-1 text-xs text-muted">
             Click rate {pct(kpis.clickRate)} · {kpis.emailsSent} emails sent
           </p>
-          <ul className="mt-4 space-y-2 text-sm">
-            {(
-              [
-                ['Started', funnel.started],
-                ['Emailed', funnel.emailed],
-                ['Clicked', funnel.clicked],
-                ['Recovered', funnel.recovered],
-                ['Expired', funnel.expired],
-              ] as const
-            ).map(([label, count]) => (
-              <li key={label} className="flex justify-between border-b border-border py-1.5">
-                <span className="text-muted">{label}</span>
-                <span className="tabular-nums">{count}</span>
-              </li>
-            ))}
-          </ul>
+          <div className="mt-5">
+            <FunnelChart
+              steps={[
+                { label: 'Started', count: funnel.started },
+                { label: 'Emailed', count: funnel.emailed },
+                { label: 'Clicked', count: funnel.clicked },
+                { label: 'Recovered', count: funnel.recovered },
+                { label: 'Expired', count: funnel.expired },
+              ]}
+            />
+          </div>
         </div>
-        <div className="border border-border bg-surface p-4">
+        <div className="rounded-2xl border border-white/10 bg-elevated/50 p-5">
           <h2 className="font-mono text-[11px] tracking-[0.16em] text-muted uppercase">
             Top builder parts
           </h2>
-          {analytics.topBuildProducts.length === 0 ? (
-            <p className="mt-4 text-sm text-muted">No saved builds in this window.</p>
-          ) : (
-            <ul className="mt-4 space-y-2 text-sm">
-              {analytics.topBuildProducts.map((row) => (
-                <li
-                  key={`${row.productId}-${row.slot}`}
-                  className="flex justify-between gap-3 border-b border-border py-1.5"
-                >
-                  <span>
-                    {row.productName}
-                    <span className="ml-2 font-mono text-[10px] text-muted uppercase">
-                      {row.slot}
-                    </span>
-                  </span>
-                  <span className="tabular-nums">{row.count}</span>
-                </li>
-              ))}
-            </ul>
-          )}
+          <div className="mt-5">
+            <RankBarChart
+              data={analytics.topBuildProducts.map((row) => ({
+                label: row.productName,
+                hint: row.slot,
+                count: row.count,
+              }))}
+            />
+          </div>
         </div>
       </section>
     </div>
@@ -257,7 +248,7 @@ function Kpi({
   hint: string;
 }) {
   return (
-    <li className="border border-border bg-surface p-4">
+    <li className="rounded-2xl border border-white/10 bg-elevated/50 p-4">
       <p className="font-mono text-[11px] text-muted uppercase">{label}</p>
       <p className="mt-2 text-2xl tabular-nums">{value}</p>
       <p className="mt-1 text-xs text-muted">{hint}</p>
@@ -275,7 +266,7 @@ function ChartPanel({
   children: React.ReactNode;
 }) {
   return (
-    <div className="border border-border bg-surface p-4">
+    <div className="rounded-2xl border border-white/10 bg-elevated/50 p-5">
       <h2 className="font-mono text-[11px] tracking-[0.16em] text-muted uppercase">
         {title}
       </h2>

@@ -163,6 +163,47 @@ export const upsertAdminProductInputSchema = z
   })
   .strict();
 
+export const MAX_ADMIN_PRODUCT_IMAGES = 12;
+
+const storedAssetUrlSchema = z
+  .string()
+  .trim()
+  .min(1)
+  .max(800)
+  .refine(
+    (value) =>
+      value.startsWith('/') ||
+      value.startsWith('https://') ||
+      value.startsWith('http://') ||
+      value.startsWith('products/'),
+    'Image URL must be a site path, HTTPS URL, or storage object key.',
+  );
+
+export const addAdminProductImageInputSchema = z
+  .object({
+    productId: cuidSchema,
+    url: storedAssetUrlSchema,
+    alt: z.string().trim().min(1).max(200).optional().nullable(),
+    isPrimary: z.boolean().default(false),
+    sortOrder: z.number().int().min(0).max(10_000).optional(),
+  })
+  .strict();
+
+export const updateAdminProductImageInputSchema = z
+  .object({
+    id: cuidSchema,
+    alt: z.string().trim().min(1).max(200).optional().nullable(),
+    isPrimary: z.boolean().optional(),
+    sortOrder: z.number().int().min(0).max(10_000).optional(),
+  })
+  .strict();
+
+export const deleteAdminProductImageInputSchema = z
+  .object({
+    id: cuidSchema,
+  })
+  .strict();
+
 export const upsertAdminVariantInputSchema = z
   .object({
     id: cuidSchema.optional(),
@@ -359,6 +400,15 @@ export type UpsertAdminCategoryInput = z.infer<
   typeof upsertAdminCategoryInputSchema
 >;
 export type UpsertAdminProductInput = z.infer<typeof upsertAdminProductInputSchema>;
+export type AddAdminProductImageInput = z.infer<
+  typeof addAdminProductImageInputSchema
+>;
+export type UpdateAdminProductImageInput = z.infer<
+  typeof updateAdminProductImageInputSchema
+>;
+export type DeleteAdminProductImageInput = z.infer<
+  typeof deleteAdminProductImageInputSchema
+>;
 export type UpsertAdminVariantInput = z.infer<typeof upsertAdminVariantInputSchema>;
 export type AdminOrderListInput = z.infer<typeof adminOrderListInputSchema>;
 export type UpdateAdminOrderStatusInput = z.infer<

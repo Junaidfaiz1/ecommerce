@@ -1,10 +1,14 @@
 import type {
+  AddAdminProductImageInput,
   AdminProductListInput,
+  DeleteAdminProductImageInput,
+  UpdateAdminProductImageInput,
   UpsertAdminBrandInput,
   UpsertAdminCategoryInput,
   UpsertAdminProductInput,
   UpsertAdminVariantInput,
 } from '@vorqen/types';
+import { MAX_ADMIN_PRODUCT_IMAGES } from '@vorqen/types';
 import type { Prisma, PrismaClient } from '@/generated/prisma/client';
 import { paginationMeta } from './catalog.filters';
 import {
@@ -22,6 +26,7 @@ import {
   ValidationError,
 } from '../common/errors';
 import { writeAuditLog } from '../audit';
+import { removeStoredProductImage } from '../storage/product-media';
 
 const productInclude = {
   brand: true,
@@ -379,4 +384,148 @@ export async function upsertAdminVariant(
   }
 
   return loadAdminProduct(prisma, input.productId);
+}
+
+export async function addAdminProductImage(
+  prisma: PrismaClient,
+  actorUserId: string,
+  input: AddAdminProductImageInput,
+  ip: string | null,
+): Promise<CatalogProduct> {
+  const product = await prisma.product.findUnique({
+    where: { id: input.productId },
+    include: { images: true },
+  });
+  if (!product) throw new NotFoundError('Product not found.');
+  if (product.images.length >= MAX_ADMIN_PRODUCT_IMAGES) {
+    throw new ValidationError(
+      `A product can have at most ${MAX_ADMIN_PRODUCT_IMAGES} images.`,
+    );
+  }
+
+  const nextSort =
+    input.sortOrder ??
+    product.images.reduce((max, row) => Math.max(max, row.sortOrder), -1) + 1;
+  const isPrimary = input.isPrimary || product.images.length === 0;
+
+  await prisma.$transaction(async (tx) => {
+    if (isPrimary) {
+      await tx.productImage.updateMany({
+        where: { productId: input.productId },
+        data: { isPrimary: false },
+      });
+    }
+    const row = await tx.productImage.create({
+      data: {
+        productId: input.productId,
+        url: input.url,
+        alt: input.alt ?? product.name,
+        isPrimary,
+        sortOrder: nextSort,
+      },
+    });
+    await writeAuditLog(tx, {
+      actorUserId,
+      action: 'product.image.create',
+      entityType: 'ProductImage',
+      entityId: row.id,
+      metadata: { productId: input.productId, isPrimary },
+      ip,
+    });
+  });
+
+  return loadAdminProduct(prisma, input.productId);
+}
+
+export async function updateAdminProductImage(
+  prisma: PrismaClient,
+  actorUserId: string,
+  input: UpdateAdminProductImageInput,
+  ip: string | null,
+): Promise<CatalogProduct> {
+  const image = await prisma.productImage.findUnique({
+    where: { id: input.id },
+  });
+  if (!image) throw new NotFoundError('Product image not found.');
+
+  await prisma.$transaction(async (tx) => {
+    if (input.isPrimary) {
+      await tx.productImage.updateMany({
+        where: { productId: image.productId },
+        data: { isPrimary: false },
+      });
+    }
+    await tx.productImage.update({
+      where: { id: input.id },
+      data: {
+        ...(input.alt !== undefined ? { alt: input.alt } : {}),
+        ...(input.isPrimary !== undefined ? { isPrimary: input.isPrimary } : {}),
+        ...(input.sortOrder !== undefined ? { sortOrder: input.sortOrder } : {}),
+      },
+    });
+    const remainingPrimary = await tx.productImage.count({
+      where: { productId: image.productId, isPrimary: true },
+    });
+    if (remainingPrimary === 0) {
+      const first = await tx.productImage.findFirst({
+        where: { productId: image.productId },
+        orderBy: { sortOrder: 'asc' },
+      });
+      if (first) {
+        await tx.productImage.update({
+          where: { id: first.id },
+          data: { isPrimary: true },
+        });
+      }
+    }
+    await writeAuditLog(tx, {
+      actorUserId,
+      action: 'product.image.update',
+      entityType: 'ProductImage',
+      entityId: input.id,
+      metadata: { productId: image.productId },
+      ip,
+    });
+  });
+
+  return loadAdminProduct(prisma, image.productId);
+}
+
+export async function deleteAdminProductImage(
+  prisma: PrismaClient,
+  actorUserId: string,
+  input: DeleteAdminProductImageInput,
+  ip: string | null,
+): Promise<CatalogProduct> {
+  const image = await prisma.productImage.findUnique({
+    where: { id: input.id },
+  });
+  if (!image) throw new NotFoundError('Product image not found.');
+
+  await prisma.$transaction(async (tx) => {
+    await tx.productImage.delete({ where: { id: input.id } });
+    if (image.isPrimary) {
+      const next = await tx.productImage.findFirst({
+        where: { productId: image.productId },
+        orderBy: { sortOrder: 'asc' },
+      });
+      if (next) {
+        await tx.productImage.update({
+          where: { id: next.id },
+          data: { isPrimary: true },
+        });
+      }
+    }
+    await writeAuditLog(tx, {
+      actorUserId,
+      action: 'product.image.delete',
+      entityType: 'ProductImage',
+      entityId: input.id,
+      metadata: { productId: image.productId },
+      ip,
+    });
+  });
+
+  await removeStoredProductImage(image.url);
+  return loadAdminProduct(prisma, image.productId);
 }

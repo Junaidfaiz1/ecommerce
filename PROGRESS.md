@@ -302,10 +302,7 @@
 | Seed `prisma/seed.ts` | Pass (script ready) |
 | Apply to DB | Needs running Postgres — `pnpm exec prisma migrate deploy && pnpm db:seed` |
 
-## Recent updates
-
-| Date | Note |
-|------|------|
+| 2026-09-01 | **Admin** — product image upload (DB `ProductImage` + R2/local `/uploads`); storefront shows stored URLs; ops shell + dashboard charts (area/donut/funnel). |
 | 2026-09-01 | **Fix** — navbar Sign out when signed in; staff login → `/admin`; removed duplicate `/build` header. |
 | 2026-09-01 | **UI** — night glassmorphism storefront + auth (orbs, frost cards, gradient CTAs). Login returns to `next` via full navigation. Per-SKU catalog photos + procedural 3D on PDP/compare/builder. |
 | 2026-09-01 | **Theme** — page background `#FBFBFB` on all routes; ice/sky/navy for surfaces, accent, and ink. |

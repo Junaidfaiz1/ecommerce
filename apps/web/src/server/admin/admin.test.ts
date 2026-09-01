@@ -5,6 +5,7 @@ import {
   remainingRefundable,
   upsertAdminCouponInputSchema,
   upsertAdminProductInputSchema,
+  addAdminProductImageInputSchema,
   updateAdminOrderStatusInputSchema,
 } from '@vorqen/types';
 
@@ -66,5 +67,14 @@ describe('admin product schema', () => {
     });
     assert.equal(parsed.status, 'DRAFT');
     assert.equal(parsed.isFeatured, false);
+  });
+
+  it('accepts site-relative product image URLs', () => {
+    const parsed = addAdminProductImageInputSchema.parse({
+      productId: 'clxxxxxxxxxxxxxxxxxxxxxxxxx',
+      url: '/uploads/products/clxxxxxxxxxxxxxxxxxxxxxxxxx/images/1.jpg',
+      isPrimary: true,
+    });
+    assert.equal(parsed.isPrimary, true);
   });
 });

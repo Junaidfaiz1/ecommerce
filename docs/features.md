@@ -123,7 +123,7 @@
 | ID | Feature | Phase | Status |
 |----|---------|-------|--------|
 | F-100 | Admin shell + navigation | 13 | done |
-| F-101 | Catalog / hardware CRUD | 13 | done |
+| F-101 | Catalog / hardware CRUD + product image upload | 13 | done |
 | F-102 | Orders / customers / inventory ops | 13 | done |
 | F-103 | Coupons / bundles / reviews moderation | 13 | done |
 | F-104 | Dashboard KPIs + charts | 15 | done |

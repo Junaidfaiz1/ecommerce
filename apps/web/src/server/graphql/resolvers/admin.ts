@@ -5,10 +5,13 @@ import { clientIpFromRequest } from '../../audit';
 import { getAdminOverview } from '../../admin/overview.service';
 import { getAdminAnalytics } from '../../analytics';
 import {
+  addAdminProductImage,
+  deleteAdminProductImage,
   getAdminProduct,
   listAdminProducts,
   listBrands,
   listCategories,
+  updateAdminProductImage,
   upsertAdminBrand,
   upsertAdminCategory,
   upsertAdminProduct,
@@ -61,6 +64,9 @@ import {
   upsertAdminCouponArgsSchema,
   upsertAdminProductArgsSchema,
   upsertAdminVariantArgsSchema,
+  addAdminProductImageArgsSchema,
+  updateAdminProductImageArgsSchema,
+  deleteAdminProductImageArgsSchema,
 } from '../schemas/admin.schema';
 
 function ip(ctx: GraphQLContext) {
@@ -245,6 +251,33 @@ export const adminResolvers = {
       const user = requireAdmin(ctx.user);
       const { input } = parseOrThrow(upsertAdminVariantArgsSchema, args);
       return upsertAdminVariant(ctx.prisma, user.id, input, ip(ctx));
+    },
+    addAdminProductImage: async (
+      _p: unknown,
+      args: unknown,
+      ctx: GraphQLContext,
+    ) => {
+      const user = requireAdmin(ctx.user);
+      const { input } = parseOrThrow(addAdminProductImageArgsSchema, args);
+      return addAdminProductImage(ctx.prisma, user.id, input, ip(ctx));
+    },
+    updateAdminProductImage: async (
+      _p: unknown,
+      args: unknown,
+      ctx: GraphQLContext,
+    ) => {
+      const user = requireAdmin(ctx.user);
+      const { input } = parseOrThrow(updateAdminProductImageArgsSchema, args);
+      return updateAdminProductImage(ctx.prisma, user.id, input, ip(ctx));
+    },
+    deleteAdminProductImage: async (
+      _p: unknown,
+      args: unknown,
+      ctx: GraphQLContext,
+    ) => {
+      const user = requireAdmin(ctx.user);
+      const { input } = parseOrThrow(deleteAdminProductImageArgsSchema, args);
+      return deleteAdminProductImage(ctx.prisma, user.id, input, ip(ctx));
     },
     updateAdminOrderStatus: async (
       _p: unknown,

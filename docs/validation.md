@@ -18,7 +18,7 @@ If client and server schemas drift, **server wins**. Fix the shared schema.
 - Coupons: code format, then **business** rules in service  
 - Builder: component IDs + types; compatibility is separate engine  
 - Addresses: required fields, country/postal rules as modeled  
-- Uploads: mime/size via storage service before R2 put  
+- Uploads: mime/size via storage service before R2 or local `/uploads` put (`POST /api/admin/catalog/images`, magic-byte sniff)  
 - Webhooks: signature first, then payload schema
 - Cron: `Authorization: Bearer ${CRON_SECRET}` (secret ≥ 16 chars); abandoned-cart click IDs are cuids only  
 

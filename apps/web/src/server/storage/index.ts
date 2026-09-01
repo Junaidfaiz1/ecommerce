@@ -29,7 +29,7 @@ export type PutObjectInput = {
 
 /**
  * Upload an object to R2. Returns the public URL (CDN or /assets fallback).
- * Admin upload UI lands in a later phase — this is the shared server primitive.
+ * Admin catalog uses `storeProductImageFile` which falls back to local /uploads.
  */
 export async function putObject(
   input: PutObjectInput,

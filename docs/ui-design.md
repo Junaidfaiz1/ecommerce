@@ -58,7 +58,7 @@ Large editorial type is encouraged; keep contrast and line-length readable.
 1. First viewport = one composition (brand, one headline, one subline, CTA group, dominant visual).
 2. Sections: one job, one headline, short support text.
 3. Cards only when they contain interaction; avoid card soup.
-4. Admin ≠ storefront. Admin uses a navy rail; the storefront is night glass with orbs.
+4. Admin ≠ storefront. Admin uses a navy ops rail, rounded metric cards, and Recharts (area / donut / funnel); the storefront is night glass with orbs.
 
 ## Key surfaces
 

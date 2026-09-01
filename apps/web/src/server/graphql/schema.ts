@@ -997,6 +997,25 @@ export const typeDefs = /* GraphQL */ `
     lowStockThreshold: Int
   }
 
+  input AddAdminProductImageInput {
+    productId: ID!
+    url: String!
+    alt: String
+    isPrimary: Boolean = false
+    sortOrder: Int
+  }
+
+  input UpdateAdminProductImageInput {
+    id: ID!
+    alt: String
+    isPrimary: Boolean
+    sortOrder: Int
+  }
+
+  input DeleteAdminProductImageInput {
+    id: ID!
+  }
+
   type AdminOrder {
     id: ID!
     orderNumber: String!
@@ -1367,6 +1386,9 @@ export const typeDefs = /* GraphQL */ `
     upsertAdminCategory(input: UpsertAdminCategoryInput!): Category!
     upsertAdminProduct(input: UpsertAdminProductInput!): Product!
     upsertAdminVariant(input: UpsertAdminVariantInput!): Product!
+    addAdminProductImage(input: AddAdminProductImageInput!): Product!
+    updateAdminProductImage(input: UpdateAdminProductImageInput!): Product!
+    deleteAdminProductImage(input: DeleteAdminProductImageInput!): Product!
     updateAdminOrderStatus(input: UpdateAdminOrderStatusInput!): AdminOrder!
     refundAdminOrder(input: RefundAdminOrderInput!): AdminOrder!
     setCustomerActive(input: SetCustomerActiveInput!): User!
