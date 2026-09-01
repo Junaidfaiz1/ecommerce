@@ -33,7 +33,7 @@
 
 ## Open
 
-_None yet — project scaffolding only (2026-08-24)._
+_None._
 
 ---
 
@@ -44,6 +44,15 @@ _None._
 ---
 
 ## Fixed
+
+### BUG-003 — Signed-in chrome still showed Sign in; staff not sent to `/admin`; duplicate `/build` navbar
+- **Status:** fixed
+- **Severity:** P2
+- **Phase / area:** storefront / auth / builder
+- **Repro:** Sign in; stay on storefront. Sign in as `admin@vorqen.local` from `/login`. Open `/build`.
+- **Expected:** Navbar shows Sign out (Admin for staff); staff land on `/admin`; one site navbar on builder
+- **Actual:** Sign in CTA stayed; home redirect for admin; second glass header on `/build`
+- **Notes:** `getNavSession` + `postAuthPath`; builder page-local header removed.
 
 ### BUG-002 — Catalog product images did not load
 - **Status:** fixed

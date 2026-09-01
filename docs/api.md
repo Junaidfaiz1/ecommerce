@@ -227,6 +227,8 @@ UI helper: `apps/web/src/lib/errors.ts` → `getErrorMessage`.
 - JWT access + refresh via `jose`
 - `requireUser` / `requireRoles` / `requireAdmin` / `requireStaff` in `src/server/auth/rbac.ts`
 - Next.js middleware redirects unauthenticated users away from `/admin/*`, `/account/*`, and `/checkout*`
+- After `login`/`register`, the UI honors `?next=` (same-origin). If `next` is absent, **ADMIN** / **SUPPORT** go to `/admin`; customers go to `/`.
+- Store chrome (`StoreNavbar` / `StoreFooter`) reads the access cookie and shows **Sign out** (plus **Admin** for staff) instead of **Sign in**.
 - Shared Zod schemas: `@vorqen/types` (`registerInputSchema`, `loginInputSchema`, …)
 
 ## Trust boundaries

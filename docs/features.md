@@ -48,7 +48,7 @@
 
 | ID | Feature | Phase | Status |
 |----|---------|-------|--------|
-| F-030 | Register / login / refresh JWT | 4 | done |
+| F-030 | Register / login / refresh JWT; staff post-login → `/admin`; navbar Sign out | 4 | done |
 | F-031 | Secure cookies | 4 | done |
 | F-032 | Email verification | 4 / 14 | done |
 | F-033 | Password reset | 4 / 14 | done |

@@ -4,9 +4,11 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { BrandMark } from '@vorqen/ui';
+import { isStaffRole, type UserRole } from '@vorqen/types';
 import { cn } from '@/lib/utils';
 import { loginHref } from '@/lib/auth-redirect';
 import { CartNavLink } from '@/components/navigation/CartNavLink';
+import { SignOutButton } from '@/components/navigation/SignOutButton';
 
 const NAV = [
   { href: '/shop', label: 'Shop' },
@@ -14,14 +16,21 @@ const NAV = [
   { href: '/compare', label: 'Compare' },
 ] as const;
 
+export type StoreNavbarSession = {
+  role: UserRole;
+} | null;
+
 type StoreNavbarProps = {
   className?: string;
+  session?: StoreNavbarSession;
 };
 
-export function StoreNavbar({ className }: StoreNavbarProps) {
+export function StoreNavbar({ className, session = null }: StoreNavbarProps) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
   const signInHref = loginHref(pathname);
+  const signedIn = session != null;
+  const staff = isStaffRole(session?.role);
 
   return (
     <header className={cn('sticky top-0 z-30 px-3 pt-3 md:px-6', className)}>
@@ -55,18 +64,32 @@ export function StoreNavbar({ className }: StoreNavbarProps) {
               Wishlist
             </Link>
             <CartNavLink />
-            <Link
-              href="/account"
-              className="hidden text-muted transition-colors hover:text-foreground sm:inline"
-            >
-              Account
-            </Link>
-            <Link
-              href={signInHref}
-              className="glass-btn rounded-full px-4 py-1.5 text-xs font-medium sm:text-sm"
-            >
-              Sign in
-            </Link>
+            {signedIn ? (
+              <>
+                <Link
+                  href="/account"
+                  className="hidden text-muted transition-colors hover:text-foreground sm:inline"
+                >
+                  Account
+                </Link>
+                {staff ? (
+                  <Link
+                    href="/admin"
+                    className="hidden text-muted transition-colors hover:text-foreground sm:inline"
+                  >
+                    Admin
+                  </Link>
+                ) : null}
+                <SignOutButton className="rounded-full glass-panel px-4 py-1.5 text-xs font-medium text-muted transition-colors hover:text-foreground sm:text-sm" />
+              </>
+            ) : (
+              <Link
+                href={signInHref}
+                className="glass-btn rounded-full px-4 py-1.5 text-xs font-medium sm:text-sm"
+              >
+                Sign in
+              </Link>
+            )}
             <button
               type="button"
               className="inline-flex h-9 w-9 items-center justify-center rounded-full glass-panel md:hidden"
@@ -99,12 +122,23 @@ export function StoreNavbar({ className }: StoreNavbarProps) {
               <Link href="/wishlist" onClick={() => setOpen(false)}>
                 Wishlist
               </Link>
-              <Link href="/account" onClick={() => setOpen(false)}>
-                Account
-              </Link>
-              <Link href={signInHref} onClick={() => setOpen(false)}>
-                Sign in
-              </Link>
+              {signedIn ? (
+                <>
+                  <Link href="/account" onClick={() => setOpen(false)}>
+                    Account
+                  </Link>
+                  {staff ? (
+                    <Link href="/admin" onClick={() => setOpen(false)}>
+                      Admin
+                    </Link>
+                  ) : null}
+                  <SignOutButton className="text-left text-foreground" />
+                </>
+              ) : (
+                <Link href={signInHref} onClick={() => setOpen(false)}>
+                  Sign in
+                </Link>
+              )}
             </nav>
           </div>
         ) : null}

@@ -17,6 +17,7 @@ export function BuilderShell() {
   const nextStep = useBuilderStore((s) => s.nextStep);
   const prevStep = useBuilderStore((s) => s.prevStep);
   const parts = useBuilderStore((s) => s.parts);
+  const reset = useBuilderStore((s) => s.reset);
 
   return (
     <div className="mx-auto flex w-full max-w-7xl flex-1 flex-col px-4 py-8 md:px-8">
@@ -33,9 +34,18 @@ export function BuilderShell() {
             explode parts, or highlight the active step in 3D.
           </p>
         </div>
-        <p className="font-mono text-xs text-muted">
-          {parts.length} part{parts.length === 1 ? '' : 's'} selected
-        </p>
+        <div className="flex flex-col items-start gap-2 md:items-end">
+          <p className="font-mono text-xs text-muted">
+            {parts.length} part{parts.length === 1 ? '' : 's'} selected
+          </p>
+          <button
+            type="button"
+            onClick={() => reset()}
+            className="text-sm text-muted hover:text-foreground"
+          >
+            New build
+          </button>
+        </div>
       </header>
 
       <div className="grid flex-1 gap-8 lg:grid-cols-[200px_minmax(0,1fr)_300px]">

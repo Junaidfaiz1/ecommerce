@@ -46,6 +46,7 @@ packages/
 | `CompareToggle` / `WishlistToggle` | Cards, PDP |
 | `AddToCartButton` / `QuantityStepper` | Cards, PDP, cart |
 | `CatalogImage` | ProductCard, PDP, cart, wishlist (`next/image`) |
+| `StoreNavbar` / `SignOutButton` | Store + account chrome; session from access cookie |
 | `SceneCanvas` / `ViewerChrome` | Hero, builder, PDP 3D |
 | `JsonLd` | Homepage, PDP structured data |
 

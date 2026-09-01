@@ -44,8 +44,10 @@ function RegisterForm() {
 
     setPending(true);
     try {
-      await graphqlRequest(REGISTER_MUTATION, { input: parsed.data });
-      goAfterAuth(next);
+      const data = await graphqlRequest<{
+        register: { user: { role: string } };
+      }>(REGISTER_MUTATION, { input: parsed.data });
+      goAfterAuth(next, data.register.user.role);
     } catch (err) {
       setError(getErrorMessage(err));
       setPending(false);

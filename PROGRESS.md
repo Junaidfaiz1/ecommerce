@@ -306,6 +306,7 @@
 
 | Date | Note |
 |------|------|
+| 2026-09-01 | **Fix** — navbar Sign out when signed in; staff login → `/admin`; removed duplicate `/build` header. |
 | 2026-09-01 | **UI** — night glassmorphism storefront + auth (orbs, frost cards, gradient CTAs). Login returns to `next` via full navigation. Per-SKU catalog photos + procedural 3D on PDP/compare/builder. |
 | 2026-09-01 | **Theme** — page background `#FBFBFB` on all routes; ice/sky/navy for surfaces, accent, and ink. |
 | 2026-09-01 | **Fix** — catalog photos: local `/assets/catalog/product.jpg` fallback; seed no longer uses `placeholder.vorqen.local`. |

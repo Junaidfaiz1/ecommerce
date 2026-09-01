@@ -2,8 +2,6 @@
 
 import { useEffect, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { BrandMark } from '@vorqen/ui';
-import Link from 'next/link';
 import { graphqlRequest } from '@/lib/graphql-client';
 import { getErrorMessage } from '@/lib/errors';
 import { BuilderShell } from './components/BuilderShell';
@@ -29,7 +27,6 @@ type LoadedBuild = {
 export function BuilderPageClient() {
   const searchParams = useSearchParams();
   const loadDraft = useBuilderStore((s) => s.loadDraft);
-  const reset = useBuilderStore((s) => s.reset);
   const loadedKey = useRef<string | null>(null);
 
   useEffect(() => {
@@ -98,29 +95,11 @@ export function BuilderPageClient() {
   }, [searchParams, loadDraft]);
 
   return (
-    <div className="relative flex min-h-screen flex-col">
+    <div className="relative flex flex-col">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-x-0 top-0 h-[420px] theme-wash"
       />
-      <header className="relative z-10 mx-3 mt-3 flex flex-wrap items-center justify-between gap-3 rounded-[1.75rem] glass-nav px-4 py-4 md:mx-8 md:px-8">
-        <BrandMark />
-        <nav className="flex flex-wrap items-center gap-3 text-sm text-muted sm:gap-4">
-          <Link href="/shop" className="hover:text-foreground">
-            Shop
-          </Link>
-          <button
-            type="button"
-            onClick={() => reset()}
-            className="hover:text-foreground"
-          >
-            New build
-          </button>
-          <Link href="/login?next=/build" className="hover:text-foreground">
-            Account
-          </Link>
-        </nav>
-      </header>
       <BuilderShell />
     </div>
   );

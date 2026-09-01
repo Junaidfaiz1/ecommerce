@@ -58,3 +58,10 @@ export type VerifyEmailInput = z.infer<typeof verifyEmailInputSchema>;
 
 export const USER_ROLES = ['CUSTOMER', 'ADMIN', 'SUPPORT'] as const;
 export type UserRole = (typeof USER_ROLES)[number];
+
+export const STAFF_ROLES = ['ADMIN', 'SUPPORT'] as const;
+export type StaffRole = (typeof STAFF_ROLES)[number];
+
+export function isStaffRole(role: string | null | undefined): role is StaffRole {
+  return role === 'ADMIN' || role === 'SUPPORT';
+}

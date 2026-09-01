@@ -6,6 +6,8 @@
 
 `/build`
 
+Uses the store layout navbar only. Component steps live in `BuilderStepNav` (not a second site header).
+
 Query params:
 
 | Param | Effect |

@@ -36,8 +36,10 @@ function LoginForm() {
 
     setPending(true);
     try {
-      await graphqlRequest(LOGIN_MUTATION, { input: parsed.data });
-      goAfterAuth(searchParams.get('next'));
+      const data = await graphqlRequest<{
+        login: { user: { role: string } };
+      }>(LOGIN_MUTATION, { input: parsed.data });
+      goAfterAuth(searchParams.get('next'), data.login.user.role);
     } catch (err) {
       setError(getErrorMessage(err));
       setPending(false);

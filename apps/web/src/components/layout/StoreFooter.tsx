@@ -1,7 +1,16 @@
 import Link from 'next/link';
 import { BrandMark } from '@vorqen/ui';
+import { isStaffRole, type UserRole } from '@vorqen/types';
+import { SignOutButton } from '@/components/navigation/SignOutButton';
 
-export function StoreFooter() {
+type StoreFooterProps = {
+  session?: { role: UserRole } | null;
+};
+
+export function StoreFooter({ session = null }: StoreFooterProps) {
+  const signedIn = session != null;
+  const staff = isStaffRole(session?.role);
+
   return (
     <footer className="mt-auto px-3 pb-3 md:px-6 md:pb-6">
       <div className="glass-panel mx-auto max-w-6xl overflow-hidden rounded-[2rem]">
@@ -55,10 +64,21 @@ export function StoreFooter() {
                   Addresses
                 </Link>
               </li>
+              {staff ? (
+                <li>
+                  <Link href="/admin" className="text-cream/90 hover:text-sage">
+                    Admin
+                  </Link>
+                </li>
+              ) : null}
               <li>
-                <Link href="/login" className="text-cream/90 hover:text-sage">
-                  Sign in
-                </Link>
+                {signedIn ? (
+                  <SignOutButton className="text-cream/90 hover:text-sage" />
+                ) : (
+                  <Link href="/login" className="text-cream/90 hover:text-sage">
+                    Sign in
+                  </Link>
+                )}
               </li>
             </ul>
           </div>

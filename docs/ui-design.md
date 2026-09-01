@@ -64,8 +64,8 @@ Large editorial type is encouraged; keep contrast and line-length readable.
 
 ### Navbar (desktop)
 
-VORQEN · Shop · Build · Compare · Performance · Showroom · Search · Wishlist · Cart · Account  
-Mega menus for Shop.
+VORQEN · Shop · Build · Compare · Wishlist · Cart · Account · Sign in  
+Signed in: Account · Admin (staff) · Sign out. Single store navbar on `/build` (no second site header).
 
 ### Homepage sections (story order)
 
