@@ -90,12 +90,12 @@
 
 | ID | Feature | Phase | Status |
 |----|---------|-------|--------|
-| F-070 | Homepage hero 3D PC (studio chassis) | 9 | done |
-| F-071 | Builder 3D PC + component highlight | 9 | done |
-| F-072 | Product detail 3D viewer (studio parts) | 9 | done |
-| F-073 | Exploded view | 9 | done |
-| F-074 | Lazy GLB / Draco loading | 9 / 18 | done |
-| F-075 | R2-hosted 3D assets | 9 / 11 | done |
+| F-070 | Homepage hero catalog photos (case + GPU) | 8 / 9 | done |
+| F-071 | Builder viewport: selected part photos + slot thumbs | 7 / 9 | done |
+| F-072 | Product detail / compare image gallery | 8 | done |
+| F-073 | R3F exploded studio viewer (not mounted in storefront) | 9 | done |
+| F-074 | Lazy GLB / Draco loading (not mounted in storefront) | 9 / 18 | done |
+| F-075 | R2-hosted 3D assets (GraphQL + storage) | 9 / 11 | done |
 
 ## Commerce
 

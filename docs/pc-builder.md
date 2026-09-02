@@ -39,7 +39,7 @@ Query params:
 | Estimated power + recommended PSU (via compatibility result) | ✅ |
 | Save / reopen / duplicate builds | ✅ |
 | Add entire build to cart | ✅ Phase 10 (`addBuildToCart`) |
-| Interactive 3D PC | ✅ Phase 9 (studio chassis + R2 GLB path) |
+| Interactive 3D PC | R3F still in repo; storefront uses catalog photos |
 
 ## Layout
 

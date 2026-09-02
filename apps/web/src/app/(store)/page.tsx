@@ -13,9 +13,9 @@ import {
   fetchFeaturedProducts,
   fetchProductsByType,
 } from '@/features/products/catalog-data';
+import { HeroHardwareMedia } from '@/features/storefront/HeroHardwareMedia';
 import { HowItWorks } from '@/features/storefront/HowItWorks';
 import { PerformanceShowcase } from '@/features/storefront/PerformanceShowcase';
-import { HeroPcViewer } from '@/features/three-d';
 import { prisma } from '@/server/common/prisma';
 import { getHomepagePerformanceShowcase } from '@/server/performance';
 import { absoluteUrl, publicPageMetadata } from '@/server/seo';
@@ -92,8 +92,8 @@ export default async function HomePage() {
                 </span>
               </h1>
               <p className="animate-fade-up mt-5 max-w-md text-base text-muted md:text-lg">
-                Configure high-performance machines with live 3D, server-checked
-                compatibility, and laboratory-grade hardware.
+                Configure high-performance machines with server-checked
+                compatibility and laboratory-grade hardware.
               </p>
               <div className="animate-fade-up mt-9 flex flex-wrap gap-3">
                 <Link
@@ -110,9 +110,7 @@ export default async function HomePage() {
                 </Link>
               </div>
             </div>
-            <div className="h-[280px] overflow-hidden rounded-[1.75rem] glass-panel sm:h-[340px] md:h-[440px]">
-              <HeroPcViewer className="h-full w-full" />
-            </div>
+            <HeroHardwareMedia />
           </div>
         </div>
       </section>

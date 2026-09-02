@@ -2,7 +2,7 @@
 
 **Build Beyond Limits.**
 
-Premium gaming hardware marketplace with PC Builder, compatibility engine, performance estimates, and interactive 3D.
+Premium gaming hardware marketplace with PC Builder, compatibility engine, performance estimates, and catalog photography.
 
 ## Status
 

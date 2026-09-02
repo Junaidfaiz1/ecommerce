@@ -6,7 +6,6 @@ import type { CatalogProduct } from '@/server/catalog/catalog.mappers';
 import { prisma } from '@/server/common/prisma';
 import { getProductBySlug } from '@/server/catalog/catalog.service';
 import { listProductReviews } from '@/server/reviews/reviews.service';
-import { getProductViewerAsset } from '@/server/three-d-assets';
 import { Price } from '@/components/shared/Price';
 import { StockBadge } from '@/components/shared/StockBadge';
 import { RatingStars } from '@/components/shared/RatingStars';
@@ -22,7 +21,6 @@ import {
 } from '@/features/products/product-path';
 import { ProductReviewsPanel } from '@/features/products/ProductReviewsPanel';
 import { SpecTable } from '@/features/products/SpecTable';
-import { Product3DViewer } from '@/features/three-d';
 import { absoluteUrl, publicPageMetadata } from '@/server/seo';
 
 type Props = {
@@ -65,16 +63,11 @@ export async function ProductDetailView({ slug, expectedType }: Props) {
   const product = await loadProduct(slug, expectedType);
   if (!product) notFound();
 
-  const [reviews, viewerAsset] = await Promise.all([
-    listProductReviews(prisma, {
-      productId: product.id,
-      page: 1,
-      pageSize: 10,
-    }).catch(() => null),
-    getProductViewerAsset(prisma, {
-      productId: product.id,
-    }).catch(() => null),
-  ]);
+  const reviews = await listProductReviews(prisma, {
+    productId: product.id,
+    page: 1,
+    pageSize: 10,
+  }).catch(() => null);
 
   const images = product.images;
   const primary = images.find((i) => i.isPrimary) ?? images[0];
@@ -112,21 +105,13 @@ export async function ProductDetailView({ slug, expectedType }: Props) {
 
       <div className="grid gap-10 lg:grid-cols-2">
         <div className="space-y-4">
-          {viewerAsset ? (
-            <div className="glass-panel overflow-hidden rounded-3xl">
-              <Product3DViewer
-                className="w-full"
-                glbUrl={viewerAsset.glbUrl}
-                label={viewerAsset.label}
-              />
-            </div>
-          ) : null}
-          <div className="relative aspect-[4/3] overflow-hidden rounded-3xl glass-panel">
+          <div className="relative aspect-[4/3] overflow-hidden rounded-3xl bg-cream ring-1 ring-white/15">
             <CatalogImage
               src={primary?.url ?? CATALOG_PLACEHOLDER_IMAGE}
               alt={primary?.alt ?? product.name}
               sizes={IMAGE_SIZES.productGallery}
               priority
+              className="object-contain p-6 md:p-8"
             />
           </div>
           {images.length > 1 ? (
@@ -134,12 +119,13 @@ export async function ProductDetailView({ slug, expectedType }: Props) {
               {images.map((img) => (
                 <div
                   key={img.id}
-                  className="relative h-16 w-20 shrink-0 overflow-hidden rounded-xl glass-panel"
+                  className="relative h-16 w-20 shrink-0 overflow-hidden rounded-xl bg-cream ring-1 ring-white/15"
                 >
                   <CatalogImage
                     src={img.url}
                     alt={img.alt ?? ''}
                     sizes={IMAGE_SIZES.productThumb}
+                    className="object-contain p-1"
                   />
                 </div>
               ))}

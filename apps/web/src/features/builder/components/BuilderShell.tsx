@@ -30,8 +30,8 @@ export function BuilderShell() {
             Configure your machine
           </h1>
           <p className="mt-2 max-w-xl text-sm text-muted">
-            Live prices and compatibility run on the server. Rotate the chassis,
-            explode parts, or highlight the active step in 3D.
+            Live prices and compatibility run on the server. Selected parts
+            appear as catalog photos in the center viewport.
           </p>
         </div>
         <div className="flex flex-col items-start gap-2 md:items-end">

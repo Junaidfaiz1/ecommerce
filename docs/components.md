@@ -45,9 +45,9 @@ packages/
 | `SectionHeader` | Marketing + store sections |
 | `CompareToggle` / `WishlistToggle` | Cards, PDP |
 | `AddToCartButton` / `QuantityStepper` | Cards, PDP, cart |
-| `CatalogImage` | ProductCard, PDP, cart, wishlist, **admin catalog** (`next/image`) |
+| `CatalogImage` | ProductCard, PDP, cart, wishlist, hero, builder viewport, compare, **admin catalog** (`next/image`) |
 | `StoreNavbar` / `SignOutButton` | Store + account chrome; session from access cookie |
-| `SceneCanvas` / `ViewerChrome` | Hero, builder, PDP 3D |
+| `HeroHardwareMedia` | Homepage hero catalog photos |
 | `JsonLd` | Homepage, PDP structured data |
 | `HowItWorks` / `PerformanceShowcase` | Homepage (`features/storefront`) |
 

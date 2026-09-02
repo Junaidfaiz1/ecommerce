@@ -302,6 +302,7 @@
 | Seed `prisma/seed.ts` | Pass (script ready) |
 | Apply to DB | Needs running Postgres — `pnpm exec prisma migrate deploy && pnpm db:seed` |
 
+| 2026-09-02 | **Storefront** — catalog photos replace R3F on hero, builder, PDP, and compare. |
 | 2026-09-02 | **Storefront** — homepage How it works + Performance showcase (server FPS samples; seed 1080p/1440p/4K). |
 | 2026-09-02 | **3D** — studio mid-tower (smoked glass + internals, hardware PBR); charcoal studio scene (not city/blue HDRI). |
 | 2026-09-01 | **Admin** — product image upload (DB `ProductImage` + R2/local `/uploads`); storefront shows stored URLs; ops shell + dashboard charts (area/donut/funnel). |

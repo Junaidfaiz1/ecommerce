@@ -158,7 +158,7 @@
 
 ### Abhi pending major product features
 
-- Interactive 3D PC viewer (hero, builder, PDP) — ✅ Phase 9 (studio chassis + R2 GLB path)
+- Interactive 3D PC viewer — Phase 9 R3F still in repo; storefront uses catalog photos (hero, builder, PDP, compare)
 - Cart, wishlist, coupons, checkout, Stripe webhook — ✅ Phases 10–11
 - Orders + inventory transactions — ✅ Phase 12
 - Admin CRUD — ✅ Phase 13; KPIs/charts — ✅ Phase 15
@@ -208,10 +208,9 @@ Yeh **business / product requirements** hain — end product mein yeh capabiliti
 
 ### FR-05 — 3D visualization
 
-- Homepage hero 3D PC.  
-- Builder mein interactive 3D + component highlight.  
-- Product detail 3D viewer + exploded view.  
-- Lazy GLB / Draco; assets on Cloudflare R2.
+- Storefront: catalog photos on hero, builder viewport, PDP, and compare.  
+- R3F studio viewers + GraphQL 3D assets remain in the repo (not mounted).  
+- Lazy GLB / Draco; assets on Cloudflare R2 when licensed models exist.
 
 ### FR-06 — Auth & accounts
 

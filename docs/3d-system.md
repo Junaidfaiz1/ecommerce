@@ -8,13 +8,19 @@
 - React Three Fiber `^9.7`
 - `@react-three/drei` `^10.7`
 
-## Experiences
+## Storefront media (current)
+
+Hero, `/build` viewport, PDP, and `/compare` use **catalog photos** (`CatalogImage` / `next/image`) — not the R3F canvases. Procedural studio meshes did not match real SKUs.
+
+R3F modules (`features/three-d`, `components/3d`) and GraphQL `productViewerAsset` remain in the repo for licensed GLBs later. They are **not mounted** on storefront routes.
+
+## Experiences (R3F — unused in UI)
 
 | Experience | Location | Notes |
 |------------|----------|--------|
-| A. Hero PC | Homepage | Studio mid-tower (smoked glass + internals); explode / spin / fullscreen |
-| B. Builder PC | `/build` | Same chassis; filled slots + active-step highlight |
-| C. Product viewer | PDP | Studio part by type, or GLB when `product_3d_assets` row exists |
+| A. Hero PC | Homepage | Replaced by `HeroHardwareMedia` (case + GPU photos) |
+| B. Builder PC | `/build` | Replaced by selected-part photos + slot thumbnails |
+| C. Product viewer | PDP / compare | Replaced by `CatalogImage` gallery |
 
 ## Features
 

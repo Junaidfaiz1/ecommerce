@@ -147,7 +147,6 @@ export default async function ComparePage({
                 {products.map((p) => (
                   <th key={p.id} className="min-w-[180px] px-3 py-3 align-bottom">
                     <CompareProductMedia
-                      type={p.type}
                       name={p.name}
                       imageUrl={
                         p.images.find((img) => img.isPrimary)?.url ??

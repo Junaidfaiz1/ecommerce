@@ -51,7 +51,6 @@ Large editorial type is encouraged; keep contrast and line-length readable.
 
 - Purposeful Framer Motion (2–3 intentional motions on marketing surfaces).
 - Scroll motion: subtle, not carnival.
-- 3D camera / explode transitions: smooth, performant.
 
 ## Layout principles
 
@@ -69,7 +68,7 @@ Signed in: Account · Admin (staff) · Sign out. Single store navbar on `/build`
 
 ### Homepage sections (story order)
 
-1. Hero — BUILD BEYOND LIMITS. + 3D PC  
+1. Hero — BUILD BEYOND LIMITS. + catalog hardware photos  
 2. How it works — choose parts → server checks → checkout  
 3. Featured hardware  
 4. Build Your Machine  
@@ -85,7 +84,7 @@ Signed in: Account · Admin (staff) · Sign out. Single store navbar on `/build`
 
 ### PC Builder
 
-- Desktop: left component nav | center 3D | right summary  
+- Desktop: left component nav | center part photos | right summary  
 - Mobile: step-by-step  
 
 ### Product card
@@ -94,7 +93,7 @@ Image, name, category, price, rating, key spec, stock; actions: cart, build, com
 
 ### Product detail
 
-3D viewer as focal point + gallery, specs, compatibility, performance, reviews.
+Photo gallery as focal point + specs, compatibility, performance, reviews.
 
 ### Checkout
 
@@ -104,9 +103,9 @@ Distraction-free steps: Customer → Shipping → Payment → Review. **No** hea
 
 | Breakpoint | Approach |
 |------------|----------|
-| Desktop | Full 3D, mega nav, 3-col builder |
+| Desktop | Mega nav, 3-col builder |
 | Tablet | Two-column |
-| Mobile | Single column, step builder, simplified 3D, sticky cart CTA |
+| Mobile | Single column, step builder, sticky cart CTA |
 
 Do not merely shrink desktop layouts.
 
