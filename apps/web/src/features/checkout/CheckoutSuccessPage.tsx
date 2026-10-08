@@ -6,6 +6,7 @@ import { useSearchParams } from 'next/navigation';
 import { cuidSchema } from '@vorqen/types';
 import { Price } from '@/components/shared/Price';
 import { ErrorState } from '@/components/shared/SectionStates';
+import { Skeleton, SkeletonRegion } from '@/components/shared/Skeleton';
 import { graphqlRequest } from '@/lib/graphql-client';
 import { getErrorMessage } from '@/lib/errors';
 import { syncCartUi } from '@/features/cart/sync';
@@ -150,7 +151,7 @@ function SuccessBody() {
           </div>
         </dl>
       ) : (
-        <p className="mt-8 text-sm text-muted">Checking payment status…</p>
+        <StatusCardSkeleton />
       )}
 
       {processing && !paid && !failed ? (
@@ -191,12 +192,31 @@ function SuccessBody() {
   );
 }
 
+function StatusCardSkeleton() {
+  return (
+    <SkeletonRegion
+      label="Checking payment status"
+      className="mt-8 flex flex-col gap-4 rounded-md border border-border bg-surface p-6"
+    >
+      {['w-28', 'w-20', 'w-16'].map((w) => (
+        <div key={w} aria-hidden className="flex justify-between gap-4">
+          <Skeleton className="h-3.5 w-14" />
+          <Skeleton className={`h-3.5 ${w}`} />
+        </div>
+      ))}
+    </SkeletonRegion>
+  );
+}
+
 export function CheckoutSuccessPage() {
   return (
     <Suspense
       fallback={
         <main className="mx-auto max-w-xl px-4 py-16">
-          <p className="text-sm text-muted">Loading payment status…</p>
+          <Skeleton className="h-3 w-20" />
+          <Skeleton className="mt-3 h-10 w-72 max-w-full" />
+          <Skeleton className="mt-4 h-4 w-full" />
+          <StatusCardSkeleton />
         </main>
       }
     >

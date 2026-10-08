@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import Link from 'next/link';
 import {
   COMPONENT_SLOTS,
@@ -7,8 +8,10 @@ import {
   SITE_NAME,
   websiteJsonLd,
 } from '@vorqen/types';
-import { ProductCard, productGridClass } from '@/components/shared/ProductCard';
+import { ProductCard } from '@/components/shared/ProductCard';
+import { productGridClass } from '@/components/shared/product-grid';
 import { JsonLd } from '@/components/shared/JsonLd';
+import { ProductGridSkeleton } from '@/components/shared/Skeleton';
 import { SectionHeader, sectionLinkClass } from '@/components/shared/SectionStates';
 import {
   fetchFeaturedProducts,
@@ -19,7 +22,10 @@ import {
   ConfiguratorTeaser,
 } from '@/features/storefront/ConfiguratorTeaser';
 import { HeroHardwareMedia } from '@/features/storefront/HeroHardwareMedia';
-import { PerformanceShowcase } from '@/features/storefront/PerformanceShowcase';
+import {
+  PerformanceShowcase,
+  PerformanceShowcaseSkeleton,
+} from '@/features/storefront/PerformanceShowcase';
 import { prisma } from '@/server/common/prisma';
 import { getHomepagePerformanceShowcase } from '@/server/performance';
 import { absoluteUrl, publicPageMetadata } from '@/server/seo';
@@ -69,12 +75,54 @@ const PROOF = [
   },
 ] as const;
 
-export default async function HomePage() {
-  const [featured, gpus, showcase] = await Promise.all([
-    safeFeatured(),
-    safeGpus(),
-    safeShowcase(),
-  ]);
+/* Data sections stream in behind skeletons so the hero paints immediately. */
+
+async function FeaturedGrid() {
+  const featured = await safeFeatured();
+  if (!featured || featured.items.length === 0) {
+    return (
+      <p className="text-sm text-muted">
+        Featured catalog will appear when the database is seeded.
+      </p>
+    );
+  }
+  return (
+    <div className={productGridClass}>
+      {featured.items.map((product, index) => (
+        <ProductCard
+          key={product.id}
+          product={product}
+          priority={index < 2}
+          imageSizes={IMAGE_SIZES.productCardDense}
+        />
+      ))}
+    </div>
+  );
+}
+
+async function GpuGrid() {
+  const gpus = await safeGpus();
+  if (!gpus || gpus.items.length === 0) {
+    return <p className="text-sm text-muted">GPU listings load from the catalog.</p>;
+  }
+  return (
+    <div className={productGridClass}>
+      {gpus.items.map((product) => (
+        <ProductCard
+          key={product.id}
+          product={product}
+          imageSizes={IMAGE_SIZES.productCardDense}
+        />
+      ))}
+    </div>
+  );
+}
+
+async function PerformanceSection() {
+  return <PerformanceShowcase showcase={await safeShowcase()} />;
+}
+
+export default function HomePage() {
   const origin = absoluteUrl('/');
 
   return (
@@ -170,25 +218,14 @@ export default async function HomePage() {
             </Link>
           }
         />
-        {featured && featured.items.length > 0 ? (
-          <div className={productGridClass}>
-            {featured.items.map((product, index) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                priority={index < 2}
-                imageSizes={IMAGE_SIZES.productCardDense}
-              />
-            ))}
-          </div>
-        ) : (
-          <p className="text-sm text-muted">
-            Featured catalog will appear when the database is seeded.
-          </p>
-        )}
+        <Suspense fallback={<ProductGridSkeleton count={4} label="Loading featured hardware" />}>
+          <FeaturedGrid />
+        </Suspense>
       </section>
 
-      <PerformanceShowcase showcase={showcase} />
+      <Suspense fallback={<PerformanceShowcaseSkeleton />}>
+        <PerformanceSection />
+      </Suspense>
 
       {/* GPUs */}
       <section className="mx-auto max-w-[1360px] px-4 pt-24 md:px-10 md:pt-32">
@@ -203,19 +240,9 @@ export default async function HomePage() {
             </Link>
           }
         />
-        {gpus && gpus.items.length > 0 ? (
-          <div className={productGridClass}>
-            {gpus.items.map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                imageSizes={IMAGE_SIZES.productCardDense}
-              />
-            ))}
-          </div>
-        ) : (
-          <p className="text-sm text-muted">GPU listings load from the catalog.</p>
-        )}
+        <Suspense fallback={<ProductGridSkeleton count={4} label="Loading GPUs" />}>
+          <GpuGrid />
+        </Suspense>
       </section>
 
       {/* Compare CTA */}

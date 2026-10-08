@@ -10,6 +10,7 @@ import {
 } from '@vorqen/types';
 import { Button } from '@/components/ui/button';
 import { EmptyState, ErrorState } from '@/components/shared/SectionStates';
+import { ListSkeleton } from '@/components/shared/Skeleton';
 import { graphqlRequest } from '@/lib/graphql-client';
 import { getErrorMessage } from '@/lib/errors';
 
@@ -152,7 +153,7 @@ export default function AddressesPage() {
   }
 
   if (loading) {
-    return <p className="text-sm text-muted">Loading addresses…</p>;
+    return <ListSkeleton rows={3} label="Loading addresses" />;
   }
 
   if (error && items.length === 0) {

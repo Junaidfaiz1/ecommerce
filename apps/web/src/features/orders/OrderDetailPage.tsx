@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { EmptyState, ErrorState } from '@/components/shared/SectionStates';
+import { OrderDetailSkeleton } from '@/components/shared/Skeleton';
 import { Price } from '@/components/shared/Price';
 import { graphqlRequest, GraphQLClientError } from '@/lib/graphql-client';
 import { getErrorMessage } from '@/lib/errors';
@@ -67,7 +68,7 @@ export function OrderDetailPage({ orderId }: { orderId: string }) {
   }
 
   if (loading) {
-    return <p className="text-sm text-muted">Loading order…</p>;
+    return <OrderDetailSkeleton />;
   }
 
   if (error && !order) {

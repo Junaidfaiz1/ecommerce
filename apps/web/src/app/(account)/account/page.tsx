@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { updateProfileInputSchema } from '@vorqen/types';
 import { Button } from '@/components/ui/button';
 import { ErrorState } from '@/components/shared/SectionStates';
+import { FormSkeleton } from '@/components/shared/Skeleton';
 import { graphqlRequest } from '@/lib/graphql-client';
 import { getErrorMessage } from '@/lib/errors';
 
@@ -110,7 +111,7 @@ export default function AccountProfilePage() {
   }
 
   if (loading) {
-    return <p className="text-sm text-muted">Loading account…</p>;
+    return <FormSkeleton fields={3} label="Loading account" />;
   }
 
   if (error && !me) {

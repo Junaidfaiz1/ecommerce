@@ -35,20 +35,6 @@ export function AuthShell({ eyebrow, title, subtitle, children }: AuthShellProps
             Save builds, checkout securely, and keep catalog prices on the
             server — never in the browser.
           </p>
-          <div className="mt-10 flex flex-wrap gap-3">
-            <div className="glass-panel rounded-2xl px-4 py-3">
-              <p className="font-display text-2xl">3D</p>
-              <p className="text-xs text-muted">Live builder chassis</p>
-            </div>
-            <div className="glass-panel rounded-2xl px-4 py-3">
-              <p className="font-display text-2xl">JWT</p>
-              <p className="text-xs text-muted">Secure session cookies</p>
-            </div>
-            <div className="glass-panel rounded-2xl px-4 py-3">
-              <p className="font-display text-2xl">Stripe</p>
-              <p className="text-xs text-muted">Webhook is paid truth</p>
-            </div>
-          </div>
         </div>
 
         <div className="glass-panel mx-auto w-full max-w-md rounded-md p-6 sm:p-8">

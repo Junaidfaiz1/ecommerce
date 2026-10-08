@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState, type FormEvent } from 'react';
+import { FormSkeleton } from '@/components/shared/Skeleton';
 import { useRouter } from 'next/navigation';
 import {
   PRODUCT_STATUSES,
@@ -263,7 +264,7 @@ export function ProductEditPage({ productId }: { productId?: string }) {
     }
   }
 
-  if (loading) return <p className="text-sm text-muted">Loading product…</p>;
+  if (loading) return <FormSkeleton fields={6} label="Loading product" />;
   if (error && isNew && brands.length === 0) return <ErrorState message={error} />;
 
   return (

@@ -1,6 +1,7 @@
 'use client';
 
 import { COMPONENT_SLOTS, type ComponentSlot } from '@vorqen/types';
+import { Skeleton } from '@/components/shared/Skeleton';
 import { CompatPanel } from './CompatPanel';
 import { PerformancePanel } from './PerformancePanel';
 import { useBuildPreview } from '../hooks';
@@ -29,11 +30,15 @@ export function BuilderSummary() {
     <aside className="flex w-full flex-col gap-7 border-t border-border bg-surface px-4 py-7 md:px-8 lg:w-[360px] lg:shrink-0 lg:border-t-0 lg:border-l lg:px-7 lg:py-8">
       <div className="flex flex-col gap-1">
         <p className="label-mono">Build total · server-priced</p>
-        <p className="font-display text-[48px] leading-[1.05] font-extrabold tabular-nums [font-stretch:115%]">
-          {parts.length === 0
-            ? formatMoney('0')
-            : formatMoney(preview?.totalPrice, preview?.currency)}
-        </p>
+        {parts.length > 0 && !preview && pending ? (
+          <Skeleton className="my-1.5 h-11 w-44" />
+        ) : (
+          <p className="font-display text-[48px] leading-[1.05] font-extrabold tabular-nums [font-stretch:115%]">
+            {parts.length === 0
+              ? formatMoney('0')
+              : formatMoney(preview?.totalPrice, preview?.currency)}
+          </p>
+        )}
         <p className="font-mono text-xs text-subtle" aria-live="polite">
           {pending ? 'Updating…' : 'Live total from server'}
         </p>

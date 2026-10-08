@@ -1,6 +1,7 @@
 'use client';
 
 import { Suspense, useState, type FormEvent } from 'react';
+import { FormSkeleton } from '@/components/shared/Skeleton';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { registerInputSchema } from '@vorqen/types';
@@ -134,7 +135,7 @@ export default function RegisterPage() {
       title="Create account"
       subtitle="Save builds, sync wishlist, and check out with Stripe."
     >
-      <Suspense fallback={<p className="mt-8 text-sm text-muted">Loading…</p>}>
+      <Suspense fallback={<FormSkeleton fields={2} label="Loading form" className="mt-8" />}>
         <RegisterForm />
       </Suspense>
     </AuthShell>

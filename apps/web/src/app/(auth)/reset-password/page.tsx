@@ -1,6 +1,7 @@
 'use client';
 
 import { Suspense, useMemo, useState, type FormEvent } from 'react';
+import { FormSkeleton } from '@/components/shared/Skeleton';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { resetPasswordInputSchema } from '@vorqen/types';
@@ -78,7 +79,7 @@ export default function ResetPasswordPage() {
       title="Choose a new password"
       subtitle="Pick a strong password, then sign in again."
     >
-      <Suspense fallback={<p className="mt-8 text-sm text-muted">Loading…</p>}>
+      <Suspense fallback={<FormSkeleton fields={2} label="Loading form" className="mt-8" />}>
         <ResetPasswordForm />
       </Suspense>
       <p className="mt-6 text-sm text-muted">

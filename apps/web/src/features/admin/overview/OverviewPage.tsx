@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { DashboardSkeleton } from '@/components/shared/Skeleton';
 import Link from 'next/link';
 import { ANALYTICS_RANGES, type AnalyticsRange } from '@vorqen/types';
 import { ErrorState } from '@/components/shared/SectionStates';
@@ -114,7 +115,7 @@ export function AdminOverviewPage() {
 
   if (error) return <ErrorState message={error} />;
   if (!overview || !analytics) {
-    return <p className="text-sm text-muted">Loading ops snapshot…</p>;
+    return <DashboardSkeleton />;
   }
 
   const kpis = analytics.kpis;

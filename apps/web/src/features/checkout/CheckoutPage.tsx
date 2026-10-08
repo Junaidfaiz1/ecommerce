@@ -7,6 +7,7 @@ import { Elements } from '@stripe/react-stripe-js';
 import { createAddressInputSchema } from '@vorqen/types';
 import { Price } from '@/components/shared/Price';
 import { EmptyState, ErrorState } from '@/components/shared/SectionStates';
+import { CommercePageSkeleton } from '@/components/shared/Skeleton';
 import { Button } from '@/components/ui/button';
 import { graphqlRequest } from '@/lib/graphql-client';
 import { getErrorMessage } from '@/lib/errors';
@@ -122,11 +123,7 @@ export function CheckoutPage() {
   }
 
   if (cart === undefined && !error) {
-    return (
-      <main className="mx-auto max-w-6xl px-4 py-10 md:px-8 md:py-14">
-        <p className="text-sm text-muted">Loading checkout…</p>
-      </main>
-    );
+    return <CommercePageSkeleton label="Loading checkout" rows={2} />;
   }
 
   if (error && !cart) {

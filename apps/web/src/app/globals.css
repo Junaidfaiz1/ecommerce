@@ -164,6 +164,29 @@
     text-transform: uppercase;
     color: var(--color-muted);
   }
+
+  /* Loading placeholder — a slow light sweep across an elevated block. */
+  .skeleton {
+    background-color: var(--color-elevated);
+    background-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgb(255 255 255 / 0.05) 50%,
+      transparent 100%
+    );
+    background-size: 200% 100%;
+    background-repeat: no-repeat;
+    animation: skeleton-sweep 1.4s ease-in-out infinite;
+  }
+}
+
+@keyframes skeleton-sweep {
+  from {
+    background-position: 150% 0;
+  }
+  to {
+    background-position: -50% 0;
+  }
 }
 
 @keyframes fade-up {
@@ -195,7 +218,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .animate-fade-up {
+  .animate-fade-up,
+  .skeleton {
     animation: none;
   }
 }

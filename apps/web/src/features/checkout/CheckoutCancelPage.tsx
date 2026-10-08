@@ -2,6 +2,7 @@
 
 import { Suspense } from 'react';
 import Link from 'next/link';
+import { Skeleton, SkeletonRegion } from '@/components/shared/Skeleton';
 import { useSearchParams } from 'next/navigation';
 
 function CancelBody() {
@@ -48,7 +49,12 @@ export function CheckoutCancelPage() {
     <Suspense
       fallback={
         <main className="mx-auto max-w-xl px-4 py-16">
-          <p className="text-sm text-muted">Loading…</p>
+          <SkeletonRegion label="Loading" className="flex flex-col gap-3">
+            <Skeleton className="h-3 w-20" />
+            <Skeleton className="h-10 w-72 max-w-full" />
+            <Skeleton className="h-4 w-full" />
+            <Skeleton className="mt-5 h-10 w-40 rounded-full" />
+          </SkeletonRegion>
         </main>
       }
     >

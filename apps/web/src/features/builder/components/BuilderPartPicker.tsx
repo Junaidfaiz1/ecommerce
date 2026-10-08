@@ -10,6 +10,7 @@ import {
   type CatalogPick,
 } from '../hooks';
 import { slotLabel, useBuilderStore } from '../store';
+import { PartOptionsSkeleton } from './BuilderSkeleton';
 
 type Props = {
   slot: ComponentSlot;
@@ -66,14 +67,19 @@ export function BuilderPartPicker({ slot }: Props) {
       ) : null}
 
       {pending && items.length === 0 ? (
-        <p className="text-sm text-muted">Loading parts…</p>
+        <PartOptionsSkeleton />
       ) : null}
 
       {!pending && items.length === 0 && !error ? (
         <p className="text-sm text-muted">No active products in this category yet.</p>
       ) : null}
 
-      <ul className="flex flex-col divide-y divide-border overflow-hidden rounded-md border border-border">
+      <ul
+        className={cn(
+          'flex flex-col divide-y divide-border overflow-hidden rounded-md border border-border',
+          items.length === 0 && 'hidden',
+        )}
+      >
         {items.map((product) => {
           const active = selectedIds.has(product.id);
           const variant = product.defaultVariant;

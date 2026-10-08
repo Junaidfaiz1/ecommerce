@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { TableSkeleton } from '@/components/shared/Skeleton';
 import { AUDIT_ACTIONS, AUDIT_ENTITY_TYPES } from '@vorqen/types';
 import { ErrorState } from '@/components/shared/SectionStates';
 import { graphqlRequest } from '@/lib/graphql-client';
@@ -33,7 +34,10 @@ export function AdminAuditPage() {
   const [items, setItems] = useState<Row[]>([]);
   const [pageInfo, setPageInfo] = useState<PageInfo | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
+  const requestKey = JSON.stringify([page, action, entityType]);
+  const [loadedKey, setLoadedKey] = useState<string | null>(null);
+  /** True until the response for the current filters arrives. */
+  const loading = loadedKey !== requestKey;
 
   useEffect(() => {
     let cancelled = false;
@@ -55,13 +59,13 @@ export function AdminAuditPage() {
       } catch (err) {
         if (!cancelled) setError(getErrorMessage(err));
       } finally {
-        if (!cancelled) setLoading(false);
+        if (!cancelled) setLoadedKey(requestKey);
       }
     })();
     return () => {
       cancelled = true;
     };
-  }, [page, action, entityType]);
+  }, [page, action, entityType, requestKey]);
 
   return (
     <div>
@@ -106,8 +110,8 @@ export function AdminAuditPage() {
           </select>
         </Field>
       </div>
-      {loading && items.length === 0 && !error ? (
-        <p className="text-sm text-muted">Loading audit log…</p>
+      {loading ? (
+        <TableSkeleton cols={4} label="Loading audit log" />
       ) : items.length === 0 && !error ? (
         <AdminEmptyState
           title={action || entityType ? 'No matching audit rows' : 'No audit rows yet'}

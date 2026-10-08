@@ -1,3 +1,5 @@
+import { Suspense } from 'react';
+import Form from 'next/form';
 import Link from 'next/link';
 import {
   PRODUCT_SORTS,
@@ -6,8 +8,10 @@ import {
   type ProductSort,
   type ProductType,
 } from '@vorqen/types';
-import { ProductCard, productGridClass } from '@/components/shared/ProductCard';
+import { ProductCard } from '@/components/shared/ProductCard';
+import { productGridClass } from '@/components/shared/product-grid';
 import { EmptyState, ErrorState } from '@/components/shared/SectionStates';
+import { ProductGridSkeleton, Skeleton } from '@/components/shared/Skeleton';
 import {
   fetchCatalogList,
   fetchShopMeta,
@@ -97,24 +101,12 @@ export default async function ShopPage({
 
   let brands: Awaited<ReturnType<typeof fetchShopMeta>>['brands'] = [];
   let categories: Awaited<ReturnType<typeof fetchShopMeta>>['categories'] = [];
-  let catalog: Awaited<ReturnType<typeof fetchCatalogList>> | null = null;
-  let loadError: string | null = null;
-
   try {
-    const [meta, list] = await Promise.all([
-      fetchShopMeta(),
-      parsed.success
-        ? fetchCatalogList(parsed.data)
-        : Promise.resolve(null),
-    ]);
+    const meta = await fetchShopMeta();
     brands = meta.brands;
     categories = meta.categories;
-    catalog = list;
-    if (!parsed.success) {
-      loadError = parsed.error.issues[0]?.message ?? 'Invalid filters.';
-    }
   } catch {
-    loadError = 'Catalog is temporarily unavailable. Try again shortly.';
+    // Filters degrade to "All"; results below report the outage.
   }
 
   const activeType =
@@ -169,8 +161,8 @@ export default async function ShopPage({
       </nav>
 
       <div className="flex flex-wrap items-start gap-10 pt-8">
-        <form
-          method="get"
+        <Form
+          action="/shop"
           aria-label="Filter products"
           className="flex w-full flex-col gap-7 lg:max-w-[280px] lg:flex-[1_1_240px]"
         >
@@ -275,67 +267,103 @@ export default async function ShopPage({
               Open builder
             </Link>
           </div>
-        </form>
+        </Form>
 
         <div className="flex min-w-0 flex-[999_1_640px] flex-col gap-5">
-          {loadError ? (
-            <ErrorState message={loadError} />
-          ) : catalog && catalog.items.length === 0 ? (
-            <EmptyState
-              title="No products match"
-              description="Try clearing filters or searching a different term."
-              action={
-                <Link href="/shop" className="text-sm text-accent">
-                  Reset filters
-                </Link>
-              }
+          {parsed.success ? (
+            <Suspense
+              key={JSON.stringify(parsed.data)}
+              fallback={<ShopResultsSkeleton />}
+            >
+              <ShopResults input={parsed.data} baseParams={baseParams} />
+            </Suspense>
+          ) : (
+            <ErrorState
+              message={parsed.error.issues[0]?.message ?? 'Invalid filters.'}
             />
-          ) : catalog ? (
-            <>
-              <p className="label-mono">
-                {catalog.pageInfo.totalCount} results · page{' '}
-                {catalog.pageInfo.page} of{' '}
-                {Math.max(1, catalog.pageInfo.totalPages)}
-              </p>
-              <div className={productGridClass}>
-                {catalog.items.map((product, index) => (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                    priority={index < 3}
-                  />
-                ))}
-              </div>
-              <div className="mt-4 flex items-center justify-between gap-4">
-                {catalog.pageInfo.hasPreviousPage ? (
-                  <Link
-                    href={`/shop${buildQuery({
-                      ...baseParams,
-                      page: String(catalog.pageInfo.page - 1),
-                    })}`}
-                    className="inline-flex h-11 items-center rounded-full border border-border-strong px-5 text-sm hover:border-foreground"
-                  >
-                    ← Previous
-                  </Link>
-                ) : (
-                  <span />
-                )}
-                {catalog.pageInfo.hasNextPage ? (
-                  <Link
-                    href={`/shop${buildQuery({
-                      ...baseParams,
-                      page: String(catalog.pageInfo.page + 1),
-                    })}`}
-                    className="inline-flex h-11 items-center rounded-full border border-border-strong px-5 text-sm hover:border-foreground"
-                  >
-                    Next →
-                  </Link>
-                ) : null}
-              </div>
-            </>
-          ) : null}
+          )}
         </div>
       </div>
     </main>
+  );
+}
+
+type ShopResultsProps = {
+  input: Parameters<typeof fetchCatalogList>[0];
+  baseParams: Record<string, string | undefined>;
+};
+
+function ShopResultsSkeleton() {
+  return (
+    <>
+      <Skeleton className="h-3 w-40" />
+      <ProductGridSkeleton count={6} label="Searching products" />
+    </>
+  );
+}
+
+/** Streams in behind a skeleton; re-suspends whenever the filters change. */
+async function ShopResults({ input, baseParams }: ShopResultsProps) {
+  let catalog: Awaited<ReturnType<typeof fetchCatalogList>>;
+  try {
+    catalog = await fetchCatalogList(input);
+  } catch {
+    return (
+      <ErrorState message="Catalog is temporarily unavailable. Try again shortly." />
+    );
+  }
+
+  if (catalog.items.length === 0) {
+    return (
+      <EmptyState
+        title="No products match"
+        description="Try clearing filters or searching a different term."
+        action={
+          <Link href="/shop" className="text-sm text-accent">
+            Reset filters
+          </Link>
+        }
+      />
+    );
+  }
+
+  return (
+    <>
+      <p className="label-mono">
+        {catalog.pageInfo.totalCount} results · page {catalog.pageInfo.page} of{' '}
+        {Math.max(1, catalog.pageInfo.totalPages)}
+      </p>
+      <div className={productGridClass}>
+        {catalog.items.map((product, index) => (
+          <ProductCard key={product.id} product={product} priority={index < 3} />
+        ))}
+      </div>
+      <div className="mt-4 flex items-center justify-between gap-4">
+        {catalog.pageInfo.hasPreviousPage ? (
+          <Link
+            href={`/shop${buildQuery({
+              ...baseParams,
+              page: String(catalog.pageInfo.page - 1),
+            })}`}
+            className="inline-flex h-11 items-center rounded-full border border-border-strong px-5 text-sm hover:border-foreground"
+          >
+            ← Previous
+          </Link>
+        ) : (
+          <span />
+        )}
+        {catalog.pageInfo.hasNextPage ? (
+          <Link
+            href={`/shop${buildQuery({
+              ...baseParams,
+              page: String(catalog.pageInfo.page + 1),
+            })}`}
+            className="inline-flex h-11 items-center rounded-full border border-border-strong px-5 text-sm hover:border-foreground"
+          >
+            Next →
+          </Link>
+        ) : null}
+      </div>
+    </>
   );
 }

@@ -41,7 +41,8 @@ packages/
 | `RatingStars` | Cards, PDP, reviews (read) + write-review picker (`onChange`) |
 | `StockBadge` | Cards, PDP, admin inventory |
 | `QuantityStepper` | Cart, checkout, PDP |
-| `EmptyState` / `ErrorState` / `Skeleton*` | Lists, builder, account |
+| `EmptyState` / `ErrorState` | Lists, builder, account |
+| `Skeleton` family (`components/shared/Skeleton.tsx`) | All loading states — see below |
 | `SectionHeader` | Marketing + store sections |
 | `CompareToggle` / `WishlistToggle` | Cards, PDP |
 | `AddToCartButton` / `QuantityStepper` | Cards, PDP, cart |
@@ -50,6 +51,29 @@ packages/
 | `HeroHardwareMedia` | Homepage hero catalog photos |
 | `JsonLd` | Homepage, PDP structured data |
 | `ConfiguratorTeaser` / `PerformanceShowcase` / `HeroHardwareMedia` | Homepage (`features/storefront`) |
+
+## Loading skeletons
+
+No "Loading…" text on data surfaces — render a skeleton shaped like the content.
+
+| Skeleton | Use for |
+|----------|---------|
+| `Skeleton` / `SkeletonText` | Primitive blocks (`.skeleton` sweep, reduced-motion safe) |
+| `SkeletonRegion` | Wrap a group: one `role="status"` + sr-only label |
+| `ProductGridSkeleton` / `ProductCardSkeleton` | Home grids, shop results |
+| `MediaListSkeleton` / `CommercePageSkeleton` | Cart, checkout, wishlist, builder options |
+| `ListSkeleton` | Orders, builds, addresses |
+| `FormSkeleton` | Account profile, auth forms, admin product edit |
+| `SummarySkeleton` / `OrderDetailSkeleton` | Order + checkout summaries (account and admin) |
+| `TableSkeleton` / `DashboardSkeleton` | Admin lists, admin overview |
+| `ProductDetailSkeleton`, `BuilderSkeleton`, `PerformanceShowcaseSkeleton` | Feature-specific page frames |
+
+Patterns:
+
+- **Route level:** `loading.tsx` in `(store)`, `shop`, product routes, `compare`, `account`, `admin`.
+- **Server sections:** stream with `<Suspense fallback={…Skeleton}>`; key the boundary by the filters (shop results) so every search shows the skeleton again.
+- **Client fetches:** derive `loading` from a request key (`loadedKey !== requestKey`) so refetches on filter/search change show the skeleton; debounce typed queries with `useDebouncedValue` (`src/hooks`).
+- `productGridClass` lives in `components/shared/product-grid.ts` — never export plain constants from a `'use client'` file for server components.
 
 ## API guidelines
 

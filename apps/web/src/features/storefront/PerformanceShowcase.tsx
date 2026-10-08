@@ -2,7 +2,42 @@ import Link from 'next/link';
 import type { HomepagePerformanceShowcase } from '@/server/performance';
 import { productHref } from '@/features/products/product-path';
 import { sectionLinkClass } from '@/components/shared/SectionStates';
+import { Skeleton, SkeletonRegion } from '@/components/shared/Skeleton';
 import { cn } from '@/lib/utils';
+
+/** Same footprint as `PerformanceShowcase` while benchmark samples load. */
+export function PerformanceShowcaseSkeleton() {
+  return (
+    <section className="mx-auto max-w-[1360px] px-4 pt-24 md:px-10 md:pt-32">
+      <SkeletonRegion
+        label="Loading performance estimates"
+        className="grid items-start gap-12 lg:grid-cols-2 lg:gap-16"
+      >
+        <div aria-hidden className="flex flex-col gap-5">
+          <Skeleton className="h-3 w-36" />
+          <Skeleton className="h-10 w-full max-w-md md:h-12" />
+          <Skeleton className="h-10 w-4/5 max-w-sm md:h-12" />
+          <Skeleton className="h-4 w-full max-w-md" />
+          <Skeleton className="h-16 w-full max-w-md" />
+        </div>
+        <div aria-hidden className="flex flex-col gap-6 rounded-md border border-border p-6 md:p-7">
+          <div className="flex justify-between">
+            <Skeleton className="h-3 w-32" />
+            <Skeleton className="h-3 w-24" />
+          </div>
+          {['w-[88%]', 'w-[62%]', 'w-[38%]'].map((w) => (
+            <div key={w} className="grid grid-cols-[72px_minmax(0,1fr)_64px] items-center gap-4">
+              <Skeleton className="h-3.5 w-12" />
+              <Skeleton className={cn('h-7', w)} />
+              <Skeleton className="ml-auto h-5 w-10" />
+            </div>
+          ))}
+          <Skeleton className="h-3 w-3/4" />
+        </div>
+      </SkeletonRegion>
+    </section>
+  );
+}
 
 type Props = {
   showcase: HomepagePerformanceShowcase | null;

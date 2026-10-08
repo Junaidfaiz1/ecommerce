@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { BrandMark } from '@vorqen/ui';
 import { cn } from '@/lib/utils';
+import { Skeleton, SkeletonRegion } from '@/components/shared/Skeleton';
 import { graphqlRequest, GraphQLClientError } from '@/lib/graphql-client';
 import { ADMIN_ME } from './graphql';
 
@@ -93,7 +94,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
                 className={cn(
                   'flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] transition',
                   active
-                    ? 'bg-accent text-cream shadow-[0_0_24px_rgb(255_92_138_/_0.25)]'
+                    ? 'bg-accent font-medium text-ink'
                     : 'text-muted hover:bg-white/6 hover:text-cream',
                 )}
               >
@@ -111,8 +112,17 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
             <ArrowLeft className="size-4 shrink-0" />
             Back to website
           </Link>
-          <p className="mt-3 truncate px-1 text-[11px] text-cream">{email}</p>
-          <p className="px-1 font-mono text-[11px] text-muted uppercase">{role}</p>
+          {email ? (
+            <>
+              <p className="mt-3 truncate px-1 text-[11px] text-cream">{email}</p>
+              <p className="px-1 font-mono text-[11px] text-muted uppercase">{role}</p>
+            </>
+          ) : (
+            <SkeletonRegion label="Loading account" className="mt-3 flex flex-col gap-1.5 px-1">
+              <Skeleton className="h-3 w-4/5" />
+              <Skeleton className="h-2.5 w-12" />
+            </SkeletonRegion>
+          )}
         </div>
       </aside>
       <div className="flex min-w-0 flex-1 flex-col">

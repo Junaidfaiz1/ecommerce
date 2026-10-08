@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { EmptyState, ErrorState } from '@/components/shared/SectionStates';
+import { ListSkeleton } from '@/components/shared/Skeleton';
 import { Price } from '@/components/shared/Price';
 import { graphqlRequest } from '@/lib/graphql-client';
 import { getErrorMessage } from '@/lib/errors';
@@ -65,7 +66,7 @@ export default function AccountBuildsPage() {
   }, [router]);
 
   if (loading) {
-    return <p className="text-sm text-muted">Loading builds…</p>;
+    return <ListSkeleton rows={3} label="Loading builds" />;
   }
 
   if (error) {

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, type FormEvent } from 'react';
+import { TableSkeleton } from '@/components/shared/Skeleton';
 import { COUPON_TYPES, upsertAdminCouponInputSchema } from '@vorqen/types';
 import { Button } from '@/components/ui/button';
 import { ErrorState } from '@/components/shared/SectionStates';
@@ -112,7 +113,7 @@ export function AdminCouponsPage() {
         </Button>
       </form>
       {loading && items.length === 0 ? (
-        <p className="text-sm text-muted">Loading coupons…</p>
+        <TableSkeleton rows={4} cols={4} label="Loading coupons" />
       ) : items.length === 0 ? (
         <AdminEmptyState
           title="No coupons yet"

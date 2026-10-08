@@ -7,6 +7,7 @@ import { StockBadge } from '@/components/shared/StockBadge';
 import { QuantityStepper } from '@/components/shared/QuantityStepper';
 import { CatalogImage } from '@/components/shared/CatalogImage';
 import { EmptyState, ErrorState } from '@/components/shared/SectionStates';
+import { CommercePageSkeleton } from '@/components/shared/Skeleton';
 import { Button } from '@/components/ui/button';
 import { graphqlRequest } from '@/lib/graphql-client';
 import { getErrorMessage } from '@/lib/errors';
@@ -120,11 +121,7 @@ export function CartPage() {
   }
 
   if (cart === undefined && !error) {
-    return (
-      <main className="mx-auto max-w-6xl px-4 py-10 md:px-8 md:py-14">
-        <p className="text-sm text-muted">Loading cart…</p>
-      </main>
-    );
+    return <CommercePageSkeleton label="Loading cart" />;
   }
 
   if (error && !cart) {

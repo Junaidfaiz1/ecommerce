@@ -72,6 +72,26 @@ Storefront re-skinned from night glassmorphism to the "Instrument" direction (se
 | `pnpm lint` | 1 error + 2 warnings, all pre-existing in untouched files (`ProductMediaPanel.tsx` ref-in-render, `SignOutButton.tsx`) |
 | Next dev server | Starts; home, shop, build checked at desktop + mobile (no DB, empty/error states) |
 
+## Skeleton loading (2026-10-08, user-requested)
+
+All "Loading…" text replaced with shaped skeletons (`components/shared/Skeleton.tsx`, documented in `docs/components.md`).
+
+| Area | Change |
+|------|--------|
+| Routes | `loading.tsx` for store group, shop, both product routes, compare, account, admin |
+| Home / shop | Product grids + FPS section stream behind `Suspense`; shop results keyed by filters; filter form uses `next/form` (soft navigation) |
+| Builder | Page, part options, total, compatibility and FPS skeletons |
+| Commerce / account / auth | Cart, checkout, success/cancel, wishlist, orders, builds, addresses, profile, auth form fallbacks |
+| Admin | Tables (catalog, orders, customers, inventory, reviews, audit, coupons, bundles), product edit, order detail, overview, sidebar identity |
+| Fixes | Admin lists never re-entered loading on search/filter — now derived from a request key, queries debounced 300 ms; `productGridClass` moved out of a `'use client'` module (was a client reference in server pages); hairline grid no longer paints grey empty cells |
+
+| Check | Result |
+|-------|--------|
+| `pnpm typecheck` | Pass |
+| `pnpm test` | Pass (193 pass, 1 skipped) |
+| `pnpm lint` | Same 3 pre-existing issues only (`ProductMediaPanel.tsx`, `SignOutButton.tsx`) |
+| Dev server | Home, shop (search), build, compare, cart, wishlist, login → 200; skeleton fallbacks stream then resolve |
+
 ## Phase 18 verification
 
 | Check | Result |

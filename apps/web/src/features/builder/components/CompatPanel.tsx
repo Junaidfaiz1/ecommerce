@@ -2,6 +2,7 @@
 
 import type { CompatibilityResult } from '@vorqen/types';
 import { cn } from '@/lib/utils';
+import { Skeleton, SkeletonRegion } from '@/components/shared/Skeleton';
 
 type Props = {
   compatibility: CompatibilityResult | null;
@@ -48,9 +49,15 @@ export function CompatPanel({ compatibility, pending, className }: Props) {
 
   if (!compatibility) {
     return (
-      <div className={cn('text-sm text-muted', className)} aria-live="polite">
-        Checking…
-      </div>
+      <SkeletonRegion
+        label="Checking compatibility"
+        className={cn('flex flex-col gap-3', className)}
+      >
+        <Skeleton className="h-1.5 w-full" />
+        <Skeleton className="h-3 w-32" />
+        <Skeleton className="h-3.5 w-4/5" />
+        <Skeleton className="h-3.5 w-3/5" />
+      </SkeletonRegion>
     );
   }
 

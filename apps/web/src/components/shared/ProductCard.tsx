@@ -43,13 +43,6 @@ export type ProductCardData = {
   cooler?: { coolerType: string; tdpRatingWatts: number | null } | null;
 };
 
-/**
- * Hairline tile grid — cards sit edge to edge, separated by 1px rules.
- * Pair with `ProductCard` children.
- */
-export const productGridClass =
-  'grid grid-cols-[repeat(auto-fill,minmax(min(100%,260px),1fr))] gap-px border border-border bg-border';
-
 type ProductCardProps = {
   product: ProductCardData;
   className?: string;
