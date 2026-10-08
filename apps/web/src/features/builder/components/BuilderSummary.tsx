@@ -26,21 +26,21 @@ export function BuilderSummary() {
   );
 
   return (
-    <aside className="flex h-full flex-col gap-6 rounded-3xl glass-panel p-4 lg:p-6">
-      <div>
-        <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted">
-          Build summary
+    <aside className="flex w-full flex-col gap-7 border-t border-border bg-surface px-4 py-7 md:px-8 lg:w-[360px] lg:shrink-0 lg:border-t-0 lg:border-l lg:px-7 lg:py-8">
+      <div className="flex flex-col gap-1">
+        <p className="label-mono">Build total · server-priced</p>
+        <p className="font-display text-[48px] leading-[1.05] font-extrabold tabular-nums [font-stretch:115%]">
+          {parts.length === 0
+            ? formatMoney('0')
+            : formatMoney(preview?.totalPrice, preview?.currency)}
         </p>
-        <p className="mt-2 font-display text-3xl tracking-tight tabular-nums">
-          {formatMoney(preview?.totalPrice, preview?.currency)}
-        </p>
-        <p className="mt-1 text-xs text-muted">
+        <p className="font-mono text-xs text-subtle" aria-live="polite">
           {pending ? 'Updating…' : 'Live total from server'}
         </p>
-        {error ? <p className="mt-2 text-sm text-red-400">{error}</p> : null}
+        {error ? <p className="mt-2 text-sm text-accent">{error}</p> : null}
       </div>
 
-      <ul className="space-y-2 text-sm">
+      <ul className="flex flex-col text-sm">
         {orderedSlots.length === 0 ? (
           <li className="text-muted">No parts selected yet.</li>
         ) : (
@@ -54,22 +54,23 @@ export function BuilderSummary() {
                 return (
                   <li
                     key={`${part.slot}-${part.productId}`}
-                    className="flex items-start justify-between gap-2 border-b border-border/50 pb-2"
+                    className="flex items-start justify-between gap-3 border-b border-border py-2.5"
                   >
                     <div className="min-w-0">
-                      <p className="font-mono text-[10px] uppercase tracking-wider text-muted">
+                      <p className="label-mono">
                         {slotLabel(part.slot as ComponentSlot)}
                       </p>
                       <p className="truncate">{part.productName}</p>
                     </div>
                     <div className="shrink-0 text-right">
-                      <p className="font-mono text-xs">
+                      <p className="font-mono text-xs tabular-nums">
                         {formatMoney(line?.lineTotal ?? part.unitPrice)}
                       </p>
                       <button
                         type="button"
                         onClick={() => removePart(part.slot, part.productId)}
-                        className="mt-1 text-[11px] text-muted hover:text-foreground"
+                        className="mt-0.5 text-xs text-subtle hover:text-foreground"
+                        aria-label={`Remove ${part.productName}`}
                       >
                         Remove
                       </button>

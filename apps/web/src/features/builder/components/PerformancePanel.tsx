@@ -8,7 +8,7 @@ export function PerformancePanel() {
   return (
     <div className="space-y-3 text-sm">
       <div className="flex items-baseline justify-between gap-2">
-        <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted">
+        <span className="label-mono">
           Performance
         </span>
         <span className="text-[11px] text-muted">Estimated</span>
@@ -18,7 +18,7 @@ export function PerformancePanel() {
         <p className="text-muted">Choose a CPU and GPU for FPS estimates.</p>
       ) : null}
 
-      {error ? <p className="text-red-400">{error}</p> : null}
+      {error ? <p className="text-accent">{error}</p> : null}
 
       {result?.missing ? (
         <p className="text-muted">{result.message}</p>
@@ -29,7 +29,7 @@ export function PerformancePanel() {
           {result.estimates.map((row) => (
             <li
               key={`${row.gameId}-${row.resolution}-${row.quality}`}
-              className="flex items-end justify-between gap-3 border-b border-border/60 pb-2"
+              className="flex items-end justify-between gap-3 border-b border-border pb-2"
             >
               <div>
                 <p className="font-medium">{row.gameName}</p>
@@ -37,7 +37,7 @@ export function PerformancePanel() {
                   {row.resolution} · {row.quality}
                 </p>
               </div>
-              <p className="font-display text-xl tabular-nums tracking-tight">
+              <p className="font-display text-xl font-bold tabular-nums [font-stretch:112%]">
                 ~{Math.round(row.avgFps)}
                 <span className="ml-1 text-xs font-sans text-muted">FPS</span>
               </p>

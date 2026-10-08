@@ -269,7 +269,7 @@ export function CartPage() {
             </ul>
           </section>
 
-          <aside className="h-fit rounded-3xl glass-panel p-6">
+          <aside className="h-fit rounded-md glass-panel p-6">
             <h2 className="font-display text-xl tracking-tight">Summary</h2>
             <dl className="mt-6 space-y-3 text-sm">
               <div className="flex justify-between gap-4">

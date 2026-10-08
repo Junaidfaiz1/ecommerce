@@ -52,6 +52,26 @@
 - `apps/web/src/server/*` — domain services
 - No `apps/api`
 
+## Design refresh — "Instrument" (2026-10-08, out-of-phase, user-requested)
+
+Storefront re-skinned from night glassmorphism to the "Instrument" direction (see `docs/ui-design.md`). No server, pricing or compatibility logic changed.
+
+| Area | Change |
+|------|--------|
+| Tokens / fonts | Graphite palette + signal orange; Archivo (wdth) / Instrument Sans / JetBrains Mono; CSS moved into `@layer base` / `@layer components` |
+| Shell | Full-width navbar, cart pill, oversized-wordmark footer; orb background removed |
+| Home | Hero + spec readout, proof strip, `ConfiguratorTeaser` (replaces `HowItWorks`), FPS bars |
+| Shop / PDP | Type pills + side filters, hairline product grid; crop-marked gallery, buy column |
+| Builder | Slot rail, photo stage + option list, server-priced summary with power meter |
+| Bug fix | `.gitignore` `build` rule hid `app/(store)/build/` — route restored, rule now `/build` |
+
+| Check | Result |
+|-------|--------|
+| `pnpm typecheck` | Pass |
+| `pnpm test` | Pass (193 pass, 1 skipped) |
+| `pnpm lint` | 1 error + 2 warnings, all pre-existing in untouched files (`ProductMediaPanel.tsx` ref-in-render, `SignOutButton.tsx`) |
+| Next dev server | Starts; home, shop, build checked at desktop + mobile (no DB, empty/error states) |
+
 ## Phase 18 verification
 
 | Check | Result |

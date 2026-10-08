@@ -69,7 +69,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex min-h-screen bg-background text-foreground">
-      <aside className="hidden w-60 shrink-0 flex-col border-r border-white/8 bg-[#0b1024] md:flex">
+      <aside className="hidden w-60 shrink-0 flex-col border-r border-white/8 bg-surface md:flex">
         <div className="border-b border-white/8 px-5 py-5">
           <Link href="/admin" className="text-cream">
             <BrandMark />

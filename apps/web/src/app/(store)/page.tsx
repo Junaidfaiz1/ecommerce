@@ -1,20 +1,24 @@
 import Link from 'next/link';
 import {
+  COMPONENT_SLOTS,
   IMAGE_SIZES,
   organizationJsonLd,
   SITE_DESCRIPTION,
   SITE_NAME,
   websiteJsonLd,
 } from '@vorqen/types';
-import { ProductCard } from '@/components/shared/ProductCard';
+import { ProductCard, productGridClass } from '@/components/shared/ProductCard';
 import { JsonLd } from '@/components/shared/JsonLd';
-import { SectionHeader } from '@/components/shared/SectionStates';
+import { SectionHeader, sectionLinkClass } from '@/components/shared/SectionStates';
 import {
   fetchFeaturedProducts,
   fetchProductsByType,
 } from '@/features/products/catalog-data';
+import {
+  COMPATIBILITY_CHECKS,
+  ConfiguratorTeaser,
+} from '@/features/storefront/ConfiguratorTeaser';
 import { HeroHardwareMedia } from '@/features/storefront/HeroHardwareMedia';
-import { HowItWorks } from '@/features/storefront/HowItWorks';
 import { PerformanceShowcase } from '@/features/storefront/PerformanceShowcase';
 import { prisma } from '@/server/common/prisma';
 import { getHomepagePerformanceShowcase } from '@/server/performance';
@@ -28,7 +32,7 @@ export const metadata = publicPageMetadata({
 
 async function safeFeatured() {
   try {
-    return await fetchFeaturedProducts(8);
+    return await fetchFeaturedProducts(4);
   } catch {
     return null;
   }
@@ -49,6 +53,21 @@ async function safeShowcase() {
     return null;
   }
 }
+
+const PROOF = [
+  {
+    value: String(COMPATIBILITY_CHECKS.length),
+    body: 'compatibility rules run server-side on every change — socket, memory, clearance, wattage, cooler, form factor.',
+  },
+  {
+    value: String(COMPONENT_SLOTS.length),
+    body: 'component slots, from processor to cooling, with live price and power totals.',
+  },
+  {
+    value: '1',
+    body: 'source of truth — totals and stock are computed on the server, and Stripe charges that figure.',
+  },
+] as const;
 
 export default async function HomePage() {
   const [featured, gpus, showcase] = await Promise.all([
@@ -75,69 +94,89 @@ export default async function HomePage() {
           }),
         ]}
       />
-      <section className="px-3 pt-3 md:px-6">
-        <div className="hero-stage relative mx-auto min-h-[78vh] max-w-6xl overflow-hidden rounded-[2rem] md:rounded-[2.5rem]">
-          <div className="relative z-10 mx-auto grid items-center gap-10 px-5 py-14 md:grid-cols-2 md:px-12 md:py-20">
-            <div>
-              <p className="animate-fade-up mb-4 font-mono text-[11px] tracking-[0.22em] text-sage uppercase">
-                VORQEN · hardware lab
-              </p>
-              <h1 className="animate-fade-up font-display text-5xl leading-[0.92] tracking-tight md:text-7xl">
-                Shopping
-                <br />
-                to stay
-                <br />
-                <span className="bg-gradient-to-r from-sage via-cream to-accent bg-clip-text text-transparent">
-                  limitless.
-                </span>
-              </h1>
-              <p className="animate-fade-up mt-5 max-w-md text-base text-muted md:text-lg">
-                Configure high-performance machines with server-checked
-                compatibility and laboratory-grade hardware.
-              </p>
-              <div className="animate-fade-up mt-9 flex flex-wrap gap-3">
-                <Link
-                  href="/build"
-                  className="glass-btn rounded-full px-6 py-3 text-sm font-medium"
-                >
-                  Build Your PC
-                </Link>
-                <Link
-                  href="/shop"
-                  className="glass-panel rounded-full px-6 py-3 text-sm font-medium"
-                >
-                  Explore Hardware
-                </Link>
-              </div>
+
+      {/* Hero */}
+      <section className="mx-auto max-w-[1360px] px-4 pt-10 md:px-10 md:pt-16">
+        <div className="flex flex-wrap justify-between gap-3 font-mono text-xs tracking-[0.06em] text-muted uppercase">
+          <span>VQ / Hardware laboratory</span>
+          <span>Server-checked builds</span>
+        </div>
+        <div className="ticks mt-3.5" aria-hidden />
+        <div className="grid items-end gap-12 pt-10 md:pt-14 lg:grid-cols-2 lg:gap-14">
+          <div className="flex flex-col gap-8">
+            <h1 className="animate-fade-up font-display text-[clamp(52px,7.4vw,112px)] leading-[0.9] font-extrabold tracking-[-0.02em] uppercase [font-stretch:125%]">
+              Build
+              <br />
+              beyond
+              <br />
+              limits<span className="text-accent">.</span>
+            </h1>
+            <p className="animate-fade-up max-w-[460px] text-lg leading-relaxed text-muted md:text-[19px]">
+              Spec a gaming PC the way you&apos;d configure a performance car —
+              every part checked for fit, power and clearance on our servers
+              before it reaches your cart.
+            </p>
+            <div className="animate-fade-up flex flex-wrap gap-3">
+              <Link
+                href="/build"
+                className="inline-flex h-14 items-center gap-3 rounded-full bg-accent px-7 text-base font-semibold text-ink transition-[filter] hover:brightness-110"
+              >
+                Start a build <span aria-hidden>→</span>
+              </Link>
+              <Link
+                href="/shop"
+                className="inline-flex h-14 items-center rounded-full border border-border-strong px-7 text-base transition-colors hover:border-foreground"
+              >
+                Shop hardware
+              </Link>
             </div>
-            <HeroHardwareMedia />
           </div>
+          <HeroHardwareMedia />
         </div>
       </section>
 
-      <HowItWorks />
-
-      <section className="mx-auto max-w-6xl px-4 py-16 md:px-8 md:py-24">
-        <SectionHeader
-          eyebrow="Featured"
-          title="Selected hardware"
-          description="Curated components ready for your next build."
-          action={
-            <Link
-              href="/shop?featured=true"
-              className="text-sm text-muted transition-colors hover:text-sage"
+      {/* Proof strip */}
+      <section className="mx-auto max-w-[1360px] px-4 pt-20 md:px-10 md:pt-24">
+        <ul className="grid border-y border-border md:grid-cols-3">
+          {PROOF.map((item, i) => (
+            <li
+              key={item.body}
+              className={
+                i === 0
+                  ? 'flex flex-col gap-1.5 py-7 md:pr-6'
+                  : 'flex flex-col gap-1.5 border-t border-border py-7 md:border-t-0 md:border-l md:px-6'
+              }
             >
-              View all →
+              <span className="font-display text-[40px] leading-none font-bold [font-stretch:112%]">
+                {item.value}
+              </span>
+              <span className="text-[15px] text-muted">{item.body}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <ConfiguratorTeaser />
+
+      {/* Featured hardware */}
+      <section className="mx-auto max-w-[1360px] px-4 pt-24 md:px-10 md:pt-32">
+        <SectionHeader
+          index="02"
+          eyebrow="Featured hardware"
+          title="On the bench this week"
+          action={
+            <Link href="/shop?featured=true" className={sectionLinkClass}>
+              View all hardware
             </Link>
           }
         />
         {featured && featured.items.length > 0 ? (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className={productGridClass}>
             {featured.items.map((product, index) => (
               <ProductCard
                 key={product.id}
                 product={product}
-                priority={index < 4}
+                priority={index < 2}
                 imageSizes={IMAGE_SIZES.productCardDense}
               />
             ))}
@@ -149,45 +188,23 @@ export default async function HomePage() {
         )}
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 pb-8 md:px-8">
-        <div className="flex flex-col gap-8 rounded-[2rem] glass-panel p-6 md:flex-row md:items-center md:justify-between md:p-10">
-          <div className="max-w-lg">
-            <p className="mb-2 font-mono text-[11px] tracking-[0.2em] text-sage uppercase">
-              PC Builder
-            </p>
-            <h2 className="font-display text-3xl tracking-tight md:text-4xl">
-              Build your machine
-            </h2>
-            <p className="mt-3 text-muted">
-              Step through components with live server pricing and compatibility —
-              never trust a client-side green check.
-            </p>
-          </div>
-          <Link
-            href="/build"
-            className="glass-btn inline-flex h-12 items-center justify-center rounded-full px-7 text-sm font-medium"
-          >
-            Open Builder
-          </Link>
-        </div>
-      </section>
+      <PerformanceShowcase showcase={showcase} />
 
-      <section className="mx-auto max-w-6xl px-4 py-16 md:px-8 md:py-24">
+      {/* GPUs */}
+      <section className="mx-auto max-w-[1360px] px-4 pt-24 md:px-10 md:pt-32">
         <SectionHeader
-          eyebrow="GPUs"
-          title="Popular graphics"
+          index="04"
+          eyebrow="Graphics"
+          title="Popular GPUs"
           description="High-VRAM cards for competitive and cinematic frames."
           action={
-            <Link
-              href="/shop?type=GPU"
-              className="text-sm text-muted transition-colors hover:text-sage"
-            >
-              Shop GPUs →
+            <Link href="/shop?type=GPU" className={sectionLinkClass}>
+              Shop GPUs
             </Link>
           }
         />
         {gpus && gpus.items.length > 0 ? (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className={productGridClass}>
             {gpus.items.map((product) => (
               <ProductCard
                 key={product.id}
@@ -201,18 +218,22 @@ export default async function HomePage() {
         )}
       </section>
 
-      <PerformanceShowcase showcase={showcase} />
-
-      <section className="mx-auto max-w-6xl px-4 pb-16 md:px-8 md:pb-24">
-        <div className="rounded-[2rem] glass-panel p-6 md:p-10">
-          <SectionHeader
-            eyebrow="Compare"
-            title="Side-by-side specs"
-            description="Add up to four products from the shop, then open compare."
-          />
+      {/* Compare CTA */}
+      <section className="mx-auto max-w-[1360px] px-4 pt-24 md:px-10 md:pt-32">
+        <div className="flex flex-wrap items-end justify-between gap-8 border-t border-border pt-12">
+          <div className="flex max-w-xl flex-col gap-4">
+            <p className="eyebrow">05 / Compare</p>
+            <h2 className="font-display text-[32px] leading-[1.05] font-bold [font-stretch:118%] md:text-[40px]">
+              Put up to four parts side by side.
+            </h2>
+            <p className="text-[15px] text-muted">
+              Add products from any card, then read the spec sheets in one
+              table.
+            </p>
+          </div>
           <Link
             href="/compare"
-            className="glass-btn inline-flex h-11 items-center rounded-full px-6 text-sm font-medium"
+            className="inline-flex h-14 items-center rounded-full bg-foreground px-7 text-base font-semibold text-ink transition-colors hover:bg-white"
           >
             Open compare
           </Link>

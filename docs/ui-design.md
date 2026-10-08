@@ -4,52 +4,57 @@
 
 - **Name:** VORQEN  
 - **Tagline:** Build Beyond Limits.  
-- **Feel:** Night laboratory glass — deep navy canvas, frost panels, cyan + magenta light.  
+- **Feel:** "Instrument" — a hardware laboratory meets a performance-car configurator. Graphite ground, hairline rules, spec readouts in mono, one signal accent.  
 
-**Not:** neon RGB gamer template, earth-tone vintage, or a flat “simple” catalog.
+**Not:** neon RGB gamer template, glassmorphism / blurred orbs, gradient text, earth-tone vintage, or a flat "simple" catalog.
 
 ## Surfaces
 
-Storefront and auth use **frosted glassmorphism** over drifting color orbs:
+Flat panels with 1px hairlines — no blur, glow or gradient washes:
 
-- `.glass-panel` — cards, filters, PDP buy column
-- `.glass-nav` — floating pill navbar
-- `.hero-stage` — rounded homepage hero
-- `.glass-btn` — orange→magenta gradient CTAs
-- `.glass-input` — translucent fields
+- `.glass-panel` — solid `surface` fill + hairline border (name kept for compatibility)
+- `.glass-nav` — full-width sticky bar with bottom hairline
+- `.glass-btn` — solid signal-accent CTA with ink label
+- `.glass-input` — transparent field, strong hairline, white on focus
+- `.media-bed` — hatched photo bed behind catalog images
+- `.crop-marks` — corner crop marks on hero / gallery / builder photos
+- `.ticks` — ruler tick strip under headers and charts
+- `.eyebrow` / `.label-mono` — section index (`01 / CONFIGURATOR`) and mono field labels
+- `productGridClass` — product tiles edge to edge, separated by 1px rules
 
-Auth uses a two-column shell (`AuthShell`): brand story + glass form.
+Product tiles, spec readouts and stat strips use the **hairline grid** pattern: `gap-px` over a `bg-border` parent with `bg-background` cells.
 
 ## Color tokens
 
 | Token | Value | Usage |
 |-------|-------|--------|
-| `--background` | `#08091A` | Page canvas |
-| `--surface` | `#12162C` | Solid fallback panels |
-| `--elevated` | `#1B2140` | Admin rail / raised |
-| `--foreground` / cream | `#F4F7FF` | Primary text |
-| `--muted` | `#B8C0E0` | Secondary text |
-| `--border` | `white / 16%` | Hairline glass edges |
-| `--accent` | `#FF5C8A` | Magenta highlight / CTA |
-| `--ink` | `#08091A` | Dark fill, 3D studio |
-| `--cream` | `#F4F7FF` | Text on dark |
-| `--sage` | `#7AE0FF` | Cyan glow, eyebrows |
+| `--background` / `ink` | `#0C0D0F` | Page canvas, label on accent / white buttons |
+| `--surface` | `#141619` | Panels, summary column, hover tile |
+| `--elevated` | `#1C1F23` | Raised / active nav item |
+| `--foreground` / `cream` | `#EEF0F2` | Primary text, secondary solid buttons |
+| `--muted` | `#A3A9B1` | Secondary text |
+| `--subtle` | `#6E747C` | Indices, captions (non-essential text only) |
+| `--border` | `#23262B` | Hairlines |
+| `--border-strong` | `#3A3F45` | Outline buttons, inputs |
+| `--accent` | `#FF6B2C` | Signal orange — primary CTA, eyebrows, low stock, conflicts |
+| `--pass` | `#7FD9A8` | Compatibility pass / complete slot |
+| `--sage` | alias of accent | Legacy eyebrow class |
 
-Accent stays **sparse** — status, primary CTA, focus rings.
+Accent stays **sparse**: one primary CTA per view, section eyebrows, and warnings. Secondary actions are white (`solid`) or outline buttons.
 
 ## Typography
 
 | Role | Font |
 |------|------|
-| Display / headlines | Space Grotesk |
-| Body | Geist or Inter |
-| Specs / SKUs / technical | JetBrains Mono |
+| Display / headlines | Archivo (variable width; `[font-stretch:112–125%]`, bold–extra-bold, hero uppercase) |
+| Body | Instrument Sans |
+| Specs / SKUs / prices in lists / labels | JetBrains Mono |
 
-Large editorial type is encouraged; keep contrast and line-length readable.
+Big expanded headlines are the signature; keep body copy at 15–19px with readable line length.
 
 ## Motion
 
-- Purposeful Framer Motion (2–3 intentional motions on marketing surfaces).
+- CSS only: hero fade-up and hover transitions. No parallax, no glow pulses.
 - Scroll motion: subtle, not carnival.
 
 ## Layout principles
@@ -57,7 +62,7 @@ Large editorial type is encouraged; keep contrast and line-length readable.
 1. First viewport = one composition (brand, one headline, one subline, CTA group, dominant visual).
 2. Sections: one job, one headline, short support text.
 3. Cards only when they contain interaction; avoid card soup.
-4. Admin ≠ storefront. Admin uses a navy ops rail, rounded metric cards, and Recharts (area / donut / funnel); the storefront is night glass with orbs.
+4. Admin shares the palette but stays utilitarian — ops rail, metric cards and Recharts; the storefront carries the editorial display type.
 
 ## Key surfaces
 
@@ -68,19 +73,16 @@ Signed in: Account · Admin (staff) · Sign out. Single store navbar on `/build`
 
 ### Homepage sections (story order)
 
-1. Hero — BUILD BEYOND LIMITS. + catalog hardware photos  
-2. How it works — choose parts → server checks → checkout  
-3. Featured hardware  
-4. Build Your Machine  
-5. Popular GPUs  
-6. Performance showcase — server FPS samples, labeled estimates  
-7. Hardware comparison  
-8. Featured builds  
-9. Gaming setup  
-10. Latest hardware  
-11. Reviews  
-12. Newsletter  
-13. Footer  
+1. Hero — "BUILD BEYOND LIMITS." expanded caps, tick ruler, catalog GPU photo with crop marks + spec readout strip  
+2. Proof strip — rule count, slot count, server source of truth  
+3. 01 / Configurator — eight-slot spec sheet beside the six server checks (`ConfiguratorTeaser`)  
+4. 02 / Featured hardware — hairline product grid  
+5. 03 / Performance — server FPS samples as bars, labelled estimates  
+6. 04 / Popular GPUs  
+7. 05 / Compare CTA  
+8. Footer — oversized ghost wordmark  
+
+Not yet built (no backend): featured builds gallery, reviews strip, newsletter.
 
 ### PC Builder
 
@@ -111,7 +113,7 @@ Do not merely shrink desktop layouts.
 
 ## Avoid list
 
-- Excessive neon / rainbow gradients  
+- Excessive neon / rainbow gradients, glassmorphism, blurred color orbs  
 - Huge glowing text everywhere  
 - Electric violet / cool-blue gamer accents  
 - Generic dashboard card grids on marketing pages  
@@ -120,6 +122,8 @@ Do not merely shrink desktop layouts.
 ## Implementation notes
 
 - Tokens live in `apps/web/src/app/globals.css`; hex constants in `apps/web/src/theme/palette.ts`.  
+- Base rules sit in `@layer base` and the custom classes in `@layer components`, so Tailwind utilities (`border-accent`, `bg-background`, …) always win. Never add unlayered global selectors that set colors.  
+- Fonts load via `next/font/google` in `app/layout.tsx` (Archivo with the `wdth` axis, Instrument Sans, JetBrains Mono).  
 - shadcn/ui themed to the palette above.  
 - Prefer `next/image` for 2D assets; lazy 3D only where needed.
 - **Reuse UI** — see [`components.md`](./components.md). Prefer shared components over page-local duplicates.

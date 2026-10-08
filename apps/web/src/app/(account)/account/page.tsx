@@ -155,7 +155,7 @@ export default function AccountProfilePage() {
           />
         </label>
         {error ? <p className="text-sm text-red-400">{error}</p> : null}
-        {notice ? <p className="text-sm text-ink">{notice}</p> : null}
+        {notice ? <p className="text-sm text-pass">{notice}</p> : null}
         <Button type="submit" disabled={pending}>
           {pending ? 'Saving…' : 'Save profile'}
         </Button>

@@ -7,7 +7,8 @@ dist
 .next
 .turbo
 out
-build
+# Root-level build output only — `app/(store)/build/` is the PC Builder route.
+/build
 coverage
 
 # Env

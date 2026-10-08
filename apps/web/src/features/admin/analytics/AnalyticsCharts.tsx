@@ -19,7 +19,7 @@ import { THEME } from '@/theme/palette';
 
 const GRID = 'rgba(255,255,255,0.06)';
 const TICK = THEME.cream;
-const SERIES = [THEME.sage, THEME.clay, '#7C5CFF', '#F5C16C', '#4ADE80', '#60A5FA'];
+const SERIES = [THEME.clay, THEME.cream, '#7CC4FF', THEME.sage, '#F5C16C', '#8C929A'];
 
 const TOOLTIP_STYLE = {
   background: 'rgba(18, 22, 44, 0.96)',

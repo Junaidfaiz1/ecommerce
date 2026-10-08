@@ -279,7 +279,7 @@ export function CheckoutPage() {
           </form>
 
           {payment ? (
-            <div className="rounded-3xl glass-panel p-6">
+            <div className="rounded-md glass-panel p-6">
               <h2 className="font-display text-xl tracking-tight">Payment</h2>
               <p className="mt-1 font-mono text-[11px] text-muted">
                 Order {payment.orderNumber}
@@ -314,7 +314,7 @@ export function CheckoutPage() {
           ) : null}
         </section>
 
-        <aside className="h-fit rounded-3xl glass-panel p-6">
+        <aside className="h-fit rounded-md glass-panel p-6">
           <h2 className="font-display text-xl tracking-tight">Order</h2>
           <ul className="mt-4 space-y-3 text-sm">
             {cart.items.map((line) => (

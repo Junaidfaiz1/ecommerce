@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { BrandMark } from '@vorqen/ui';
 import { isStaffRole, type UserRole } from '@vorqen/types';
 import { SignOutButton } from '@/components/navigation/SignOutButton';
 
@@ -7,75 +6,65 @@ type StoreFooterProps = {
   session?: { role: UserRole } | null;
 };
 
+const linkClass = 'text-muted transition-colors hover:text-foreground';
+
 export function StoreFooter({ session = null }: StoreFooterProps) {
   const signedIn = session != null;
   const staff = isStaffRole(session?.role);
 
   return (
-    <footer className="mt-auto px-3 pb-3 md:px-6 md:pb-6">
-      <div className="glass-panel mx-auto max-w-6xl overflow-hidden rounded-[2rem]">
-        <div className="grid gap-10 px-6 py-12 md:grid-cols-3 md:px-10">
+    <footer className="mt-auto border-t border-border">
+      <div className="mx-auto max-w-[1360px] px-4 pt-16 pb-10 md:px-10 md:pt-24">
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)_minmax(0,1fr)]">
+          <p className="max-w-sm text-[15px] text-muted">
+            Build Beyond Limits. Premium gaming hardware with compatibility,
+            pricing and stock checked on the server — never in the browser.
+          </p>
           <div>
-            <Link href="/" className="text-foreground">
-              <BrandMark />
-            </Link>
-            <p className="mt-3 max-w-xs text-sm text-muted">
-              Build Beyond Limits. Premium gaming hardware with server-checked
-              compatibility.
-            </p>
-          </div>
-          <div>
-            <p className="font-mono text-[11px] tracking-[0.18em] text-sage uppercase">
-              Explore
-            </p>
-            <ul className="mt-3 space-y-2 text-sm">
+            <p className="label-mono">Explore</p>
+            <ul className="mt-4 space-y-2.5 text-[15px]">
               <li>
-                <Link href="/shop" className="text-cream/90 hover:text-sage">
+                <Link href="/shop" className={linkClass}>
                   Shop hardware
                 </Link>
               </li>
               <li>
-                <Link href="/build" className="text-cream/90 hover:text-sage">
+                <Link href="/build" className={linkClass}>
                   PC Builder
                 </Link>
               </li>
               <li>
-                <Link href="/compare" className="text-cream/90 hover:text-sage">
+                <Link href="/compare" className={linkClass}>
                   Compare
                 </Link>
               </li>
             </ul>
           </div>
           <div>
-            <p className="font-mono text-[11px] tracking-[0.18em] text-sage uppercase">
-              Account
-            </p>
-            <ul className="mt-3 space-y-2 text-sm">
+            <p className="label-mono">Account</p>
+            <ul className="mt-4 space-y-2.5 text-[15px]">
               <li>
-                <Link href="/account" className="text-cream/90 hover:text-sage">
+                <Link href="/account" className={linkClass}>
                   Profile
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/account/addresses"
-                  className="text-cream/90 hover:text-sage"
-                >
-                  Addresses
+                <Link href="/account/orders" className={linkClass}>
+                  Orders
                 </Link>
               </li>
               {staff ? (
                 <li>
-                  <Link href="/admin" className="text-cream/90 hover:text-sage">
+                  <Link href="/admin" className={linkClass}>
                     Admin
                   </Link>
                 </li>
               ) : null}
               <li>
                 {signedIn ? (
-                  <SignOutButton className="text-cream/90 hover:text-sage" />
+                  <SignOutButton className={linkClass} />
                 ) : (
-                  <Link href="/login" className="text-cream/90 hover:text-sage">
+                  <Link href="/login" className={linkClass}>
                     Sign in
                   </Link>
                 )}
@@ -83,8 +72,16 @@ export function StoreFooter({ session = null }: StoreFooterProps) {
             </ul>
           </div>
         </div>
-        <div className="border-t border-white/10 px-6 py-4 text-center font-mono text-[11px] text-muted md:px-10">
-          © {new Date().getFullYear()} VORQEN
+
+        <p
+          aria-hidden
+          className="mt-16 font-display text-[clamp(64px,15vw,220px)] leading-[0.8] font-black tracking-[-0.02em] text-surface select-none [font-stretch:125%]"
+        >
+          VORQEN
+        </p>
+        <div className="mt-6 flex flex-wrap justify-between gap-4 font-mono text-xs text-subtle">
+          <span>© {new Date().getFullYear()} VORQEN — Build Beyond Limits.</span>
+          <span>Payments secured by Stripe</span>
         </div>
       </div>
     </footer>

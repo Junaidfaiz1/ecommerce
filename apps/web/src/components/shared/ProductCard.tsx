@@ -43,6 +43,13 @@ export type ProductCardData = {
   cooler?: { coolerType: string; tdpRatingWatts: number | null } | null;
 };
 
+/**
+ * Hairline tile grid — cards sit edge to edge, separated by 1px rules.
+ * Pair with `ProductCard` children.
+ */
+export const productGridClass =
+  'grid grid-cols-[repeat(auto-fill,minmax(min(100%,260px),1fr))] gap-px border border-border bg-border';
+
 type ProductCardProps = {
   product: ProductCardData;
   className?: string;
@@ -67,67 +74,71 @@ export function ProductCard({
   return (
     <article
       className={cn(
-        'group relative flex flex-col rounded-3xl glass-panel p-4 transition-transform hover:-translate-y-0.5',
+        'group relative flex flex-col gap-4 bg-background p-5 transition-colors hover:bg-surface',
         className,
       )}
     >
-      <Link href={href} className="relative block aspect-[4/3] overflow-hidden rounded-2xl bg-white/5">
+      <Link
+        href={href}
+        className="media-bed relative block aspect-[4/3] overflow-hidden"
+        tabIndex={-1}
+        aria-hidden
+      >
         <CatalogImage
           src={image?.url ?? CATALOG_PLACEHOLDER_IMAGE}
-          alt={image?.alt ?? product.name}
+          alt=""
           sizes={imageSizes}
           priority={priority}
-          className="opacity-90 transition duration-500 group-hover:scale-[1.03] group-hover:opacity-100"
+          className="transition duration-500 group-hover:scale-[1.03]"
         />
       </Link>
 
-      <div className="mt-4 flex flex-1 flex-col gap-2">
-        <p className="font-mono text-[10px] tracking-[0.18em] text-muted uppercase">
+      <div className="flex items-center justify-between gap-3">
+        <p className="label-mono truncate">
           {product.brand.name} · {product.type}
         </p>
-        <Link
-          href={href}
-          className="font-display text-lg leading-snug tracking-tight text-foreground transition-colors hover:text-accent"
-        >
-          {product.name}
-        </Link>
-        {spec ? (
-          <p className="font-mono text-xs text-muted">{spec}</p>
+        {variant ? (
+          <StockBadge
+            inStock={variant.inStock}
+            quantity={variant.availableQuantity}
+          />
         ) : null}
-
-        <div className="mt-auto flex flex-col gap-3 pt-3">
-          <div className="flex items-end justify-between gap-3">
-            <div className="flex flex-col gap-1">
-              {variant ? (
-                <>
-                  <Price
-                    amount={variant.price}
-                    currency={variant.currency}
-                    compareAt={variant.compareAtPrice}
-                  />
-                  <StockBadge
-                    inStock={variant.inStock}
-                    quantity={variant.availableQuantity}
-                  />
-                </>
-              ) : (
-                <span className="text-sm text-muted">Unavailable</span>
-              )}
-            </div>
-            {showCompare ? <CompareToggle productId={product.id} /> : null}
-          </div>
-          {variant ? (
-            <div className="flex flex-wrap gap-2">
-              <AddToCartButton
-                variantId={variant.id}
-                size="sm"
-                disabled={!variant.inStock}
-              />
-              <WishlistToggle variantId={variant.id} size="sm" />
-            </div>
-          ) : null}
-        </div>
       </div>
+
+      <Link
+        href={href}
+        className="min-h-[2.6em] text-[17px] leading-snug font-semibold text-foreground"
+      >
+        {product.name}
+      </Link>
+
+      <div className="mt-auto flex items-baseline justify-between gap-3 border-t border-border pt-3">
+        <span className="truncate font-mono text-xs text-muted">
+          {spec ?? '—'}
+        </span>
+        {variant ? (
+          <Price
+            amount={variant.price}
+            currency={variant.currency}
+            compareAt={variant.compareAtPrice}
+            className="font-display text-xl font-bold [font-stretch:112%]"
+          />
+        ) : (
+          <span className="text-sm text-muted">Unavailable</span>
+        )}
+      </div>
+
+      {variant ? (
+        <div className="flex flex-wrap items-start gap-2">
+          <AddToCartButton
+            variantId={variant.id}
+            size="sm"
+            disabled={!variant.inStock}
+          />
+          <WishlistToggle variantId={variant.id} size="sm" />
+          {showCompare ? <CompareToggle productId={product.id} /> : null}
+        </div>
+      ) : null}
     </article>
   );
 }

@@ -1,7 +1,7 @@
-/** Night glass storefront palette — keep in sync with `globals.css`. */
+/** Instrument storefront palette — keep in sync with `globals.css`. */
 export const THEME = {
-  cream: '#F4F7FF',
-  sage: '#7AE0FF',
-  clay: '#FF5C8A',
-  ink: '#08091A',
+  cream: '#EEF0F2',
+  sage: '#7FD9A8',
+  clay: '#FF6B2C',
+  ink: '#0C0D0F',
 } as const;

@@ -113,9 +113,9 @@ export function ProductReviewsPanel({ productId, initial, className }: Props) {
 
       <form
         onSubmit={onSubmit}
-        className="flex flex-col gap-3 border border-border bg-surface/40 p-4 lg:col-span-2"
+        className="flex flex-col gap-3 rounded-md border border-border bg-surface p-5 lg:col-span-2"
       >
-        <h3 className="font-display text-lg tracking-tight">Write a review</h3>
+        <h3 className="font-display text-xl font-bold [font-stretch:112%]">Write a review</h3>
         <p className="text-xs text-muted">
           Requires sign-in. New reviews stay pending until moderation.
         </p>
@@ -153,7 +153,7 @@ export function ProductReviewsPanel({ productId, initial, className }: Props) {
           />
         </label>
         {error ? <p className="text-sm text-red-400">{error}</p> : null}
-        {notice ? <p className="text-sm text-ink">{notice}</p> : null}
+        {notice ? <p className="text-sm text-pass">{notice}</p> : null}
         <Button type="submit" disabled={pending}>
           {pending ? 'Submitting…' : 'Submit review'}
         </Button>

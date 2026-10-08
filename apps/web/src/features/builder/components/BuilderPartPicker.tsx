@@ -44,15 +44,10 @@ export function BuilderPartPicker({ slot }: Props) {
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
-      <header className="mb-6 flex items-end justify-between gap-4">
-        <div>
-          <h2 className="font-display text-2xl tracking-tight md:text-3xl">
-            {slotLabel(slot)}
-          </h2>
-          <p className="mt-1 text-sm text-muted">
-            Prices and stock from catalog — confirmed again when you save.
-          </p>
-        </div>
+      <header className="mb-3 flex items-end justify-between gap-4">
+        <p className="label-mono">
+          {slotLabel(slot)} options{multi ? ' · pick one or more' : ''}
+        </p>
         {selected.length > 0 ? (
           <button
             type="button"
@@ -65,7 +60,7 @@ export function BuilderPartPicker({ slot }: Props) {
       </header>
 
       {error ? (
-        <p className="rounded-md border border-border bg-surface px-4 py-3 text-sm text-red-400">
+        <p className="rounded-md border border-accent/40 px-4 py-3 text-sm text-accent">
           {error}
         </p>
       ) : null}
@@ -78,7 +73,7 @@ export function BuilderPartPicker({ slot }: Props) {
         <p className="text-sm text-muted">No active products in this category yet.</p>
       ) : null}
 
-      <ul className="grid gap-2 sm:grid-cols-2">
+      <ul className="flex flex-col divide-y divide-border overflow-hidden rounded-md border border-border">
         {items.map((product) => {
           const active = selectedIds.has(product.id);
           const variant = product.defaultVariant;
@@ -87,39 +82,47 @@ export function BuilderPartPicker({ slot }: Props) {
               <button
                 type="button"
                 onClick={() => onPick(product)}
+                aria-pressed={active}
                 className={cn(
-                  'flex w-full gap-3 rounded-2xl glass-panel px-3 py-3 text-left transition-colors',
-                  active
-                    ? 'ring-2 ring-accent'
-                    : 'hover:bg-white/40',
+                  'flex w-full items-center gap-4 px-4 py-3 text-left transition-colors md:px-5',
+                  active ? 'bg-surface' : 'hover:bg-surface/60',
                 )}
               >
-                <span className="relative h-16 w-20 shrink-0 overflow-hidden rounded-xl bg-white/30">
+                <span
+                  aria-hidden
+                  className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full border border-subtle"
+                >
+                  <span
+                    className={cn(
+                      'h-2 w-2 rounded-full',
+                      active ? 'bg-foreground' : 'bg-transparent',
+                    )}
+                  />
+                </span>
+                <span className="media-bed relative h-14 w-[72px] shrink-0 overflow-hidden rounded-[4px]">
                   <CatalogImage
                     src={
                       product.images.find((img) => img.isPrimary)?.url ??
                       product.images[0]?.url ??
                       CATALOG_PLACEHOLDER_IMAGE
                     }
-                    alt={product.name}
+                    alt=""
                     sizes={IMAGE_SIZES.productThumb}
                   />
                 </span>
-                <span className="flex min-w-0 flex-1 flex-col gap-1">
-                <span className="font-mono text-[10px] uppercase tracking-wider text-muted">
-                  {product.brand.name}
-                </span>
-                <span className="text-sm font-medium leading-snug">
-                  {product.name}
-                </span>
-                <span className="mt-1 flex items-center justify-between gap-2 font-mono text-xs text-muted">
-                  <span>{formatMoney(variant?.price, variant?.currency)}</span>
-                  <span>
+                <span className="flex min-w-0 flex-1 flex-col gap-0.5">
+                  <span className="text-[15px] leading-snug font-medium">
+                    {product.name}
+                  </span>
+                  <span className="font-mono text-xs text-muted">
+                    {product.brand.name} ·{' '}
                     {variant?.inStock
                       ? `${variant.availableQuantity} in stock`
                       : 'Out of stock'}
                   </span>
                 </span>
+                <span className="shrink-0 text-right font-mono text-sm tabular-nums">
+                  {formatMoney(variant?.price, variant?.currency)}
                 </span>
               </button>
             </li>

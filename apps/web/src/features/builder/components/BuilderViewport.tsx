@@ -10,6 +10,16 @@ import { cn } from '@/lib/utils';
 import { SLOT_PLACEHOLDER_IMAGE } from '../slot-images';
 import { isComponentSlot, slotLabel, useBuilderStore } from '../store';
 
+function formatMoney(price: string | null | undefined) {
+  if (!price) return null;
+  const n = Number(price);
+  if (Number.isNaN(n)) return price;
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  }).format(n);
+}
+
 export function BuilderViewport() {
   const parts = useBuilderStore((s) => s.parts);
   const step = useBuilderStore((s) => s.step);
@@ -20,39 +30,47 @@ export function BuilderViewport() {
   const featuredPart = parts.find((p) => p.slot === featuredSlot);
   const featuredSrc =
     featuredPart?.imageUrl ?? SLOT_PLACEHOLDER_IMAGE[featuredSlot];
+  const slotIndex = COMPONENT_SLOTS.indexOf(featuredSlot) + 1;
+  const price = formatMoney(featuredPart?.unitPrice);
 
   return (
-    <div className="overflow-hidden rounded-3xl glass-panel">
-      <div className="relative min-h-[240px] bg-cream sm:min-h-[280px] lg:min-h-[360px]">
+    <div className="flex flex-col gap-4">
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <div className="min-w-0">
+          <p className="eyebrow mb-2">
+            {String(slotIndex).padStart(2, '0')} / {slotLabel(featuredSlot)}
+          </p>
+          <h2 className="font-display text-[28px] leading-none font-extrabold [font-stretch:118%] md:text-[40px]">
+            {featuredPart
+              ? featuredPart.productName
+              : `Choose ${slotLabel(featuredSlot)}`}
+          </h2>
+        </div>
+        {price ? (
+          <p className="font-display text-[28px] font-bold tabular-nums [font-stretch:112%]">
+            {price}
+          </p>
+        ) : null}
+      </div>
+
+      <div
+        className={cn(
+          'crop-marks media-bed relative h-[240px] overflow-hidden rounded-[4px] sm:h-[300px] lg:h-[360px]',
+          !featuredPart && 'opacity-60',
+        )}
+      >
         <CatalogImage
           src={featuredSrc}
           alt={
             featuredPart
               ? `${featuredPart.brandName} ${featuredPart.productName}`
-              : `${slotLabel(featuredSlot)}`
+              : slotLabel(featuredSlot)
           }
           sizes={IMAGE_SIZES.builderStage}
-          className="object-contain p-8 sm:p-10"
         />
       </div>
-      <div className="flex items-end justify-between gap-3 border-t border-white/10 px-4 py-3">
-        <div className="min-w-0">
-          <p className="font-mono text-[11px] tracking-[0.18em] text-muted uppercase">
-            {slotLabel(featuredSlot)}
-          </p>
-          <p className="mt-0.5 truncate font-display text-lg tracking-tight">
-            {featuredPart
-              ? featuredPart.productName
-              : `Select ${slotLabel(featuredSlot).toLowerCase()}`}
-          </p>
-        </div>
-        {featuredPart ? (
-          <p className="shrink-0 font-mono text-[11px] text-sage">Selected</p>
-        ) : (
-          <p className="shrink-0 font-mono text-[11px] text-muted">Empty</p>
-        )}
-      </div>
-      <ul className="flex gap-2 overflow-x-auto border-t border-white/10 p-3">
+
+      <ul className="grid grid-cols-8 gap-2" aria-label="Slots">
         {COMPONENT_SLOTS.map((slot) => {
           const part = parts.find((p) => p.slot === slot);
           const active = slot === featuredSlot;
@@ -64,18 +82,15 @@ export function BuilderViewport() {
                 aria-label={slotLabel(slot)}
                 aria-pressed={active}
                 className={cn(
-                  'relative h-16 w-16 overflow-hidden rounded-xl bg-cream',
-                  active
-                    ? 'ring-2 ring-accent ring-offset-2 ring-offset-transparent'
-                    : 'ring-1 ring-white/15',
-                  !part && 'opacity-55',
+                  'media-bed relative block aspect-[8/7] w-full overflow-hidden rounded-[4px] border',
+                  active ? 'border-foreground' : 'border-border',
+                  !part && 'opacity-45',
                 )}
               >
                 <CatalogImage
                   src={part?.imageUrl ?? SLOT_PLACEHOLDER_IMAGE[slot]}
                   alt=""
                   sizes={IMAGE_SIZES.builderSlot}
-                  className="object-contain p-1.5"
                 />
               </button>
             </li>

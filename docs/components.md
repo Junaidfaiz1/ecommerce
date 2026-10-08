@@ -49,7 +49,7 @@ packages/
 | `StoreNavbar` / `SignOutButton` | Store + account chrome; session from access cookie |
 | `HeroHardwareMedia` | Homepage hero catalog photos |
 | `JsonLd` | Homepage, PDP structured data |
-| `HowItWorks` / `PerformanceShowcase` | Homepage (`features/storefront`) |
+| `ConfiguratorTeaser` / `PerformanceShowcase` / `HeroHardwareMedia` | Homepage (`features/storefront`) |
 
 ## API guidelines
 

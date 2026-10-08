@@ -92,16 +92,16 @@ function rowsFor(product: CatalogProduct): Array<[string, string]> {
 export function SpecTable({ product }: { product: CatalogProduct }) {
   const rows = rowsFor(product);
   return (
-    <dl className="divide-y divide-border border border-border">
+    <dl className="divide-y divide-border border-y border-border">
       {rows.map(([label, value]) => (
         <div
           key={label}
-          className="grid grid-cols-2 gap-4 px-4 py-3 text-sm md:grid-cols-3"
+          className="grid grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] gap-4 py-3.5 text-[15px] md:grid-cols-[180px_minmax(0,1fr)]"
         >
-          <dt className="font-mono text-xs tracking-wide text-muted uppercase">
+          <dt className="label-mono pt-0.5">
             {label}
           </dt>
-          <dd className="md:col-span-2 text-foreground/90">{value}</dd>
+          <dd className="text-foreground">{value}</dd>
         </div>
       ))}
     </dl>

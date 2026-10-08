@@ -51,7 +51,7 @@ export function AuthShell({ eyebrow, title, subtitle, children }: AuthShellProps
           </div>
         </div>
 
-        <div className="glass-panel mx-auto w-full max-w-md rounded-[2rem] p-6 sm:p-8">
+        <div className="glass-panel mx-auto w-full max-w-md rounded-md p-6 sm:p-8">
           <p className="font-mono text-[11px] tracking-[0.2em] text-sage uppercase lg:hidden">
             {eyebrow}
           </p>

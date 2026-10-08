@@ -17,11 +17,11 @@ export function EmptyState({
   return (
     <div
       className={cn(
-        'flex flex-col items-start gap-3 rounded-3xl glass-panel px-6 py-10',
+        'flex flex-col items-start gap-3 rounded-md border border-border px-6 py-10',
         className,
       )}
     >
-      <h3 className="font-display text-lg tracking-tight text-foreground">
+      <h3 className="font-display text-xl font-bold tracking-tight text-foreground [font-stretch:112%]">
         {title}
       </h3>
       {description ? (
@@ -48,12 +48,12 @@ export function ErrorState({
   return (
     <div
       className={cn(
-        'flex flex-col items-start gap-3 rounded-3xl glass-panel px-6 py-8',
+        'flex flex-col items-start gap-3 rounded-md border border-accent/40 px-6 py-8',
         className,
       )}
       role="alert"
     >
-      <h3 className="font-display text-lg tracking-tight text-foreground">
+      <h3 className="font-display text-xl font-bold tracking-tight text-foreground [font-stretch:112%]">
         {title}
       </h3>
       <p className="max-w-md text-sm text-muted">{message}</p>
@@ -63,6 +63,8 @@ export function ErrorState({
 }
 
 type SectionHeaderProps = {
+  /** Optional index, rendered as "01 / EYEBROW". */
+  index?: string;
   eyebrow?: string;
   title: string;
   description?: string;
@@ -71,6 +73,7 @@ type SectionHeaderProps = {
 };
 
 export function SectionHeader({
+  index,
   eyebrow,
   title,
   description,
@@ -80,21 +83,22 @@ export function SectionHeader({
   return (
     <div
       className={cn(
-        'mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between',
+        'mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between',
         className,
       )}
     >
-      <div>
+      <div className="max-w-2xl">
         {eyebrow ? (
-          <p className="mb-2 font-mono text-[11px] tracking-[0.2em] text-muted uppercase">
+          <p className="eyebrow mb-4">
+            {index ? `${index} / ` : null}
             {eyebrow}
           </p>
         ) : null}
-        <h2 className="font-display text-2xl tracking-tight md:text-3xl">
+        <h2 className="font-display text-[32px] leading-none font-bold tracking-[-0.01em] [font-stretch:118%] md:text-5xl">
           {title}
         </h2>
         {description ? (
-          <p className="mt-2 max-w-xl text-sm text-muted md:text-base">
+          <p className="mt-4 max-w-xl text-[15px] text-muted md:text-base">
             {description}
           </p>
         ) : null}
@@ -103,3 +107,7 @@ export function SectionHeader({
     </div>
   );
 }
+
+/** Secondary link styled as an underlined text action. */
+export const sectionLinkClass =
+  'w-fit border-b border-border-strong pb-0.5 text-[15px] text-muted transition-colors hover:border-foreground hover:text-foreground';

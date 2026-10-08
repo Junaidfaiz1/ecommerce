@@ -14,6 +14,7 @@ const NAV = [
   { href: '/shop', label: 'Shop' },
   { href: '/build', label: 'Build' },
   { href: '/compare', label: 'Compare' },
+  { href: '/wishlist', label: 'Wishlist' },
 ] as const;
 
 export type StoreNavbarSession = {
@@ -25,6 +26,11 @@ type StoreNavbarProps = {
   session?: StoreNavbarSession;
 };
 
+function isActive(pathname: string | null, href: string) {
+  if (!pathname) return false;
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
 export function StoreNavbar({ className, session = null }: StoreNavbarProps) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
@@ -33,116 +39,126 @@ export function StoreNavbar({ className, session = null }: StoreNavbarProps) {
   const staff = isStaffRole(session?.role);
 
   return (
-    <header className={cn('sticky top-0 z-30 px-3 pt-3 md:px-6', className)}>
-      <div className="glass-nav mx-auto flex max-w-6xl flex-col rounded-[1.75rem]">
-        <div className="flex h-14 items-center justify-between gap-4 px-4 md:h-16 md:px-6">
-          <div className="flex min-w-0 items-center gap-6">
-            <Link
-              href="/"
-              className="shrink-0 text-foreground"
-              onClick={() => setOpen(false)}
-            >
-              <BrandMark />
-            </Link>
-            <nav className="hidden items-center gap-6 text-sm text-muted md:flex">
-              {NAV.map((item) => (
+    <header className={cn('glass-nav sticky top-0 z-30', className)}>
+      <div className="mx-auto flex h-16 max-w-[1360px] items-center gap-8 px-4 md:h-[72px] md:px-10">
+        <Link
+          href="/"
+          className="shrink-0 text-lg text-foreground md:text-xl"
+          onClick={() => setOpen(false)}
+        >
+          <BrandMark />
+        </Link>
+        <nav
+          aria-label="Primary"
+          className="hidden flex-1 items-center gap-7 text-[15px] md:flex"
+        >
+          {NAV.map((item) => {
+            const active = isActive(pathname, item.href);
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                aria-current={active ? 'page' : undefined}
+                className={cn(
+                  'border-b pb-0.5 transition-colors',
+                  active
+                    ? 'border-accent text-foreground'
+                    : 'border-transparent text-muted hover:text-foreground',
+                )}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
+        </nav>
+        <div className="ml-auto flex items-center gap-2 text-[15px] md:ml-0">
+          {signedIn ? (
+            <>
+              <Link
+                href="/account"
+                className="hidden h-11 items-center px-3 text-muted transition-colors hover:text-foreground lg:inline-flex"
+              >
+                Account
+              </Link>
+              {staff ? (
                 <Link
-                  key={item.href}
-                  href={item.href}
-                  className="transition-colors hover:text-foreground"
+                  href="/admin"
+                  className="hidden h-11 items-center px-3 text-muted transition-colors hover:text-foreground lg:inline-flex"
                 >
-                  {item.label}
+                  Admin
                 </Link>
-              ))}
-            </nav>
-          </div>
-          <nav className="flex items-center gap-2 text-sm sm:gap-4">
+              ) : null}
+              <SignOutButton className="hidden h-11 items-center px-3 text-muted transition-colors hover:text-foreground sm:inline-flex" />
+            </>
+          ) : (
             <Link
-              href="/wishlist"
-              className="hidden text-muted transition-colors hover:text-foreground sm:inline"
+              href={signInHref}
+              className="hidden h-11 items-center px-3 text-muted transition-colors hover:text-foreground sm:inline-flex"
             >
-              Wishlist
+              Sign in
             </Link>
-            <CartNavLink />
+          )}
+          <CartNavLink />
+          <button
+            type="button"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-border-strong md:hidden"
+            aria-expanded={open}
+            aria-label={open ? 'Close menu' : 'Open menu'}
+            onClick={() => setOpen((v) => !v)}
+          >
+            <span className="flex flex-col gap-1">
+              <span className="block h-px w-4 bg-foreground" />
+              <span className="block h-px w-4 bg-foreground" />
+              <span className="block h-px w-4 bg-foreground" />
+            </span>
+          </button>
+        </div>
+      </div>
+      {open ? (
+        <div className="border-t border-border px-4 py-2 md:hidden">
+          <nav aria-label="Mobile" className="flex flex-col text-base">
+            {NAV.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="flex h-12 items-center border-b border-border text-foreground"
+                onClick={() => setOpen(false)}
+              >
+                {item.label}
+              </Link>
+            ))}
             {signedIn ? (
               <>
                 <Link
                   href="/account"
-                  className="hidden text-muted transition-colors hover:text-foreground sm:inline"
+                  className="flex h-12 items-center border-b border-border"
+                  onClick={() => setOpen(false)}
                 >
                   Account
                 </Link>
                 {staff ? (
                   <Link
                     href="/admin"
-                    className="hidden text-muted transition-colors hover:text-foreground sm:inline"
+                    className="flex h-12 items-center border-b border-border"
+                    onClick={() => setOpen(false)}
                   >
                     Admin
                   </Link>
                 ) : null}
-                <SignOutButton className="rounded-full glass-panel px-4 py-1.5 text-xs font-medium text-muted transition-colors hover:text-foreground sm:text-sm" />
+                <SignOutButton className="flex h-12 items-center text-left text-foreground" />
               </>
             ) : (
               <Link
                 href={signInHref}
-                className="glass-btn rounded-full px-4 py-1.5 text-xs font-medium sm:text-sm"
+                className="flex h-12 items-center"
+                onClick={() => setOpen(false)}
               >
                 Sign in
               </Link>
             )}
-            <button
-              type="button"
-              className="inline-flex h-9 w-9 items-center justify-center rounded-full glass-panel md:hidden"
-              aria-expanded={open}
-              aria-label="Open menu"
-              onClick={() => setOpen((v) => !v)}
-            >
-              <span className="sr-only">Menu</span>
-              <span className="flex flex-col gap-1">
-                <span className="block h-0.5 w-4 bg-foreground" />
-                <span className="block h-0.5 w-4 bg-foreground" />
-                <span className="block h-0.5 w-4 bg-foreground" />
-              </span>
-            </button>
           </nav>
         </div>
-        {open ? (
-          <div className="border-t border-white/10 px-4 py-4 md:hidden">
-            <nav className="flex flex-col gap-3 text-sm">
-              {NAV.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="text-foreground"
-                  onClick={() => setOpen(false)}
-                >
-                  {item.label}
-                </Link>
-              ))}
-              <Link href="/wishlist" onClick={() => setOpen(false)}>
-                Wishlist
-              </Link>
-              {signedIn ? (
-                <>
-                  <Link href="/account" onClick={() => setOpen(false)}>
-                    Account
-                  </Link>
-                  {staff ? (
-                    <Link href="/admin" onClick={() => setOpen(false)}>
-                      Admin
-                    </Link>
-                  ) : null}
-                  <SignOutButton className="text-left text-foreground" />
-                </>
-              ) : (
-                <Link href={signInHref} onClick={() => setOpen(false)}>
-                  Sign in
-                </Link>
-              )}
-            </nav>
-          </div>
-        ) : null}
-      </div>
+      ) : null}
     </header>
   );
 }

@@ -31,15 +31,16 @@ export function CartNavLink({ className }: { className?: string }) {
   return (
     <Link
       href="/cart"
+      aria-label={itemCount > 0 ? `Cart, ${itemCount} items` : 'Cart'}
       className={cn(
-        'text-muted transition-colors hover:text-foreground',
+        'inline-flex h-11 items-center gap-2.5 rounded-full border border-border-strong px-4 text-[15px] text-foreground transition-colors hover:border-foreground',
         className,
       )}
     >
       Cart
       {itemCount > 0 ? (
-        <span className="ml-1 font-mono text-[11px] text-accent">
-          ({itemCount})
+        <span className="rounded-full bg-accent px-1.5 font-mono text-[12px] leading-5 text-ink">
+          {itemCount}
         </span>
       ) : null}
     </Link>

@@ -94,7 +94,7 @@ export function WishlistToggle({
     <div className={cn('inline-flex flex-col gap-1', className)}>
       <Button
         type="button"
-        variant={saved ? 'default' : 'outline'}
+        variant={saved ? 'solid' : 'outline'}
         size={size}
         disabled={pending || !variantId}
         aria-pressed={saved}

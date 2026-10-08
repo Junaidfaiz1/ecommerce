@@ -133,7 +133,7 @@ function SuccessBody() {
       </p>
 
       {status ? (
-        <dl className="mt-8 space-y-3 rounded-3xl glass-panel p-6 text-sm">
+        <dl className="mt-8 space-y-3 rounded-md glass-panel p-6 text-sm">
           <div className="flex justify-between gap-4">
             <dt className="text-muted">Order</dt>
             <dd className="font-mono">{status.orderNumber}</dd>
