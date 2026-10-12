@@ -43,3 +43,6 @@ apps/web/public/uploads/**
 # Misc
 *.tsbuildinfo
 next-env.d.ts
+
+# pnpm only — avoid npm lockfile (Vercel picks npm if present)
+package-lock.json
