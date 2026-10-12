@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, type FormEvent } from 'react';
+import { TableSkeleton } from '@/components/shared/Skeleton';
 import { PRODUCT_STATUSES, upsertAdminBundleInputSchema } from '@vorqen/types';
 import { Button } from '@/components/ui/button';
 import { ErrorState } from '@/components/shared/SectionStates';
@@ -126,7 +127,7 @@ export function AdminBundlesPage() {
         </Button>
       </form>
       {loading && items.length === 0 ? (
-        <p className="text-sm text-muted">Loading bundles…</p>
+        <TableSkeleton rows={4} cols={3} label="Loading bundles" />
       ) : items.length === 0 ? (
         <AdminEmptyState
           title="No bundles yet"

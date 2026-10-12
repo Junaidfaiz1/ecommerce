@@ -11,9 +11,9 @@ export default async function StoreLayout({
   const session = await getNavSession();
 
   return (
-    <div className="flex min-h-screen flex-col px-0">
+    <div className="flex min-h-screen flex-col">
       <StoreNavbar session={session} />
-      <div className="flex-1 pb-20">{children}</div>
+      <div className="flex-1 pb-24">{children}</div>
       <StoreFooter session={session} />
       <CompareTray />
     </div>

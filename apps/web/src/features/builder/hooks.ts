@@ -219,7 +219,7 @@ export function usePerformanceEstimates() {
   }, [cpuId, gpuId, key]);
 
   if (!cpuId || !gpuId) {
-    return { result: null, error: null, ready: false };
+    return { result: null, error: null, ready: false, pending: false };
   }
 
   const fresh = cache?.key === key ? cache : null;
@@ -227,6 +227,7 @@ export function usePerformanceEstimates() {
     result: fresh?.result ?? null,
     error: fresh?.error ?? null,
     ready: true,
+    pending: !fresh,
   };
 }
 

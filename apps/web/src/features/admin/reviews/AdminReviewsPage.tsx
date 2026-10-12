@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { TableSkeleton } from '@/components/shared/Skeleton';
 import { REVIEW_STATUSES } from '@vorqen/types';
 import { Button } from '@/components/ui/button';
 import { ErrorState } from '@/components/shared/SectionStates';
@@ -33,7 +34,10 @@ export function AdminReviewsPage() {
   const [items, setItems] = useState<Row[]>([]);
   const [pageInfo, setPageInfo] = useState<PageInfo | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
+  const requestKey = JSON.stringify([page, status]);
+  const [loadedKey, setLoadedKey] = useState<string | null>(null);
+  /** True until the response for the current filters arrives. */
+  const loading = loadedKey !== requestKey;
 
   async function load(nextPage = page, nextStatus = status) {
     const data = await graphqlRequest<{
@@ -63,13 +67,13 @@ export function AdminReviewsPage() {
       } catch (err) {
         if (!cancelled) setError(getErrorMessage(err));
       } finally {
-        if (!cancelled) setLoading(false);
+        if (!cancelled) setLoadedKey(requestKey);
       }
     })();
     return () => {
       cancelled = true;
     };
-  }, [page, status]);
+  }, [page, status, requestKey]);
 
   async function moderate(id: string, next: 'APPROVED' | 'REJECTED') {
     setError(null);
@@ -102,8 +106,8 @@ export function AdminReviewsPage() {
           ))}
         </select>
       </Field>
-      {loading && items.length === 0 ? (
-        <p className="text-sm text-muted">Loading reviews…</p>
+      {loading ? (
+        <TableSkeleton cols={4} label="Loading reviews" />
       ) : items.length === 0 ? (
         <AdminEmptyState
           title={status ? `No ${status.toLowerCase()} reviews` : 'No reviews yet'}

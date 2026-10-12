@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, type FormEvent } from 'react';
+import { OrderDetailSkeleton } from '@/components/shared/Skeleton';
 import { ORDER_STATUSES, canAdminTransitionOrder, type OrderStatus } from '@vorqen/types';
 import { Button } from '@/components/ui/button';
 import { ErrorState } from '@/components/shared/SectionStates';
@@ -117,7 +118,7 @@ export function AdminOrderDetailPage({ orderId }: { orderId: string }) {
   }
 
   if (error && !order) return <ErrorState message={error} />;
-  if (!order) return <p className="text-sm text-muted">Loading order…</p>;
+  if (!order) return <OrderDetailSkeleton />;
 
   const allowed = ORDER_STATUSES.filter((s) =>
     canAdminTransitionOrder(order.status, s),

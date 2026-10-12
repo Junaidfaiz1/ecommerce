@@ -19,7 +19,7 @@ export function Price({
 
   return (
     <span className={cn('inline-flex items-baseline gap-2', className)}>
-      <span className="font-medium text-foreground">
+      <span className="text-foreground tabular-nums">
         {formatMoney(amount, currency)}
       </span>
       {showCompare ? (

@@ -20,7 +20,7 @@ export function CompareToggle({ productId, className }: CompareToggleProps) {
   return (
     <Button
       type="button"
-      variant={selected ? 'default' : 'outline'}
+      variant={selected ? 'solid' : 'outline'}
       size="sm"
       className={cn('shrink-0', className)}
       disabled={full}
@@ -48,11 +48,11 @@ export function CompareTray() {
   const href = `/compare?ids=${ids.join(',')}`;
 
   return (
-    <div className="fixed inset-x-3 bottom-3 z-40 rounded-3xl glass-nav px-4 py-3 md:inset-x-6 md:px-6">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4">
-        <p className="text-sm text-muted">
-          <span className="font-medium text-foreground">{ids.length}</span> selected
-          for compare
+    <div className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-surface/95 px-4 py-3 md:px-10">
+      <div className="mx-auto flex max-w-[1360px] items-center justify-between gap-4">
+        <p className="font-mono text-xs tracking-wide text-muted uppercase">
+          <span className="text-foreground">{ids.length}</span> /{' '}
+          {COMPARE_MAX_ITEMS} selected for compare
         </p>
         <div className="flex gap-2">
           <Button type="button" variant="ghost" size="sm" onClick={clear}>
@@ -60,7 +60,7 @@ export function CompareTray() {
           </Button>
           <Link
             href={href}
-            className="glass-btn inline-flex h-8 items-center justify-center rounded-full px-3 text-xs font-medium"
+            className="inline-flex h-9 items-center justify-center rounded-full bg-accent px-4 text-xs font-semibold text-ink"
           >
             Open compare
           </Link>

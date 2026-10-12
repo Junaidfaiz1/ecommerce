@@ -1,6 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { TableSkeleton } from '@/components/shared/Skeleton';
+import { useDebouncedValue } from '@/hooks/use-debounced-value';
 import Link from 'next/link';
 import { IMAGE_SIZES, PRODUCT_STATUSES, PRODUCT_TYPES } from '@vorqen/types';
 import { ErrorState } from '@/components/shared/SectionStates';
@@ -39,7 +41,12 @@ export function CatalogListPage() {
   const [items, setItems] = useState<Product[]>([]);
   const [pageInfo, setPageInfo] = useState<PageInfo | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
+  // Debounce typing so each keystroke does not refetch (and flash a skeleton).
+  const debouncedQuery = useDebouncedValue(query.trim(), 300);
+  const requestKey = JSON.stringify([page, debouncedQuery, status, type]);
+  const [loadedKey, setLoadedKey] = useState<string | null>(null);
+  /** True until the response for the current filters arrives. */
+  const loading = loadedKey !== requestKey;
 
   useEffect(() => {
     let cancelled = false;
@@ -51,7 +58,7 @@ export function CatalogListPage() {
           input: {
             page,
             pageSize: 20,
-            ...(query ? { query } : {}),
+            ...(debouncedQuery ? { query: debouncedQuery } : {}),
             ...(status ? { status } : {}),
             ...(type ? { type } : {}),
           },
@@ -63,13 +70,13 @@ export function CatalogListPage() {
       } catch (err) {
         if (!cancelled) setError(getErrorMessage(err));
       } finally {
-        if (!cancelled) setLoading(false);
+        if (!cancelled) setLoadedKey(requestKey);
       }
     })();
     return () => {
       cancelled = true;
     };
-  }, [page, query, status, type]);
+  }, [page, debouncedQuery, status, type, requestKey]);
 
   if (error && items.length === 0) return <ErrorState message={error} />;
 
@@ -134,8 +141,8 @@ export function CatalogListPage() {
           </select>
         </Field>
       </div>
-      {loading && items.length === 0 ? (
-        <p className="text-sm text-muted">Loading catalog…</p>
+      {loading ? (
+        <TableSkeleton cols={4} thumb label="Loading catalog" />
       ) : items.length === 0 ? (
         <AdminEmptyState
           title={query || status || type ? 'No products match these filters' : 'No products yet'}

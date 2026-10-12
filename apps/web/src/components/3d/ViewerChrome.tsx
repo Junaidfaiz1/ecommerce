@@ -71,7 +71,7 @@ export function ViewerChrome({
               'inline-flex h-8 items-center gap-1.5 rounded-md border px-2.5 font-mono text-[10px] tracking-wider uppercase transition-colors',
               explode
                 ? 'border-sage bg-sage/20 text-cream'
-                : 'border-sage/50 bg-cream/90 text-ink hover:bg-cream',
+                : 'border-border-strong bg-background/90 text-foreground hover:bg-surface',
             )}
             aria-pressed={explode}
           >
@@ -82,7 +82,7 @@ export function ViewerChrome({
         <button
           type="button"
           onClick={() => void toggleFullscreen()}
-          className="inline-flex h-8 items-center gap-1.5 rounded-md border border-sage/50 bg-cream/90 px-2.5 font-mono text-[10px] tracking-wider text-ink uppercase transition-colors hover:bg-cream"
+          className="inline-flex h-8 items-center gap-1.5 rounded-md border border-border-strong bg-background/90 px-2.5 font-mono text-[10px] tracking-wider text-foreground uppercase transition-colors hover:bg-surface"
           aria-label={fullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
         >
           {fullscreen ? (

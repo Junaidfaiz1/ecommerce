@@ -1,6 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { TableSkeleton } from '@/components/shared/Skeleton';
+import { useDebouncedValue } from '@/hooks/use-debounced-value';
 import Link from 'next/link';
 import { ORDER_STATUSES } from '@vorqen/types';
 import { ErrorState } from '@/components/shared/SectionStates';
@@ -35,7 +37,12 @@ export function AdminOrdersPage() {
   const [items, setItems] = useState<Row[]>([]);
   const [pageInfo, setPageInfo] = useState<PageInfo | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
+  // Debounce typing so each keystroke does not refetch (and flash a skeleton).
+  const debouncedQuery = useDebouncedValue(query.trim(), 300);
+  const requestKey = JSON.stringify([page, debouncedQuery, status]);
+  const [loadedKey, setLoadedKey] = useState<string | null>(null);
+  /** True until the response for the current filters arrives. */
+  const loading = loadedKey !== requestKey;
 
   useEffect(() => {
     let cancelled = false;
@@ -46,7 +53,7 @@ export function AdminOrdersPage() {
         }>(ADMIN_ORDERS, {
           input: {
             page,
-            ...(query ? { query } : {}),
+            ...(debouncedQuery ? { query: debouncedQuery } : {}),
             ...(status ? { status } : {}),
           },
         });
@@ -56,13 +63,13 @@ export function AdminOrdersPage() {
       } catch (err) {
         if (!cancelled) setError(getErrorMessage(err));
       } finally {
-        if (!cancelled) setLoading(false);
+        if (!cancelled) setLoadedKey(requestKey);
       }
     })();
     return () => {
       cancelled = true;
     };
-  }, [page, query, status]);
+  }, [page, debouncedQuery, status, requestKey]);
 
   if (error && items.length === 0) return <ErrorState message={error} />;
 
@@ -99,8 +106,8 @@ export function AdminOrdersPage() {
           </select>
         </Field>
       </div>
-      {loading && items.length === 0 ? (
-        <p className="text-sm text-muted">Loading orders…</p>
+      {loading ? (
+        <TableSkeleton cols={5} label="Loading orders" />
       ) : items.length === 0 ? (
         <AdminEmptyState
           title={query || status ? 'No orders match these filters' : 'No orders yet'}

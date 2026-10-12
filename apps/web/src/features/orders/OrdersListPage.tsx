@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { ORDER_STATUSES, type OrderStatus } from '@vorqen/types';
 import { Button } from '@/components/ui/button';
 import { EmptyState, ErrorState } from '@/components/shared/SectionStates';
+import { ListSkeleton } from '@/components/shared/Skeleton';
 import { Price } from '@/components/shared/Price';
 import { graphqlRequest, GraphQLClientError } from '@/lib/graphql-client';
 import { getErrorMessage } from '@/lib/errors';
@@ -55,7 +56,7 @@ export function OrdersListPage() {
   }, [page, status, router]);
 
   if (loading && !data) {
-    return <p className="text-sm text-muted">Loading orders…</p>;
+    return <ListSkeleton rows={5} label="Loading orders" />;
   }
 
   if (error && !data) {

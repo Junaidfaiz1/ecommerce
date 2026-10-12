@@ -7,30 +7,21 @@ type StockBadgeProps = {
 };
 
 export function StockBadge({ inStock, quantity, className }: StockBadgeProps) {
+  const base = 'shrink-0 font-mono text-[11px] tracking-[0.06em] uppercase';
+
   if (!inStock) {
-    return (
-      <span
-        className={cn(
-          'font-mono text-[11px] tracking-wide text-muted uppercase',
-          className,
-        )}
-      >
-        Out of stock
-      </span>
-    );
+    return <span className={cn(base, 'text-subtle', className)}>Out of stock</span>;
   }
 
   const low = quantity !== undefined && quantity > 0 && quantity <= 5;
 
   return (
-    <span
-      className={cn(
-        'font-mono text-[11px] tracking-wide uppercase',
-        low ? 'text-accent' : 'text-sage',
-        className,
-      )}
-    >
-      {low ? `Low stock · ${quantity}` : 'In stock'}
+    <span className={cn(base, low ? 'text-accent' : 'text-muted', className)}>
+      {low
+        ? `${quantity} left`
+        : quantity !== undefined && quantity > 0
+          ? `${quantity} in stock`
+          : 'In stock'}
     </span>
   );
 }

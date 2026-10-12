@@ -11,7 +11,7 @@ const LINKS: Array<{ href: string; label: string; exact?: boolean }> = [
 
 export function AccountNav({ pathname }: { pathname: string }) {
   return (
-    <nav className="flex flex-wrap gap-2 rounded-3xl glass-panel p-3 md:flex-col">
+    <nav className="flex flex-wrap gap-2 rounded-md glass-panel p-3 md:flex-col">
       {LINKS.map((link) => {
         const active = link.exact
           ? pathname === link.href
@@ -23,8 +23,8 @@ export function AccountNav({ pathname }: { pathname: string }) {
             className={cn(
               'rounded-2xl px-3 py-2 text-sm transition-colors',
               active
-                ? 'glass-btn text-cream'
-                : 'text-muted hover:bg-white/40 hover:text-foreground',
+                ? 'bg-elevated text-foreground'
+                : 'text-muted hover:bg-elevated hover:text-foreground',
             )}
           >
             {link.label}

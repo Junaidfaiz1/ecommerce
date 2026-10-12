@@ -1,12 +1,13 @@
 import type { JSX } from 'react';
 
-/** Minimal shared brand mark — expand design system in later phases. */
+/** VORQEN wordmark — expanded display face, tracked caps. */
 export function BrandMark(): JSX.Element {
   return (
     <span
       style={{
         fontFamily: 'var(--font-display, system-ui)',
-        fontWeight: 700,
+        fontWeight: 800,
+        fontStretch: '125%',
         letterSpacing: '0.08em',
       }}
     >

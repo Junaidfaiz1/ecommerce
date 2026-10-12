@@ -7,6 +7,7 @@ import { Elements } from '@stripe/react-stripe-js';
 import { createAddressInputSchema } from '@vorqen/types';
 import { Price } from '@/components/shared/Price';
 import { EmptyState, ErrorState } from '@/components/shared/SectionStates';
+import { CommercePageSkeleton } from '@/components/shared/Skeleton';
 import { Button } from '@/components/ui/button';
 import { graphqlRequest } from '@/lib/graphql-client';
 import { getErrorMessage } from '@/lib/errors';
@@ -122,11 +123,7 @@ export function CheckoutPage() {
   }
 
   if (cart === undefined && !error) {
-    return (
-      <main className="mx-auto max-w-6xl px-4 py-10 md:px-8 md:py-14">
-        <p className="text-sm text-muted">Loading checkout…</p>
-      </main>
-    );
+    return <CommercePageSkeleton label="Loading checkout" rows={2} />;
   }
 
   if (error && !cart) {
@@ -279,7 +276,7 @@ export function CheckoutPage() {
           </form>
 
           {payment ? (
-            <div className="rounded-3xl glass-panel p-6">
+            <div className="rounded-md glass-panel p-6">
               <h2 className="font-display text-xl tracking-tight">Payment</h2>
               <p className="mt-1 font-mono text-[11px] text-muted">
                 Order {payment.orderNumber}
@@ -314,7 +311,7 @@ export function CheckoutPage() {
           ) : null}
         </section>
 
-        <aside className="h-fit rounded-3xl glass-panel p-6">
+        <aside className="h-fit rounded-md glass-panel p-6">
           <h2 className="font-display text-xl tracking-tight">Order</h2>
           <ul className="mt-4 space-y-3 text-sm">
             {cart.items.map((line) => (

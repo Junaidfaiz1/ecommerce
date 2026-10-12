@@ -6,34 +6,43 @@ alwaysApply: false
 
 # UI / Design System
 
-Direction: cold sky / navy hardware catalog — **not** neon gamer kitsch.
+Direction: **"Instrument"** — hardware laboratory + performance-car configurator. Graphite ground, hairline rules, mono spec readouts, one signal accent. **Not** neon gamer kitsch, not glassmorphism.
 
 ## Palette
 
 | Token | Hex |
 |-------|-----|
-| Background | `#FBFBFB` |
-| Surface | `#D4EAFB` |
-| Elevated | `#B8DCF9` |
-| Text / ink | `#0D47A1` |
-| Muted / clay | `#2196F3` |
-| Border / sage | `#90CAF9` |
-| Accent | `#2196F3` — **sparingly** |
+| Background / ink | `#0C0D0F` |
+| Surface | `#141619` |
+| Elevated | `#1C1F23` |
+| Foreground / cream | `#EEF0F2` |
+| Muted | `#A3A9B1` |
+| Subtle | `#6E747C` |
+| Border / border-strong | `#23262B` / `#3A3F45` |
+| Accent (signal orange) | `#FF6B2C` — **sparingly**: primary CTA, eyebrows, warnings |
+| Pass | `#7FD9A8` — compatibility pass only |
 
 ## Typography
 
-- Display: Space Grotesk  
-- Body: Geist / Inter  
-- Technical: JetBrains Mono  
+- Display: Archivo, expanded (`[font-stretch:112–125%]`), bold/extra-bold
+- Body: Instrument Sans
+- Technical / labels: JetBrains Mono (`.label-mono`, `.eyebrow`)
+
+## Patterns
+
+- Hairline grid: `gap-px bg-border` parent, `bg-background` cells (`productGridClass`).
+- Photos sit on `.media-bed`; hero / gallery / builder stage add `.crop-marks`.
+- Section headers: `SectionHeader` with `index` + `eyebrow` → `01 / CONFIGURATOR`.
+- Buttons: `Button` variants `default` (accent), `solid` (white), `outline`, `ghost`; pill radius, ≥44px targets.
 
 ## Avoid
 
-Excessive neon/gradients/glow, glassmorphism spam, huge glowing headlines, earth-tone vintage palettes unless requested.
+Blur, glow, gradient text/washes, color orbs, left-border callout cards, emoji icons, unlayered global CSS that sets colors.
 
 ## Layout notes
 
-- Homepage = one continuous visual story; hero budget is tight.
-- Builder desktop: left nav | center 3D | right summary. Mobile: step-by-step.
-- Product cards: image, name, category, price, rating, key spec, stock + subtle hover.
+- Homepage = one continuous story; content max width 1360px, 40px gutters desktop / 16px mobile.
+- Builder desktop: left slot rail | center photo + options | right server-priced summary. Mobile: progress segments + step pills.
+- Product tiles: photo, brand · type, stock, name, key spec, price, actions.
 
 Full: `docs/ui-design.md`.

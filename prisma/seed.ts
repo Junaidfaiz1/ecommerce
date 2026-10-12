@@ -178,7 +178,7 @@ async function main() {
             isPrimary: true,
           },
         },
-        threeDAssets: {
+        assets3d: {
           create: {
             glbUrl: `procedural://${input.type.toLowerCase()}`,
             label: `${input.name} 3D`,

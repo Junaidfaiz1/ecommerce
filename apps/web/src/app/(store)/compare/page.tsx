@@ -137,7 +137,7 @@ export default async function ComparePage({
       ) : null}
 
       {products.length > 0 ? (
-        <div className="overflow-x-auto rounded-3xl glass-panel p-4">
+        <div className="overflow-x-auto rounded-md glass-panel p-4">
           <table className="w-full min-w-[640px] border-collapse text-left text-sm">
             <thead>
               <tr className="border-b border-white/40">

@@ -1,6 +1,7 @@
 'use client';
 
 import { Suspense, useState, type FormEvent } from 'react';
+import { FormSkeleton } from '@/components/shared/Skeleton';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { loginInputSchema } from '@vorqen/types';
@@ -109,7 +110,7 @@ export default function LoginPage() {
       title="Sign in"
       subtitle="Access your VORQEN account and continue where you left off."
     >
-      <Suspense fallback={<p className="mt-8 text-sm text-muted">Loading…</p>}>
+      <Suspense fallback={<FormSkeleton fields={2} label="Loading form" className="mt-8" />}>
         <LoginForm />
       </Suspense>
     </AuthShell>

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Price } from '@/components/shared/Price';
 import { StockBadge } from '@/components/shared/StockBadge';
 import { EmptyState, ErrorState } from '@/components/shared/SectionStates';
+import { CommercePageSkeleton } from '@/components/shared/Skeleton';
 import { Button } from '@/components/ui/button';
 import { graphqlRequest, GraphQLClientError } from '@/lib/graphql-client';
 import { getErrorMessage } from '@/lib/errors';
@@ -105,11 +106,7 @@ export function WishlistPage() {
   }
 
   if (loading) {
-    return (
-      <main className="mx-auto max-w-6xl px-4 py-10 md:px-8 md:py-14">
-        <p className="text-sm text-muted">Loading wishlist…</p>
-      </main>
-    );
+    return <CommercePageSkeleton label="Loading wishlist" summary={false} />;
   }
 
   if (needsAuth) {

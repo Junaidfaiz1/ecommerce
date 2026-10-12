@@ -1,6 +1,8 @@
 'use client';
 
 import { useEffect, useState, type FormEvent } from 'react';
+import { TableSkeleton } from '@/components/shared/Skeleton';
+import { useDebouncedValue } from '@/hooks/use-debounced-value';
 import { ErrorState } from '@/components/shared/SectionStates';
 import { Button } from '@/components/ui/button';
 import { graphqlRequest } from '@/lib/graphql-client';
@@ -33,7 +35,12 @@ export function AdminInventoryPage() {
   const [items, setItems] = useState<Row[]>([]);
   const [pageInfo, setPageInfo] = useState<PageInfo | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
+  // Debounce typing so each keystroke does not refetch (and flash a skeleton).
+  const debouncedQuery = useDebouncedValue(query.trim(), 300);
+  const requestKey = JSON.stringify([page, debouncedQuery, lowOnly]);
+  const [loadedKey, setLoadedKey] = useState<string | null>(null);
+  /** True until the response for the current filters arrives. */
+  const loading = loadedKey !== requestKey;
   const [delta, setDelta] = useState('0');
   const [reason, setReason] = useState('cycle count');
   const [selected, setSelected] = useState<string>('');
@@ -48,7 +55,7 @@ export function AdminInventoryPage() {
           input: {
             page,
             lowStockOnly: lowOnly,
-            ...(query ? { query } : {}),
+            ...(debouncedQuery ? { query: debouncedQuery } : {}),
           },
         });
         if (cancelled) return;
@@ -57,13 +64,13 @@ export function AdminInventoryPage() {
       } catch (err) {
         if (!cancelled) setError(getErrorMessage(err));
       } finally {
-        if (!cancelled) setLoading(false);
+        if (!cancelled) setLoadedKey(requestKey);
       }
     })();
     return () => {
       cancelled = true;
     };
-  }, [page, query, lowOnly]);
+  }, [page, debouncedQuery, lowOnly, requestKey]);
 
   async function onAdjust(e: FormEvent) {
     e.preventDefault();
@@ -81,7 +88,11 @@ export function AdminInventoryPage() {
       const data = await graphqlRequest<{
         adminInventory: { items: Row[]; pageInfo: PageInfo };
       }>(ADMIN_INVENTORY, {
-        input: { page, lowStockOnly: lowOnly, ...(query ? { query } : {}) },
+        input: {
+          page,
+          lowStockOnly: lowOnly,
+          ...(debouncedQuery ? { query: debouncedQuery } : {}),
+        },
       });
       setItems(data.adminInventory.items);
       setPageInfo(data.adminInventory.pageInfo);
@@ -123,8 +134,8 @@ export function AdminInventoryPage() {
           Low stock only
         </label>
       </div>
-      {loading && items.length === 0 ? (
-        <p className="text-sm text-muted">Loading inventory…</p>
+      {loading ? (
+        <TableSkeleton cols={5} label="Loading inventory" />
       ) : items.length === 0 ? (
         <AdminEmptyState
           title={query || lowOnly ? 'No SKUs match these filters' : 'No inventory rows yet'}

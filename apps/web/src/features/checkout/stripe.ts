@@ -18,18 +18,18 @@ export const PAYMENT_ELEMENT_APPEARANCE = {
   theme: 'night' as const,
   variables: {
     colorPrimary: THEME.clay,
-    colorBackground: '#12162C',
+    colorBackground: '#141619',
     colorText: THEME.cream,
     colorDanger: '#FF8A8A',
-    colorTextSecondary: THEME.sage,
-    fontFamily: 'Inter, system-ui, sans-serif',
-    borderRadius: '16px',
+    colorTextSecondary: '#A3A9B1',
+    fontFamily: '"Instrument Sans", system-ui, sans-serif',
+    borderRadius: '6px',
     spacingUnit: '4px',
   },
   rules: {
     '.Input': {
-      backgroundColor: 'rgba(255,255,255,0.08)',
-      border: '1px solid rgba(255,255,255,0.16)',
+      backgroundColor: 'transparent',
+      border: '1px solid #3A3F45',
     },
     '.Input:focus': {
       border: `1px solid ${THEME.clay}`,

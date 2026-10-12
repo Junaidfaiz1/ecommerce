@@ -76,7 +76,7 @@ export async function ProductDetailView({ slug, expectedType }: Props) {
   const path = productHref(product);
 
   return (
-    <main className="mx-auto max-w-6xl px-4 py-10 md:px-8 md:py-14">
+    <main className="mx-auto max-w-[1360px] px-4 pt-6 md:px-10">
       <JsonLd
         data={productJsonLd({
           name: product.name,
@@ -91,41 +91,46 @@ export async function ProductDetailView({ slug, expectedType }: Props) {
           inStock: variant?.inStock,
         })}
       />
-      <nav className="mb-6 font-mono text-[11px] tracking-wide text-muted">
-        <Link href="/shop" className="hover:text-accent">
+      <nav
+        aria-label="Breadcrumb"
+        className="font-mono text-xs tracking-[0.04em] text-muted uppercase"
+      >
+        <Link href="/shop" className="hover:text-foreground">
           Shop
         </Link>
         <span className="mx-2">/</span>
-        <Link href={`/shop?type=${product.type}`} className="hover:text-accent">
+        <Link href={`/shop?type=${product.type}`} className="hover:text-foreground">
           {product.type}
         </Link>
         <span className="mx-2">/</span>
-        <span className="text-foreground/80">{product.name}</span>
+        <span className="text-foreground">{product.name}</span>
       </nav>
 
-      <div className="grid gap-10 lg:grid-cols-2">
-        <div className="space-y-4">
-          <div className="relative aspect-[4/3] overflow-hidden rounded-3xl bg-cream ring-1 ring-white/15">
+      <div className="flex flex-wrap items-start gap-14 pt-8">
+        <div className="flex min-w-0 flex-[999_1_560px] flex-col gap-3">
+          <div className="crop-marks media-bed relative aspect-[5/4] overflow-hidden rounded-[4px]">
             <CatalogImage
               src={primary?.url ?? CATALOG_PLACEHOLDER_IMAGE}
               alt={primary?.alt ?? product.name}
               sizes={IMAGE_SIZES.productGallery}
               priority
-              className="object-contain p-6 md:p-8"
             />
           </div>
           {images.length > 1 ? (
-            <div className="flex gap-2 overflow-x-auto pb-1">
-              {images.map((img) => (
+            <div className="grid grid-cols-4 gap-3">
+              {images.slice(0, 8).map((img) => (
                 <div
                   key={img.id}
-                  className="relative h-16 w-20 shrink-0 overflow-hidden rounded-xl bg-cream ring-1 ring-white/15"
+                  className={
+                    img.id === primary?.id
+                      ? 'media-bed relative aspect-[4/3] overflow-hidden rounded-[4px] border border-foreground'
+                      : 'media-bed relative aspect-[4/3] overflow-hidden rounded-[4px] border border-border'
+                  }
                 >
                   <CatalogImage
                     src={img.url}
                     alt={img.alt ?? ''}
                     sizes={IMAGE_SIZES.productThumb}
-                    className="object-contain p-1"
                   />
                 </div>
               ))}
@@ -133,36 +138,36 @@ export async function ProductDetailView({ slug, expectedType }: Props) {
           ) : null}
         </div>
 
-        <div>
-          <div className="rounded-3xl glass-panel p-5 sm:p-6">
-          <p className="font-mono text-[11px] tracking-[0.18em] text-muted uppercase">
-            {product.brand.name} · {product.type}
-          </p>
-          <h1 className="mt-2 font-display text-3xl tracking-tight md:text-4xl">
-            {product.name}
-          </h1>
-          {highlight ? (
-            <p className="mt-2 font-mono text-sm text-muted">{highlight}</p>
-          ) : null}
+        <div className="flex w-full flex-col gap-7 lg:max-w-[480px] lg:flex-[1_1_380px]">
+          <div className="flex flex-col gap-3">
+            <p className="label-mono">
+              {product.brand.name} · {product.type}
+            </p>
+            <h1 className="font-display text-[clamp(34px,3.6vw,44px)] leading-none font-extrabold tracking-[-0.01em] [font-stretch:115%]">
+              {product.name}
+            </h1>
+            {reviews?.averageRating != null ? (
+              <div className="flex items-center gap-3">
+                <RatingStars rating={reviews.averageRating} />
+                <a
+                  href="#reviews"
+                  className="border-b border-border-strong text-sm text-muted hover:text-foreground"
+                >
+                  {reviews.averageRating.toFixed(1)} ·{' '}
+                  {reviews.pageInfo.totalCount} reviews
+                </a>
+              </div>
+            ) : null}
+          </div>
 
-          {reviews?.averageRating != null ? (
-            <div className="mt-4 flex items-center gap-2">
-              <RatingStars rating={reviews.averageRating} />
-              <span className="text-sm text-muted">
-                {reviews.averageRating.toFixed(1)} · {reviews.pageInfo.totalCount}{' '}
-                reviews
-              </span>
-            </div>
-          ) : null}
-
-          <div className="mt-6 flex flex-wrap items-end gap-4 border-y border-border py-5">
+          <div className="flex flex-wrap items-baseline justify-between gap-3 border-y border-border py-5">
             {variant ? (
               <>
                 <Price
                   amount={variant.price}
                   currency={variant.currency}
                   compareAt={variant.compareAtPrice}
-                  className="text-xl"
+                  className="font-display text-[40px] font-bold [font-stretch:112%]"
                 />
                 <StockBadge
                   inStock={variant.inStock}
@@ -174,38 +179,45 @@ export async function ProductDetailView({ slug, expectedType }: Props) {
             )}
           </div>
 
+          {highlight ? (
+            <p className="font-mono text-sm text-foreground/85">{highlight}</p>
+          ) : null}
+
           {product.description ? (
-            <p className="mt-5 text-sm leading-relaxed text-muted">
+            <p className="text-[15px] leading-relaxed text-muted">
               {product.description}
             </p>
           ) : null}
 
-          <div className="mt-6 flex flex-wrap gap-3">
+          <div className="flex flex-col gap-2.5">
             {variant ? (
-              <>
-                <AddToCartButton variantId={variant.id} />
-                <WishlistToggle variantId={variant.id} />
-              </>
+              <AddToCartButton
+                variantId={variant.id}
+                size="lg"
+                disabled={!variant.inStock}
+                className="w-full [&>button]:w-full"
+              />
             ) : null}
-            <CompareToggle productId={product.id} />
             <Link
-              href={`/build`}
-              className="glass-panel inline-flex h-8 items-center rounded-2xl px-3 text-xs font-medium"
+              href="/build"
+              className="inline-flex h-14 items-center justify-center rounded-full border border-border-strong text-base transition-colors hover:border-foreground"
             >
-              Open Builder
+              Configure in builder
             </Link>
+            <div className="flex flex-wrap gap-2.5">
+              {variant ? <WishlistToggle variantId={variant.id} /> : null}
+              <CompareToggle productId={product.id} className="h-11 px-5 text-sm" />
+            </div>
           </div>
 
           {product.variants.length > 1 ? (
-            <div className="mt-8">
-              <h2 className="font-mono text-[11px] tracking-[0.18em] text-muted uppercase">
-                Variants
-              </h2>
-              <ul className="mt-3 space-y-2">
+            <div>
+              <h2 className="label-mono">Variants</h2>
+              <ul className="mt-3 divide-y divide-border border-y border-border">
                 {product.variants.map((v) => (
                   <li
                     key={v.id}
-                    className="flex items-center justify-between gap-3 border-b border-border/70 py-2 text-sm"
+                    className="flex items-center justify-between gap-3 py-3 text-sm"
                   >
                     <span>
                       {v.name ?? v.sku}
@@ -219,36 +231,26 @@ export async function ProductDetailView({ slug, expectedType }: Props) {
               </ul>
             </div>
           ) : null}
-          </div>
         </div>
       </div>
 
-      <section className="mt-14 rounded-[2rem] glass-panel p-5 sm:p-6">
-        <h2 className="font-display text-2xl tracking-tight">Specifications</h2>
-        <div className="mt-4">
-          <SpecTable product={product} />
-        </div>
+      <section className="pt-24 md:pt-28">
+        <p className="eyebrow mb-6">Specifications</p>
+        <SpecTable product={product} />
       </section>
 
-      <section className="mt-8 rounded-[2rem] glass-panel p-5 sm:p-6">
-        <h2 className="font-display text-2xl tracking-tight">Reviews</h2>
+      <section id="reviews" className="scroll-mt-24 pt-24 md:pt-28">
+        <div className="mb-8 border-b border-border pb-6">
+          <h2 className="font-display text-[32px] leading-none font-bold [font-stretch:118%] md:text-[40px]">
+            Owner reviews
+          </h2>
+        </div>
         {reviews ? (
-          <ProductReviewsPanel
-            productId={product.id}
-            initial={reviews}
-            className="mt-4"
-          />
+          <ProductReviewsPanel productId={product.id} initial={reviews} />
         ) : (
-          <ErrorState className="mt-4" message="Reviews could not be loaded." />
+          <ErrorState message="Reviews could not be loaded." />
         )}
       </section>
-
-      <p className="mt-10 font-mono text-[11px] text-muted">
-        Canonical:{' '}
-        <Link href={productHref(product)} className="hover:text-accent">
-          {productHref(product)}
-        </Link>
-      </p>
     </main>
   );
 }

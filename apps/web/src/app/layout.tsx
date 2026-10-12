@@ -1,16 +1,17 @@
 import type { Metadata } from 'next';
 import { SITE_DESCRIPTION, SITE_NAME, SITE_TAGLINE } from '@vorqen/types';
-import { Space_Grotesk, Inter, JetBrains_Mono } from 'next/font/google';
+import { Archivo, Instrument_Sans, JetBrains_Mono } from 'next/font/google';
 import { metadataBaseUrl } from '@/server/seo';
-import { AuraBackground } from '@/components/layout/AuraBackground';
 import './globals.css';
 
-const spaceGrotesk = Space_Grotesk({
+/** Display face — variable width axis drives the expanded headlines. */
+const archivo = Archivo({
   subsets: ['latin'],
+  axes: ['wdth'],
   variable: '--font-display',
 });
 
-const inter = Inter({
+const instrumentSans = Instrument_Sans({
   subsets: ['latin'],
   variable: '--font-sans',
 });
@@ -52,10 +53,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable}`}>
-      <body className="relative min-h-screen bg-background font-sans text-foreground antialiased">
-        <AuraBackground />
-        <div className="relative z-10">{children}</div>
+    <html lang="en" className={`${archivo.variable} ${instrumentSans.variable} ${jetbrainsMono.variable}`}>
+      <body className="min-h-screen bg-background font-sans text-foreground antialiased">
+        {children}
       </body>
     </html>
   );

@@ -125,40 +125,40 @@ export function SaveBuildPanel() {
   return (
     <form onSubmit={onSubmit} className="space-y-4 border-t border-border pt-6">
       <div>
-        <h3 className="font-display text-xl tracking-tight">Save build</h3>
+        <h3 className="font-display text-2xl font-bold [font-stretch:112%]">Save build</h3>
         <p className="mt-1 text-sm text-muted">
           Server re-checks prices and compatibility on save.
         </p>
       </div>
 
       <label className="flex flex-col gap-1.5 text-sm">
-        <span className="text-muted">Name</span>
+        <span className="label-mono">Name</span>
         <input
           value={buildName}
           onChange={(e) => setBuildName(e.target.value)}
-          className="glass-input rounded-2xl px-3 py-2 outline-none focus:border-accent"
+          className="glass-input rounded-md px-4 py-2.5 outline-none focus:border-accent"
           maxLength={120}
           required
         />
       </label>
 
       <label className="flex flex-col gap-1.5 text-sm">
-        <span className="text-muted">Notes (optional)</span>
+        <span className="label-mono">Notes (optional)</span>
         <textarea
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
           rows={2}
           maxLength={2000}
-          className="resize-y glass-input rounded-2xl px-3 py-2 outline-none focus:border-accent"
+          className="resize-y glass-input rounded-md px-4 py-2.5 outline-none focus:border-accent"
         />
       </label>
 
       <label className="flex flex-col gap-1.5 text-sm">
-        <span className="text-muted">Visibility</span>
+        <span className="label-mono">Visibility</span>
         <select
           value={visibility}
           onChange={(e) => setVisibility(e.target.value as BuildVisibility)}
-          className="glass-input rounded-2xl px-3 py-2 outline-none focus:border-accent"
+          className="glass-input rounded-md px-4 py-2.5 outline-none focus:border-accent"
         >
           <option value="PRIVATE">Private</option>
           <option value="UNLISTED">Unlisted (link)</option>
@@ -168,18 +168,18 @@ export function SaveBuildPanel() {
 
       {visibility !== 'PRIVATE' ? (
         <label className="flex flex-col gap-1.5 text-sm">
-          <span className="text-muted">Slug</span>
+          <span className="label-mono">Slug</span>
           <input
             value={slug}
             onChange={(e) => setSlug(e.target.value)}
             placeholder={slugify(buildName) || 'my-build'}
-            className="glass-input rounded-2xl px-3 py-2 font-mono text-sm outline-none focus:border-accent"
+            className="glass-input rounded-md px-4 py-2.5 font-mono text-sm outline-none focus:border-accent"
           />
         </label>
       ) : null}
 
       {error ? <p className="text-sm text-red-400">{error}</p> : null}
-      {success ? <p className="text-sm text-ink">{success}</p> : null}
+      {success ? <p className="text-sm text-pass">{success}</p> : null}
       {needsAuth ? (
         <p className="text-sm text-muted">
           <Link href={loginHref('/build')} className="text-foreground underline-offset-4 hover:underline">
@@ -200,7 +200,7 @@ export function SaveBuildPanel() {
         <button
           type="submit"
           disabled={pending || parts.length === 0}
-          className="glass-btn rounded-2xl px-5 py-2.5 text-sm font-medium disabled:opacity-50"
+          className="glass-btn h-12 rounded-full px-6 text-sm disabled:opacity-50"
         >
           {pending ? 'Saving…' : buildId ? 'Update build' : 'Save build'}
         </button>
@@ -213,7 +213,7 @@ export function SaveBuildPanel() {
               : 'Save the build first'
           }
           onClick={() => void onAddToCart()}
-          className="glass-panel rounded-2xl px-5 py-2.5 text-sm disabled:opacity-60"
+          className="h-12 rounded-full border border-border-strong px-6 text-sm hover:border-foreground disabled:opacity-60"
         >
           {cartPending ? 'Adding…' : 'Add to cart'}
         </button>

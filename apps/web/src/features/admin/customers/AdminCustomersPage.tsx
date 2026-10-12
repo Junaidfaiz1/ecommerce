@@ -1,6 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { TableSkeleton } from '@/components/shared/Skeleton';
+import { useDebouncedValue } from '@/hooks/use-debounced-value';
 import { ErrorState } from '@/components/shared/SectionStates';
 import { Button } from '@/components/ui/button';
 import { graphqlRequest } from '@/lib/graphql-client';
@@ -31,13 +33,18 @@ export function AdminCustomersPage() {
   const [items, setItems] = useState<Row[]>([]);
   const [pageInfo, setPageInfo] = useState<PageInfo | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
+  // Debounce typing so each keystroke does not refetch (and flash a skeleton).
+  const debouncedQuery = useDebouncedValue(query.trim(), 300);
+  const requestKey = JSON.stringify([page, debouncedQuery]);
+  const [loadedKey, setLoadedKey] = useState<string | null>(null);
+  /** True until the response for the current filters arrives. */
+  const loading = loadedKey !== requestKey;
 
   async function load(nextPage = page) {
     const data = await graphqlRequest<{
       adminCustomers: { items: Row[]; pageInfo: PageInfo };
     }>(ADMIN_CUSTOMERS, {
-      input: { page: nextPage, ...(query ? { query } : {}) },
+      input: { page: nextPage, ...(debouncedQuery ? { query: debouncedQuery } : {}) },
     });
     setItems(data.adminCustomers.items);
     setPageInfo(data.adminCustomers.pageInfo);
@@ -50,7 +57,7 @@ export function AdminCustomersPage() {
         const data = await graphqlRequest<{
           adminCustomers: { items: Row[]; pageInfo: PageInfo };
         }>(ADMIN_CUSTOMERS, {
-          input: { page, ...(query ? { query } : {}) },
+          input: { page, ...(debouncedQuery ? { query: debouncedQuery } : {}) },
         });
         if (cancelled) return;
         setItems(data.adminCustomers.items);
@@ -58,13 +65,13 @@ export function AdminCustomersPage() {
       } catch (err) {
         if (!cancelled) setError(getErrorMessage(err));
       } finally {
-        if (!cancelled) setLoading(false);
+        if (!cancelled) setLoadedKey(requestKey);
       }
     })();
     return () => {
       cancelled = true;
     };
-  }, [page, query]);
+  }, [page, debouncedQuery, requestKey]);
 
   async function toggle(userId: string, isActive: boolean) {
     setError(null);
@@ -95,8 +102,8 @@ export function AdminCustomersPage() {
           placeholder="Search by email or name…"
         />
       </Field>
-      {loading && items.length === 0 ? (
-        <p className="text-sm text-muted">Loading customers…</p>
+      {loading ? (
+        <TableSkeleton cols={4} label="Loading customers" />
       ) : items.length === 0 ? (
         <AdminEmptyState
           title={query ? 'No customers match this search' : 'No customers yet'}
